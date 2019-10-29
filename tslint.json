@@ -1,0 +1,6 @@
+{
+  "extends": "@veake/tslint-config",
+  "linterOptions": {
+    "exclude": ["node_modules/**/*"]
+  }
+}
