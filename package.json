@@ -9,7 +9,7 @@
     "watch": "webpack --watch",
     "test": "jest",
     "lint": "tslint --project .",
-    "lint:fix": "tslint --fix",
+    "lint:fix": "tslint --project . --fix",
     "prettier:check": "prettier --check src/**/*.{ts,vue,json}",
     "prettier:format": "prettier --write src/**/*.{ts,vue,json} --list-different"
   },

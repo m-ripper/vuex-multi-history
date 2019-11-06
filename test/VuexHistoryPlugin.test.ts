@@ -1,15 +1,17 @@
-import Vuex, { MutationPayload, Store } from 'vuex';
 import Vue from 'vue';
+import Vuex, { MutationPayload, Store } from 'vuex';
+
 import { DEFAULT_KEY, VuexHistoryPlugin } from '../src';
+import { VuexHistory } from '../src/VuexHistory';
+
 import {
-  INITIAL_SINGLE_STATE_SUM,
   initMockupMultiStore,
   initMockupSingleStore,
+  INITIAL_SINGLE_STATE_SUM,
   MockupMultiHistoryKeys,
   MockupMultiState,
   MockupSingleState,
 } from './mock/util';
-import { VuexHistory } from '../src/VuexHistory';
 
 Vue.use(Vuex);
 
@@ -99,11 +101,7 @@ describe('VuexHistoryPlugin', () => {
       plugin = new VuexHistoryPlugin<MockupMultiHistoryKeys>({
         histories: {
           allocate: (mutation: MutationPayload) => {
-            if (mutation.type === 'updateEditorEntity') {
-              return ['editor'];
-            } else {
-              return ['entities'];
-            }
+            return mutation.type === 'updateEditorEntity' ? ['editor'] : ['entities'];
           },
           keys: ['editor', 'entities'],
         },
@@ -111,7 +109,7 @@ describe('VuexHistoryPlugin', () => {
       store = initMockupMultiStore(plugin);
     });
 
-    test("'allocate' returns invalid key", () => {
+    test('\'allocate\' returns invalid key', () => {
       plugin.options.histories.allocate = (mutation: MutationPayload) => {
         return ['doesNotExist'];
       };
@@ -120,7 +118,7 @@ describe('VuexHistoryPlugin', () => {
       }).toThrow(Error);
     });
 
-    test("history is accessible via it's related key", () => {
+    test('history is accessible via it\'s related key', () => {
       expect(store.history('editor') instanceof VuexHistory).toBeTruthy();
     });
 

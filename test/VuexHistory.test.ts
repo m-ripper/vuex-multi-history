@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+
 import { DEFAULT_KEY, VuexHistoryPlugin } from '../src';
+import { VuexHistory } from '../src/VuexHistory';
+
 import {
-  INITIAL_SINGLE_STATE,
-  INITIAL_SINGLE_STATE_SUM,
   initMockupMultiStore,
   initMockupSingleStore,
+  INITIAL_SINGLE_STATE,
+  INITIAL_SINGLE_STATE_SUM,
   MockupSingleState,
 } from './mock/util';
-import { VuexHistory } from '../src/VuexHistory';
 
 Vue.use(Vuex);
 

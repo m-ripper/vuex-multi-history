@@ -1,4 +1,5 @@
 import { MutationPayload, Store } from 'vuex';
+
 import { VuexHistoryPlugin } from './VuexHistoryPlugin';
 
 export type VuexPlugin<T = any> = (state: Store<T>) => void;

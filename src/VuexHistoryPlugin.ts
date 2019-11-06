@@ -1,5 +1,6 @@
-import { MutationPayload, Store } from 'vuex';
 import Vue from 'vue';
+import { MutationPayload, Store } from 'vuex';
+
 import {
   AllocationFunction,
   DefaultKey,
@@ -10,15 +11,19 @@ import {
 } from './Interfaces';
 import { HistoryEntry, VuexHistory } from './VuexHistory';
 
+// tslint:disable-next-line
 const DEFAULT_FILTER: FilterFunction = function(mutation: MutationPayload) {
   return true;
 };
+// tslint:disable-next-line
 const DEFAULT_ALLOCATION: AllocationFunction = function(mutation: MutationPayload) {
   return [this.options.histories.keys[0]];
 };
+// tslint:disable-next-line
 const DEFAULT_SERIALIZER: SerializeFunction = function(historyKey: string, state: any) {
   return state;
 };
+// tslint:disable-next-line
 const DEFAULT_DESERIALIZER: DeserializeFunction = function(historyKey: string, data: any) {
   return data;
 };
@@ -93,7 +98,7 @@ export class VuexHistoryPlugin<K extends string = string> {
         const historyKeys = this.options.histories.allocate.call(this, mutation);
         for (const historyKey of historyKeys) {
           if (!this.options.histories.keys.includes(historyKey)) {
-            let keysString = this.options.histories.keys.join(', ');
+            const keysString = this.options.histories.keys.join(', ');
             throw new Error(`'${historyKey}' is not a valid key! Valid keys are: [${keysString}]}`);
           }
           const history = this.getHistory(historyKey);

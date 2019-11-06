@@ -1,4 +1,5 @@
 import { Store } from 'vuex';
+
 import { VuexHistoryPlugin } from './VuexHistoryPlugin';
 
 export interface HistoryEntry {
