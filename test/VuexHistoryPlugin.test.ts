@@ -100,9 +100,9 @@ describe('VuexHistoryPlugin', () => {
         histories: {
           allocate: (mutation: MutationPayload) => {
             if (mutation.type === 'updateEditorEntity') {
-              return 'editor';
+              return ['editor'];
             } else {
-              return 'entities';
+              return ['entities'];
             }
           },
           keys: ['editor', 'entities'],
@@ -113,7 +113,7 @@ describe('VuexHistoryPlugin', () => {
 
     test("'allocate' returns invalid key", () => {
       plugin.options.histories.allocate = (mutation: MutationPayload) => {
-        return 'doesNotExist';
+        return ['doesNotExist'];
       };
       expect(() => {
         store.commit('updateEditorEntity', { id: '1', value: 'one' });

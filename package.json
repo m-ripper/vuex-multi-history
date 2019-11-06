@@ -1,12 +1,12 @@
 {
   "name": "vuex-history-plugin",
   "version": "1.0.0",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Max Ripper (@Veake)",
   "scripts": {
-    "tsc": "tsc",
-    "watch": "tsc -w",
+    "build": "webpack",
+    "watch": "webpack --watch",
     "test": "jest",
     "lint": "tslint --project .",
     "lint:fix": "tslint --fix",
@@ -24,9 +24,15 @@
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.1.0",
+    "ts-loader": "^6.2.1",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "prettier": "@veake/prettier-config",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "dist"
+  ]
 }

@@ -113,11 +113,11 @@ export class VuexHistory implements HistoryInterface {
   }
 
   deserialize(data: any): any {
-    return this.plugin.serialize(this.historyKey, data);
+    return this.plugin.deserialize(this.historyKey, data);
   }
 
   serialize(state: any): any {
-    return this.plugin.deserialize(this.historyKey, state);
+    return this.plugin.serialize(this.historyKey, state);
   }
 
   private replaceState(state: any) {
