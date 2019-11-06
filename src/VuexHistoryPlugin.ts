@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { MutationPayload, Store } from 'vuex';
 
 import {
-  AllocationFunction,
+  AllocateFunction,
   DefaultKey,
   DeserializeFunction,
   FilterFunction,
@@ -16,7 +16,7 @@ const DEFAULT_FILTER: FilterFunction = function(mutation: MutationPayload) {
   return true;
 };
 // tslint:disable-next-line
-const DEFAULT_ALLOCATION: AllocationFunction = function(mutation: MutationPayload) {
+const DEFAULT_ALLOCATION: AllocateFunction = function(mutation: MutationPayload) {
   return [this.options.histories.keys[0]];
 };
 // tslint:disable-next-line
@@ -54,7 +54,7 @@ export interface HistoryPluginOptions<K extends string = string> {
   size?: number;
   filter?: FilterFunction;
   histories?: {
-    allocate: AllocationFunction<K>;
+    allocate: AllocateFunction<K>;
     keys: K[];
   };
   transform?: {

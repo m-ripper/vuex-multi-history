@@ -6,7 +6,7 @@ export type VuexPlugin<T = any> = (state: Store<T>) => void;
 
 export type DefaultKey = 'default';
 
-export type AllocationFunction<K extends string = string, T extends MutationPayload = MutationPayload> = (
+export type AllocateFunction<K extends string = string, T extends MutationPayload = MutationPayload> = (
   this: VuexHistoryPlugin,
   mutation: T,
 ) => K[];

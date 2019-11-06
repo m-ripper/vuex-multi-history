@@ -1,5 +1,6 @@
 # vuex-history-plugin
-[![Build Status](https://travis-ci.com/Veake/vuex-history-plugin.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-history-plugin) 
+
+[![Build Status](https://travis-ci.com/Veake/vuex-history-plugin.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-history-plugin)
 
 (Multi-) History for Vuex
 
@@ -55,8 +56,8 @@ const vuexHistory = new VuexHistoryPlugin({
 });
 ```
 
-As you can see you also need to provide an `allocate`-function, which is of the type `AllocationFunction` and determines in which history the next entry will be saved, based on the mutation.  \
-You can read more about the `AllocationFunction` [here]().
+As you can see you also need to provide an `allocate`-function, which is of the type `AllocateFunction` and determines in which history the next entry will be saved, based on the mutation. \
+You can read more about the `AllocateFunction` [here]().
 
 > If you do not pass a `histories`-object to the options, the default-options will be used.
 
@@ -104,10 +105,10 @@ if (history.canUndo()) {
 
 ##### HistoriesOptions
 
-| key      | type                 | default                               | description                                                    |
-| -------- | -------------------- | ------------------------------------- | -------------------------------------------------------------- |
-| allocate | `AllocationFunction` | returns first key of `histories.keys` | Determines which history/histories an entry should be added to |
-| keys     | `string[]`           | `['default']`                         | For each given key a separate history will be created          |
+| key      | type               | default                               | description                                                    |
+| -------- | ------------------ | ------------------------------------- | -------------------------------------------------------------- |
+| allocate | `AllocateFunction` | returns first key of `histories.keys` | Determines which history/histories an entry should be added to |
+| keys     | `string[]`         | `['default']`                         | For each given key a separate history will be created          |
 
 ##### TransformOptions
 
@@ -120,7 +121,7 @@ if (history.canUndo()) {
 
 #### FilterFunction
 
-#### AllocationFunction
+#### AllocateFunction
 
 #### SerializeFunction
 
