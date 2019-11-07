@@ -1,6 +1,6 @@
 {
   "name": "vuex-multi-history",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Max Ripper (@Veake)",
@@ -12,7 +12,7 @@
     "lint:fix": "tslint --project . --fix",
     "prettier:check": "prettier --check src/**/*.{ts,vue,json}",
     "prettier:format": "prettier --write src/**/*.{ts,vue,json} --list-different",
-    "typedoc": "typedoc --out docs src"
+    "typedoc": "typedoc --mode file  --out docs src"
   },
   "dependencies": {
     "vue": "^2.6.10",
@@ -36,5 +36,6 @@
   "license": "MIT",
   "files": [
     "dist"
-  ]
+  ],
+  "repository": "https://github.com/Veake/vuex-multi-history"
 }
