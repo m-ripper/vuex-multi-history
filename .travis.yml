@@ -13,3 +13,11 @@ script:
 after_success:
   - npm run format:fix
   - npm run typedoc
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: master

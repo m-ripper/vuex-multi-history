@@ -292,4 +292,4 @@ It has the following signature:
 
 ## Docs
 
-You can take a look at the docs [here](../blob/master/docs) for in-depth type-declarations.
+You can take a look at the docs [here](https://veake.github.io/vuex-multi-history/) for in-depth type-declarations.
