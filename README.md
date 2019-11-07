@@ -137,12 +137,12 @@ The available options are listed in the tables below:
 
 > \* default values written in related object
 
-| key       | type                                  | default | description                                                                                              |
-| --------- | ------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| size      | `number`                              |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed. |
+| key       | type                                | default | description                                                                                              |
+| --------- | ----------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| size      | `number`                            |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed. |
 | filter    | [`FilterFunction`](#filterfunction) |         | Determines whether the given mutation is supported                                                       |
-| histories | `HistoriesOptions`                    | \*      | Options related to the histories                                                                         |
-| transform | `TransformOptions`                    | \*      | Options related to serializing and deserializing state-data                                              |
+| histories | `HistoriesOptions`                  | \*      | Options related to the histories                                                                         |
+| transform | `TransformOptions`                  | \*      | Options related to serializing and deserializing state-data                                              |
 
 > All the options above are optional
 
@@ -152,10 +152,10 @@ The available options are listed in the tables below:
 
 The options beneath are required when the `histories`-object is passed.
 
-| key      | type                                      | default                               | description                                                       |
-| -------- | ----------------------------------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| key      | type                                    | default                               | description                                                       |
+| -------- | --------------------------------------- | ------------------------------------- | ----------------------------------------------------------------- |
 | allocate | [`AllocateFunction`](#allocatefunction) | returns first key of `histories.keys` | Determines which history/histories an snapshot should be added to |
-| keys     | `string[]`                                | `['default']`                         | For each given key a separate history will be created             |
+| keys     | `string[]`                              | `['default']`                         | For each given key a separate history will be created             |
 
 <br/>
 
@@ -163,8 +163,8 @@ The options beneath are required when the `histories`-object is passed.
 
 The options beneath are required when the `transform`-object is passed.
 
-| key         | type                                            | default                         | description                                                           |
-| ----------- | ----------------------------------------------- | ------------------------------- | --------------------------------------------------------------------- |
+| key         | type                                          | default                         | description                                                           |
+| ----------- | --------------------------------------------- | ------------------------------- | --------------------------------------------------------------------- |
 | serialize   | [`SerializeFunction`](#serializefunction)     | returns complete state          | Reduces the state-object when it will be added to the history         |
 | deserialize | [`DeserializeFunction`](#deserializefunction) | returns complete snapshot-state | Will be used to merge the reduced state-object with the current state |
 
@@ -211,8 +211,8 @@ All properties are `readonly` and cannot be replaced.
 
 For all these methods the `historyKey` will be the first key in [`histories.keys`](#histories-options) of the options.
 
-| signature                                          | description                                                                                                                 |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| signature                                          | description                                                                                                               |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `getHistory(historyKey?: string): VuexHistory`     | returns the [`VuexHistory`](#vuexhistory) with the given key; if there is no history for the key, an error will be thrown |
 | `serialize(historyKey?: string, state: any): any`  | serializes the given state, you can read more [here](#serializefunction)                                                  |
 | `deserialize(historyKey?: string, data: any): any` | deserialized the given data to a state, you can read more [here](#deserializefunction)                                    |
@@ -233,23 +233,23 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 
 #### Methods
 
-| signature                                                                      | description                                                                                                                                                      |
-| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                                  |
-| `getSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined`    | returns a copy of an snapshot of the history                                                                                                                     |
-| `removeSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined` | deletes an snapshot of the history                                                                                                                               |
-| `updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory`        | updates an snapshot of the history                                                                                                                               |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                                  |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                                  |
-| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                      |
-| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                      |
-| `undo(): VuexHistory`                                                          | undoes the last snapshot                                                                                                                                         |
-| `canRedo(): boolean`                                                           | returns if redo is possible                                                                                                                                      |
-| `redo(): VuexHistory`                                                          | redoes the next possible snapshot                                                                                                                                |
-| `hasChanges(): boolean`                                                        | returns if there are any snapshots in the history                                                                                                                |
-| `overrideInitialState(state): VuexHistory`                                     | overrides the initial state                                                                                                                                      |
-| `clearHistory(overrideInitialState = true): void`                              | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                               |
-| `reset(): void`                                                                | clears the history and replaces the current state with the initial                                                                                               |
+| signature                                                                      | description                                                                                                                                                  |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
+| `getSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined`    | returns a copy of an snapshot of the history                                                                                                                 |
+| `removeSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined` | deletes an snapshot of the history                                                                                                                           |
+| `updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory`        | updates an snapshot of the history                                                                                                                           |
+| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
+| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
+| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                  |
+| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                  |
+| `undo(): VuexHistory`                                                          | undoes the last snapshot                                                                                                                                     |
+| `canRedo(): boolean`                                                           | returns if redo is possible                                                                                                                                  |
+| `redo(): VuexHistory`                                                          | redoes the next possible snapshot                                                                                                                            |
+| `hasChanges(): boolean`                                                        | returns if there are any snapshots in the history                                                                                                            |
+| `overrideInitialState(state): VuexHistory`                                     | overrides the initial state                                                                                                                                  |
+| `clearHistory(overrideInitialState = true): void`                              | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                           |
+| `reset(): void`                                                                | clears the history and replaces the current state with the initial                                                                                           |
 | `serialize(state: any): any`                                                   | gives access to the [`SerializeFunction`](#serializefunction); should be used when manually adding an snapshot; you can read more [here](#serializefunction) |
 | `deserialize(data: any): void`                                                 | gives access to the [`DeserializeFunction`](#deserializefunction); you can read more [here](#deserializefunction)                                            |
 
