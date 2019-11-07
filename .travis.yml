@@ -14,6 +14,9 @@ after_success:
   - npm run prettier:format
   - npm run typedoc
 
+before_deploy:
+  - touch docs/.nojekyll
+
 deploy:
   local_dir: docs
   provider: pages
