@@ -11,7 +11,7 @@ script:
   - npm run test
 
 after_success:
-  - npm run format:fix
+  - npm run prettier:format
   - npm run typedoc
 
 deploy:
