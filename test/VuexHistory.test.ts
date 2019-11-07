@@ -19,7 +19,7 @@ describe('VuexHistory', () => {
     history = new VuexHistory(plugin, 'test');
   });
 
-  describe('addEntry', () => {
+  describe('addSnapshot', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
@@ -27,9 +27,9 @@ describe('VuexHistory', () => {
     });
 
     test('no override, because max-size is not reached', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       expect(history.length).toBe(1);
       expect(history.index).toBe(0);
@@ -37,35 +37,35 @@ describe('VuexHistory', () => {
 
     test('override, because max-size is reached', () => {
       plugin.options.size = 1;
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 4 },
+        stateData: { sum: 4 },
       });
       expect(history.length).toBe(1);
-      expect(history.getEntry(0)!.state.sum).toBe(4);
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(4);
     });
 
-    test('latest entries will be removed when adding after undoing', () => {
-      history.addEntry({
+    test('latest snapshots will be removed when adding after undoing', () => {
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 4 },
+        stateData: { sum: 4 },
       });
       history.undo();
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 8 },
+        stateData: { sum: 8 },
       });
       expect(history.length).toBe(2);
-      expect(history.getEntry(0)!.state.sum).toBe(2);
-      expect(history.getEntry(1)!.state.sum).toBe(8);
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+      expect(history.getSnapshot(1)!.stateData.sum).toBe(8);
     });
   });
 
@@ -78,9 +78,9 @@ describe('VuexHistory', () => {
 
     test('canUndo', () => {
       expect(history.canUndo()).toBeFalsy();
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       expect(history.canUndo()).toBeTruthy();
       history.undo();
@@ -89,19 +89,19 @@ describe('VuexHistory', () => {
 
     test('canRedo', () => {
       expect(history.canRedo()).toBeFalsy();
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.undo();
       expect(history.canRedo()).toBeTruthy();
     });
 
-    test('clearHistory - override initial state', () => {
+    test('clearHistory - override initial stateData', () => {
       store.commit('add', 2);
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.clearHistory();
       expect(history.length).toBe(0);
@@ -109,9 +109,9 @@ describe('VuexHistory', () => {
     });
 
     test('clearHistory - not overriding', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.clearHistory(false);
       expect(history.length).toBe(0);
@@ -119,14 +119,14 @@ describe('VuexHistory', () => {
     });
 
     test('hasChanges', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       expect(history.hasChanges()).toBeTruthy();
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 0 },
+        stateData: { sum: 0 },
       });
       expect(history.hasChanges()).toBeTruthy();
     });
@@ -141,18 +141,18 @@ describe('VuexHistory', () => {
     });
 
     test('redo', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.undo().redo();
       expect(store.state.sum).toBe(2);
     });
 
     test('reset', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.reset();
       expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
@@ -160,9 +160,9 @@ describe('VuexHistory', () => {
     });
 
     test('undo', () => {
-      history.addEntry({
+      history.addSnapshot({
         mutation: 'add',
-        state: { sum: 2 },
+        stateData: { sum: 2 },
       });
       history.undo();
       expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);

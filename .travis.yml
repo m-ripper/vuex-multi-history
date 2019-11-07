@@ -15,6 +15,7 @@ after_success:
   - npm run typedoc
 
 deploy:
+  local_dir: docs
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN

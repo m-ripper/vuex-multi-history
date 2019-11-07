@@ -62,7 +62,7 @@ describe('VuexHistoryPlugin', () => {
       expect(store.history().canRedo()).toBeTruthy();
     });
 
-    test('clearHistory - override initial state', () => {
+    test('clearHistory - override initial stateData', () => {
       store.commit('add', 2);
       store.history().clearHistory();
       expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);

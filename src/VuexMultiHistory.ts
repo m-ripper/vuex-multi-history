@@ -9,7 +9,7 @@ import {
   SerializeFunction,
   VuexPlugin,
 } from './Interfaces';
-import { HistoryEntry, VuexHistory } from './VuexHistory';
+import { HistorySnapshot, VuexHistory } from './VuexHistory';
 
 // tslint:disable-next-line
 const DEFAULT_FILTER: FilterFunction = function(mutation: MutationPayload) {
@@ -103,11 +103,11 @@ export class VuexMultiHistory<K extends string = string> {
           }
           const history = this.getHistory(historyKey);
 
-          const newEntry: HistoryEntry = {
+          const snapshot: HistorySnapshot = {
             mutation: mutation.type,
-            state: this.serialize(historyKey, state),
+            stateData: this.serialize(historyKey, state),
           };
-          history.addEntry(newEntry);
+          history.addSnapshot(snapshot);
         }
       });
 

@@ -2,9 +2,9 @@ import { Store } from 'vuex';
 
 import { VuexMultiHistory } from './VuexMultiHistory';
 
-export interface HistoryEntry {
+export interface HistorySnapshot {
   mutation: string;
-  state: any;
+  stateData: any;
 }
 
 export interface HistoryInterface {
@@ -12,10 +12,10 @@ export interface HistoryInterface {
   readonly index: number;
   readonly initialState: any;
 
-  addEntry(entry: HistoryEntry): HistoryInterface;
-  getEntry(index: number): HistoryEntry | undefined;
-  removeEntry(index: number): HistoryEntry | undefined;
-  updateEntry(index: number, newEntry: HistoryEntry): HistoryInterface;
+  addSnapshot(snapshot: HistorySnapshot): HistoryInterface;
+  getSnapshot(index: number): HistorySnapshot | undefined;
+  removeSnapshot(index: number): HistorySnapshot | undefined;
+  updateSnapshot(index: number, snapshot: HistorySnapshot): HistoryInterface;
   hasChanges(): boolean;
   canUndo(): boolean;
   canRedo(): boolean;
@@ -28,7 +28,7 @@ export interface HistoryInterface {
 
 export class VuexHistory implements HistoryInterface {
   private currentIndex: number;
-  private readonly entries: HistoryEntry[];
+  private readonly snapshots: HistorySnapshot[];
   private initialStateData: any;
   private hasInitialized: boolean;
 
@@ -36,13 +36,13 @@ export class VuexHistory implements HistoryInterface {
 
   constructor(private readonly plugin: VuexMultiHistory, private readonly historyKey: string) {
     this.currentIndex = -1;
-    this.entries = [];
+    this.snapshots = [];
     this.initialStateData = null;
     this.hasInitialized = false;
   }
 
   get length(): number {
-    return this.entries.length;
+    return this.snapshots.length;
   }
 
   get index(): number {
@@ -62,50 +62,50 @@ export class VuexHistory implements HistoryInterface {
     return this;
   }
 
-  addEntry(entry: HistoryEntry): VuexHistory {
+  addSnapshot(snapshot: HistorySnapshot): VuexHistory {
     // needed because everything after the currentIndex will be removed if something was undone and then added
-    const isLatestEntry = this.currentIndex + 1 < this.entries.length;
+    const isLatestSnapshot = this.currentIndex + 1 < this.snapshots.length;
 
     this.currentIndex++;
 
     if (this.currentIndex === this.plugin.options.size) {
-      this.entries.splice(0, 1);
+      this.snapshots.splice(0, 1);
       this.currentIndex--;
     }
 
-    this.entries.splice(this.currentIndex, 1, entry);
+    this.snapshots.splice(this.currentIndex, 1, snapshot);
 
-    if (isLatestEntry) {
-      this.entries.splice(this.currentIndex + 1);
+    if (isLatestSnapshot) {
+      this.snapshots.splice(this.currentIndex + 1);
     }
     return this;
   }
 
-  removeEntry(index: number): HistoryEntry | undefined {
-    return this.length > index ? this.entries.splice(index, 1)[0] : undefined;
+  removeSnapshot(index: number): HistorySnapshot | undefined {
+    return this.length > index ? this.snapshots.splice(index, 1)[0] : undefined;
   }
 
-  getEntry(index: number): HistoryEntry | undefined {
-    return { ...this.entries[index] };
+  getSnapshot(index: number): HistorySnapshot | undefined {
+    return { ...this.snapshots[index] };
   }
 
-  updateEntry(index: number, newEntry: HistoryEntry): VuexHistory {
-    this.entries.splice(index, 1, newEntry);
+  updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory {
+    this.snapshots.splice(index, 1, snapshot);
     return this;
   }
 
   canRedo(): boolean {
     const nextIndex = this.currentIndex + 1;
-    return nextIndex >= 0 && nextIndex < this.entries.length;
+    return nextIndex >= 0 && nextIndex < this.snapshots.length;
   }
 
   canUndo(): boolean {
     const prevIndex = this.currentIndex - 1;
-    return prevIndex >= -1 && this.entries.length > prevIndex;
+    return prevIndex >= -1 && this.snapshots.length > prevIndex;
   }
 
   clearHistory(overrideInitialState = true): void {
-    this.entries.splice(0);
+    this.snapshots.splice(0);
     this.currentIndex = -1;
     if (overrideInitialState) {
       this.overrideInitialState(this.store.state);
@@ -113,7 +113,7 @@ export class VuexHistory implements HistoryInterface {
   }
 
   hasChanges(): boolean {
-    return this.entries.length > 0;
+    return this.snapshots.length > 0;
   }
 
   overrideInitialState(state: any): VuexHistory {
@@ -124,8 +124,8 @@ export class VuexHistory implements HistoryInterface {
   redo(): VuexHistory {
     const nextIndex = this.currentIndex + 1;
     if (this.canRedo()) {
-      const nextState = this.entries[nextIndex].state;
-      this.replaceState(nextState);
+      const nextStateData = this.snapshots[nextIndex].stateData;
+      this.replaceState(nextStateData);
       this.currentIndex++;
     }
     return this;
@@ -139,8 +139,8 @@ export class VuexHistory implements HistoryInterface {
   undo(): VuexHistory {
     const prevIndex = this.currentIndex - 1;
     if (this.canUndo()) {
-      const prevState = prevIndex === -1 ? this.initialStateData : this.entries[prevIndex].state;
-      this.replaceState(prevState);
+      const prevStateData = prevIndex === -1 ? this.initialStateData : this.snapshots[prevIndex].stateData;
+      this.replaceState(prevStateData);
       this.currentIndex--;
     }
     return this;
@@ -154,7 +154,7 @@ export class VuexHistory implements HistoryInterface {
     return this.plugin.deserialize(this.historyKey, data);
   }
 
-  private replaceState(state: any) {
-    this.store.replaceState(this.deserialize(state));
+  private replaceState(stateData: any) {
+    this.store.replaceState(this.deserialize(stateData));
   }
 }
