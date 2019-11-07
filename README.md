@@ -1,6 +1,6 @@
 # vuex-multi-history
 
-[![Build Status](https://travis-ci.com/Veake/vuex-history-plugin.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-history-plugin)
+[![Build Status](https://travis-ci.com/Veake/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-multi-history)
 
 (Multi-) History for Vuex
 
