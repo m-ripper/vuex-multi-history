@@ -50,8 +50,8 @@ Multiple histories for Vuex
   - [Initializing multiple histories](#initializing-multiple-histories)
   - [Using a history](#using-a-history)
 - [Options](#options)
-  - [`histories`-Options](#histories-options)
-  - [`transform`-Options](#transform-options)
+  - [`histories`-Options](#histories--options)
+  - [`transform`-Options](#transform--options)
 - [Types](#types)
   - [Store](#store)
   - [`VuexMultiHistory`](#vuexmultihistory)
@@ -72,7 +72,7 @@ Multiple histories for Vuex
 
 ### Initializing a single history
 
-By default a single history will be initialized if you do not modify the [`histories`](#histories-options)-object of the options of [`VuexMultiHistory`](#vuexmultihistory), which can be either done by passing it to the constructor or setting it manually.
+By default a single history will be initialized if you do not modify the [`histories`](#histories--options)-object of the options of [`VuexMultiHistory`](#vuexmultihistory), which can be either done by passing it to the constructor or setting it manually.
 
 Example:
 
@@ -84,10 +84,10 @@ const vuexHistory = new VuexMultiHistory();
 
 ### Initializing multiple histories
 
-It is possible to initialize multiple histories. This can be done by modifying the [`histories`](#histories-options)-object of the options of [`VuexMultiHistory`](#vuexmultihistory), which can be either done by passing it to the constructor or setting it manually.
+It is possible to initialize multiple histories. This can be done by modifying the [`histories`](#histories--options)-object of the options of [`VuexMultiHistory`](#vuexmultihistory), which can be either done by passing it to the constructor or setting it manually.
 
-For each key of [`histories.keys`](#histories-options) a history will be created, which will also be accessible by the given key. \
-Also [`histories.allocate`](#histories-options) has to be provided, which is of the type [`AllocateFunction`](#allocatefunction) and used to determine to which histories the snapshot will be added.
+For each key of [`histories.keys`](#histories--options) a history will be created, which will also be accessible by the given key. \
+Also [`histories.allocate`](#histories--options) has to be provided, which is of the type [`AllocateFunction`](#allocatefunction) and used to determine to which histories the snapshot will be added.
 You can read more about the [`AllocateFunction`](#allocatefunction) [here](#allocatefunction).
 
 Example:
@@ -118,8 +118,8 @@ history(historyKey?: string): VuexHistory;
 
 > **INFO**:
 >
-> - If you do not pass a historyKey the plugin will assume that you mean the first key declared in [`histories.keys`](#histories-options).
-> - If you pass a key that is not declared in [`histories.keys`](#histories-options) an error will be thrown because this is a logical error.
+> - If you do not pass a historyKey the plugin will assume that you mean the first key declared in [`histories.keys`](#histories--options).
+> - If you pass a key that is not declared in [`histories.keys`](#histories--options) an error will be thrown because this is a logical error.
 
 After retrieving a [`VuexHistory`](#vuexhistory)-instance you can use it's methods and access it's properties which are listed [here](#vuexhistory).
 
@@ -177,8 +177,8 @@ That makes is possible to call `store.history()` or `store.history(key)` to retr
 
 > **INFO**:
 >
-> - If you do not pass a historyKey the plugin will assume that you mean the first key declared in [`histories.keys`](#histories-options).
-> - If you pass a key that is not declared in [`histories.keys`](#histories-options) an error will be thrown because this is a logical error.
+> - If you do not pass a historyKey the plugin will assume that you mean the first key declared in [`histories.keys`](#histories--options).
+> - If you pass a key that is not declared in [`histories.keys`](#histories--options) an error will be thrown because this is a logical error.
 
 ### `VuexMultiHistory`
 
@@ -209,7 +209,7 @@ All properties are `readonly` and cannot be replaced.
 
 #### Methods
 
-For all these methods the `historyKey` will be the first key in [`histories.keys`](#histories-options) of the options.
+For all these methods the `historyKey` will be the first key in [`histories.keys`](#histories--options) of the options.
 
 | signature                                          | description                                                                                                                 |
 | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -278,11 +278,11 @@ It has the following signature:
 ```
 
 The aim of this function is to determine, based on the `mutation`, to which histories the snapshot will be added.
-The returned strings should be those or a subset of those, that are in the options in [`histories.keys`](#histories-options).
+The returned strings should be those or a subset of those, that are in the options in [`histories.keys`](#histories--options).
 
 > **INFO**:
 >
-> If a key is returned that is not in [`histories.keys`](#histories-options) an error will be thrown, because this is a logical error.
+> If a key is returned that is not in [`histories.keys`](#histories--options) an error will be thrown, because this is a logical error.
 
 #### `SerializeFunction`
 
