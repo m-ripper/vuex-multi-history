@@ -12,3 +12,4 @@ script:
 
 after_success:
   - npm run format:fix
+  - npm run typedoc

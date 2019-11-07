@@ -1,6 +1,6 @@
 import { Store } from 'vuex';
 
-import { VuexHistoryPlugin } from '../../src';
+import { VuexMultiHistory } from '../../src';
 
 export interface MockupSingleState {
   sum: number;
@@ -30,7 +30,7 @@ export const INITIAL_MULTI_STATE: MockupMultiState = {
 };
 
 export function initMockupSingleStore(
-  plugin: VuexHistoryPlugin,
+  plugin: VuexMultiHistory,
   initialState: any = INITIAL_SINGLE_STATE,
 ): Store<MockupSingleState> {
   return new Store({
@@ -48,7 +48,7 @@ export function initMockupSingleStore(
 }
 
 export function initMockupMultiStore(
-  plugin: VuexHistoryPlugin,
+  plugin: VuexMultiHistory,
   initialState: any = INITIAL_MULTI_STATE,
 ): Store<MockupMultiState> {
   return new Store({

@@ -7,4 +7,4 @@ declare module 'vuex' {
 }
 
 export * from './Interfaces';
-export * from './VuexHistoryPlugin';
+export * from './VuexMultiHistory';

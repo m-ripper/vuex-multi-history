@@ -1,6 +1,6 @@
 import { Store } from 'vuex';
 
-import { VuexHistoryPlugin } from './VuexHistoryPlugin';
+import { VuexMultiHistory } from './VuexMultiHistory';
 
 export interface HistoryEntry {
   mutation: string;
@@ -8,12 +8,14 @@ export interface HistoryEntry {
 }
 
 export interface HistoryInterface {
-  entries: HistoryEntry[];
-  initialState: any;
-  currentIndex: number;
+  readonly length: number;
+  readonly index: number;
+  readonly initialState: any;
 
-  init(store: Store<any>): HistoryInterface;
-  addEntry(entry: HistoryEntry): void;
+  addEntry(entry: HistoryEntry): HistoryInterface;
+  getEntry(index: number): HistoryEntry | undefined;
+  removeEntry(index: number): HistoryEntry | undefined;
+  updateEntry(index: number, newEntry: HistoryEntry): HistoryInterface;
   hasChanges(): boolean;
   canUndo(): boolean;
   canRedo(): boolean;
@@ -25,25 +27,42 @@ export interface HistoryInterface {
 }
 
 export class VuexHistory implements HistoryInterface {
-  currentIndex: number;
-  entries: HistoryEntry[];
-  initialState: any;
+  private currentIndex: number;
+  private readonly entries: HistoryEntry[];
+  private initialStateData: any;
+  private hasInitialized: boolean;
 
-  store!: Store<any>;
+  private store!: Store<any>;
 
-  constructor(private readonly plugin: VuexHistoryPlugin, private readonly historyKey: string) {
+  constructor(private readonly plugin: VuexMultiHistory, private readonly historyKey: string) {
     this.currentIndex = -1;
     this.entries = [];
-    this.initialState = null;
+    this.initialStateData = null;
+    this.hasInitialized = false;
+  }
+
+  get length(): number {
+    return this.entries.length;
+  }
+
+  get index(): number {
+    return this.currentIndex;
+  }
+
+  get initialState(): any {
+    return this.deserialize(this.initialStateData);
   }
 
   init(store: Store<any>): VuexHistory {
-    this.store = store;
-    this.overrideInitialState(store.state);
+    if (!this.hasInitialized) {
+      this.store = store;
+      this.overrideInitialState(store.state);
+      this.hasInitialized = true;
+    }
     return this;
   }
 
-  addEntry(entry: HistoryEntry): void {
+  addEntry(entry: HistoryEntry): VuexHistory {
     // needed because everything after the currentIndex will be removed if something was undone and then added
     const isLatestEntry = this.currentIndex + 1 < this.entries.length;
 
@@ -59,6 +78,20 @@ export class VuexHistory implements HistoryInterface {
     if (isLatestEntry) {
       this.entries.splice(this.currentIndex + 1);
     }
+    return this;
+  }
+
+  removeEntry(index: number): HistoryEntry | undefined {
+    return this.length > index ? this.entries.splice(index, 1)[0] : undefined;
+  }
+
+  getEntry(index: number): HistoryEntry | undefined {
+    return { ...this.entries[index] };
+  }
+
+  updateEntry(index: number, newEntry: HistoryEntry): VuexHistory {
+    this.entries.splice(index, 1, newEntry);
+    return this;
   }
 
   canRedo(): boolean {
@@ -72,10 +105,10 @@ export class VuexHistory implements HistoryInterface {
   }
 
   clearHistory(overrideInitialState = true): void {
-    this.entries = [];
+    this.entries.splice(0);
     this.currentIndex = -1;
     if (overrideInitialState) {
-      this.initialState = this.serialize(this.store.state);
+      this.overrideInitialState(this.store.state);
     }
   }
 
@@ -84,7 +117,7 @@ export class VuexHistory implements HistoryInterface {
   }
 
   overrideInitialState(state: any): VuexHistory {
-    this.initialState = this.deserialize(state);
+    this.initialStateData = this.serialize(state);
     return this;
   }
 
@@ -100,25 +133,25 @@ export class VuexHistory implements HistoryInterface {
 
   reset(): void {
     this.clearHistory(false);
-    this.store.replaceState(this.deserialize(this.initialState));
+    this.store.replaceState(this.initialStateData);
   }
 
   undo(): VuexHistory {
     const prevIndex = this.currentIndex - 1;
     if (this.canUndo()) {
-      const prevState = prevIndex === -1 ? this.initialState : this.entries[prevIndex].state;
+      const prevState = prevIndex === -1 ? this.initialStateData : this.entries[prevIndex].state;
       this.replaceState(prevState);
       this.currentIndex--;
     }
     return this;
   }
 
-  deserialize(data: any): any {
-    return this.plugin.deserialize(this.historyKey, data);
-  }
-
   serialize(state: any): any {
     return this.plugin.serialize(this.historyKey, state);
+  }
+
+  deserialize(data: any): any {
+    return this.plugin.deserialize(this.historyKey, data);
   }
 
   private replaceState(state: any) {

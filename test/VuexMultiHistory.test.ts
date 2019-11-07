@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { MutationPayload, Store } from 'vuex';
 
-import { DEFAULT_KEY, VuexHistoryPlugin } from '../src';
+import { DEFAULT_KEY, VuexMultiHistory } from '../src';
 import { VuexHistory } from '../src/VuexHistory';
 
 import {
@@ -17,11 +17,11 @@ Vue.use(Vuex);
 
 describe('VuexHistoryPlugin', () => {
   describe('single history (default)', () => {
-    let plugin!: VuexHistoryPlugin;
+    let plugin!: VuexMultiHistory;
     let store!: Store<MockupSingleState>;
 
     beforeEach(() => {
-      plugin = new VuexHistoryPlugin();
+      plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
     });
 
@@ -65,21 +65,21 @@ describe('VuexHistoryPlugin', () => {
     test('clearHistory - override initial state', () => {
       store.commit('add', 2);
       store.history().clearHistory();
-      expect(plugin.data.historyMap[DEFAULT_KEY].entries.length).toBe(0);
+      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
       expect(plugin.data.historyMap[DEFAULT_KEY].initialState.sum).toBe(2);
     });
 
     test('clearHistory - not overriding', () => {
       store.commit('add', 2);
       store.history().clearHistory(false);
-      expect(plugin.data.historyMap[DEFAULT_KEY].entries.length).toBe(0);
+      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
       expect(plugin.data.historyMap[DEFAULT_KEY].initialState.sum).toBe(INITIAL_SINGLE_STATE_SUM);
     });
 
     test('reset', () => {
       store.commit('add', 2);
       store.history().reset();
-      expect(plugin.data.historyMap[DEFAULT_KEY].entries.length).toBe(0);
+      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
       expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
     });
 
@@ -94,11 +94,11 @@ describe('VuexHistoryPlugin', () => {
   });
 
   describe('multiple histories', () => {
-    let plugin!: VuexHistoryPlugin;
+    let plugin!: VuexMultiHistory;
     let store!: Store<MockupMultiState>;
 
     beforeEach(() => {
-      plugin = new VuexHistoryPlugin<MockupMultiHistoryKeys>({
+      plugin = new VuexMultiHistory<MockupMultiHistoryKeys>({
         histories: {
           allocate: (mutation: MutationPayload) => {
             return mutation.type === 'updateEditorEntity' ? ['editor'] : ['entities'];
@@ -130,11 +130,11 @@ describe('VuexHistoryPlugin', () => {
   });
 
   describe('options', () => {
-    let plugin!: VuexHistoryPlugin;
+    let plugin!: VuexMultiHistory;
     let store!: Store<MockupSingleState>;
 
     beforeEach(() => {
-      plugin = new VuexHistoryPlugin();
+      plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
     });
 
@@ -144,7 +144,7 @@ describe('VuexHistoryPlugin', () => {
       };
       store.commit('add', 2);
       store.commit('sub', 2);
-      expect(store.history().entries.length).toBe(1);
+      expect(store.history().length).toBe(1);
     });
   });
 });

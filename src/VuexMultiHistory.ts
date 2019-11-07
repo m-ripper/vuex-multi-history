@@ -29,7 +29,7 @@ const DEFAULT_DESERIALIZER: DeserializeFunction = function(historyKey: string, d
 };
 export const DEFAULT_KEY: DefaultKey = 'default';
 
-const DEFAULT_OPTIONS: () => Required<HistoryPluginOptions> = () => {
+const DEFAULT_OPTIONS: () => Required<VuexMultiHistoryOptions> = () => {
   return {
     size: 50,
     filter: DEFAULT_FILTER,
@@ -50,7 +50,7 @@ interface Data {
   historyMap: HistoryMap;
 }
 
-export interface HistoryPluginOptions<K extends string = string> {
+export interface VuexMultiHistoryOptions<K extends string = string> {
   size?: number;
   filter?: FilterFunction;
   histories?: {
@@ -63,12 +63,12 @@ export interface HistoryPluginOptions<K extends string = string> {
   };
 }
 
-export class VuexHistoryPlugin<K extends string = string> {
-  plugin: VuexPlugin;
-  data: Data;
-  options: Required<HistoryPluginOptions<K>>;
+export class VuexMultiHistory<K extends string = string> {
+  readonly plugin: VuexPlugin;
+  readonly data: Data;
+  readonly options: Required<VuexMultiHistoryOptions<K>>;
 
-  constructor(options?: Partial<HistoryPluginOptions<K>>) {
+  constructor(options?: Partial<VuexMultiHistoryOptions<K>>) {
     this.options = Object.assign(DEFAULT_OPTIONS(), options);
 
     this.validateOptions();
@@ -123,12 +123,12 @@ export class VuexHistoryPlugin<K extends string = string> {
     return this.data.historyMap[key];
   }
 
-  deserialize(historyKey: string, data: any): any {
-    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, data));
-  }
-
   serialize(historyKey: string, state: any): any {
     return this.removeObservers(this.options.transform.serialize.call(this, historyKey, state));
+  }
+
+  deserialize(historyKey: string, data: any): any {
+    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, data));
   }
 
   private validateOptions() {

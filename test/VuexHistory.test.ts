@@ -1,39 +1,27 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 
-import { DEFAULT_KEY, VuexHistoryPlugin } from '../src';
+import { DEFAULT_KEY, VuexMultiHistory } from '../src';
 import { VuexHistory } from '../src/VuexHistory';
 
-import {
-  initMockupMultiStore,
-  initMockupSingleStore,
-  INITIAL_SINGLE_STATE,
-  INITIAL_SINGLE_STATE_SUM,
-  MockupSingleState,
-} from './mock/util';
+import { initMockupSingleStore, INITIAL_SINGLE_STATE_SUM, MockupSingleState } from './mock/util';
 
 Vue.use(Vuex);
 
 describe('VuexHistory', () => {
-  let plugin!: VuexHistoryPlugin;
+  let plugin!: VuexMultiHistory;
   let store!: Store<MockupSingleState>;
   let history!: VuexHistory;
 
   beforeEach(() => {
-    plugin = new VuexHistoryPlugin();
+    plugin = new VuexMultiHistory();
     store = initMockupSingleStore(plugin);
     history = new VuexHistory(plugin, 'test');
   });
 
-  test('init', () => {
-    history.init(store);
-    expect(history.store).toBeDefined();
-    expect(history.store.state).toEqual(INITIAL_SINGLE_STATE);
-  });
-
   describe('addEntry', () => {
     beforeEach(() => {
-      plugin = new VuexHistoryPlugin();
+      plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
       history = new VuexHistory(plugin, 'test').init(store);
     });
@@ -43,8 +31,8 @@ describe('VuexHistory', () => {
         mutation: 'add',
         state: { sum: 2 },
       });
-      expect(history.entries.length).toBe(1);
-      expect(history.currentIndex).toBe(0);
+      expect(history.length).toBe(1);
+      expect(history.index).toBe(0);
     });
 
     test('override, because max-size is reached', () => {
@@ -57,8 +45,8 @@ describe('VuexHistory', () => {
         mutation: 'add',
         state: { sum: 4 },
       });
-      expect(history.entries.length).toBe(1);
-      expect(history.entries[0].state.sum).toBe(4);
+      expect(history.length).toBe(1);
+      expect(history.getEntry(0)!.state.sum).toBe(4);
     });
 
     test('latest entries will be removed when adding after undoing', () => {
@@ -75,15 +63,15 @@ describe('VuexHistory', () => {
         mutation: 'add',
         state: { sum: 8 },
       });
-      expect(history.entries.length).toBe(2);
-      expect(history.entries[0].state.sum).toBe(2);
-      expect(history.entries[1].state.sum).toBe(8);
+      expect(history.length).toBe(2);
+      expect(history.getEntry(0)!.state.sum).toBe(2);
+      expect(history.getEntry(1)!.state.sum).toBe(8);
     });
   });
 
   describe('methods', () => {
     beforeEach(() => {
-      plugin = new VuexHistoryPlugin();
+      plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
       history = new VuexHistory(plugin, 'test').init(store);
     });
@@ -116,7 +104,7 @@ describe('VuexHistory', () => {
         state: { sum: 2 },
       });
       history.clearHistory();
-      expect(history.entries.length).toBe(0);
+      expect(history.length).toBe(0);
       expect(history.initialState.sum).toBe(2);
     });
 
@@ -126,7 +114,7 @@ describe('VuexHistory', () => {
         state: { sum: 2 },
       });
       history.clearHistory(false);
-      expect(history.entries.length).toBe(0);
+      expect(history.length).toBe(0);
       expect(history.initialState.sum).toBe(INITIAL_SINGLE_STATE_SUM);
     });
 
@@ -167,7 +155,7 @@ describe('VuexHistory', () => {
         state: { sum: 2 },
       });
       history.reset();
-      expect(plugin.data.historyMap[DEFAULT_KEY].entries.length).toBe(0);
+      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
       expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
     });
 
