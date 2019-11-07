@@ -67,20 +67,21 @@
 				<a href="#vuex-multi-history" id="vuex-multi-history" style="color: inherit; text-decoration: none;">
 					<h1>vuex-multi-history</h1>
 				</a>
-				<p><a href="https://travis-ci.com/Veake/vuex-multi-history"><img src="https://travis-ci.com/Veake/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master" alt="Build Status"></a></p>
+				<p><a href="https://travis-ci.com/Veake/vuex-multi-history"><img src="https://travis-ci.com/Veake/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master" alt="Build Status"></a>
+				<a href="https://badge.fury.io/js/vuex-multi-history"><img src="https://badge.fury.io/js/vuex-multi-history.svg" alt="npm version"></a></p>
 				<p>Multiple histories for Vuex</p>
+				<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+					<h2>Requirements</h2>
+				</a>
+				<ul>
+					<li>Node.js v8 or higher</li>
+					<li>npm or yarn</li>
+				</ul>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
 				</a>
 				<ol>
-					<li><p>Install the dependencies:</p>
-						<ul>
-							<li><code>npm install vue vuex vuex-history-plugin</code></li>
-						</ul>
-						<p>or</p>
-						<ul>
-							<li><code>yarn add vue vuex vuex-history-plugin</code></li>
-						</ul>
+					<li><p>Install the dependencies: <br><code>npm install vue vuex vuex-history-plugin</code> <br>or <br><code>yarn add vue vuex vuex-history-plugin</code></p>
 					</li>
 					<li><p>Initialize the plugin:</p>
 						<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { VuexMultiHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'vuex-multi-history'</span>;
@@ -105,8 +106,8 @@
 					<h2>Table of Contents</h2>
 				</a>
 				<ul>
+					<li><a href="#requirements">Requirements</a></li>
 					<li><a href="#getting-started">Getting Started</a></li>
-					<li><a href="#table-of-contents">Table of Contents</a></li>
 					<li><a href="#usage">Usage</a><ul>
 							<li><a href="#initializing-a-single-history">Initializing a single history</a></li>
 							<li><a href="#initializing-multiple-histories">Initializing multiple histories</a></li>
@@ -114,28 +115,28 @@
 						</ul>
 					</li>
 					<li><a href="#options">Options</a><ul>
-							<li><a href="#historiesoptions">HistoriesOptions</a></li>
-							<li><a href="#transformoptions">TransformOptions</a></li>
+							<li><a href="#-histories--options"><code>histories</code>-Options</a></li>
+							<li><a href="#-transform--options"><code>transform</code>-Options</a></li>
 						</ul>
 					</li>
 					<li><a href="#types">Types</a><ul>
 							<li><a href="#store">Store</a></li>
-							<li><a href="#vuexmultihistory">VuexMultiHistory</a><ul>
+							<li><a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a><ul>
 									<li><a href="#constructor">Constructor</a></li>
 									<li><a href="#properties">Properties</a></li>
 									<li><a href="#methods">Methods</a></li>
 								</ul>
 							</li>
-							<li><a href="#vuexhistory">VuexHistory</a><ul>
+							<li><a href="#-vuexhistory-"><code>VuexHistory</code></a><ul>
 									<li><a href="#properties-1">Properties</a></li>
 									<li><a href="#methods-1">Methods</a></li>
 								</ul>
 							</li>
 							<li><a href="#functions">Functions</a><ul>
-									<li><a href="#filterfunction">FilterFunction</a></li>
-									<li><a href="#allocatefunction">AllocateFunction</a></li>
-									<li><a href="#serializefunction">SerializeFunction</a></li>
-									<li><a href="#deserializefunction">DeserializeFunction</a></li>
+									<li><a href="#-filterfunction-"><code>FilterFunction</code></a></li>
+									<li><a href="#-allocatefunction-"><code>AllocateFunction</code></a></li>
+									<li><a href="#-serializefunction-"><code>SerializeFunction</code></a></li>
+									<li><a href="#-deserializefunction-"><code>DeserializeFunction</code></a></li>
 								</ul>
 							</li>
 						</ul>
@@ -148,17 +149,21 @@
 				<a href="#initializing-a-single-history" id="initializing-a-single-history" style="color: inherit; text-decoration: none;">
 					<h3>Initializing a single history</h3>
 				</a>
-				<p>By default a single history will be initialized if you do not modify the <code>histories</code>-object of the options of <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>, which can be either done by passing it to the constructor or setting it manually.</p>
+				<p>By default a single history will be initialized if you do not modify the <a href="#-histories--options"><code>histories</code></a>-object of the options of <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>, which can be either done by passing it to the constructor or setting it manually.</p>
 				<p>Example:</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> vuexHistory = <span class="hljs-keyword">new</span> VuexMultiHistory();</code></pre>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { VuexMultiHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'vuex-multi-history'</span>;
+
+<span class="hljs-keyword">const</span> vuexHistory = <span class="hljs-keyword">new</span> VuexMultiHistory();</code></pre>
 				<a href="#initializing-multiple-histories" id="initializing-multiple-histories" style="color: inherit; text-decoration: none;">
 					<h3>Initializing multiple histories</h3>
 				</a>
-				<p>It is possible to initialize multiple histories. This can be done by modifying the <code>histories</code>-object of the options of <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>, which can be either done by passing it to the constructor or setting it manually.</p>
-				<p>For each key of <code>histories.keys</code> a history will be created, which will also be accessible by the given key. <br>Also <code>histories.allocate</code> has to be provided, which is of the type <a href="#allocatefunction"><code>AllocateFunction</code></a> and used to determine to which histories the snapshot will be added.
-				You can read more about the <a href="#allocatefunction"><code>AllocateFunction</code></a> <a href="#allocatefunction">here</a>.</p>
+				<p>It is possible to initialize multiple histories. This can be done by modifying the <a href="#-histories--options"><code>histories</code></a>-object of the options of <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>, which can be either done by passing it to the constructor or setting it manually.</p>
+				<p>For each key of <a href="#-histories--options"><code>histories.keys</code></a> a history will be created, which will also be accessible by the given key. <br>Also <a href="#-histories--options"><code>histories.allocate</code></a> has to be provided, which is of the type <a href="#-allocatefunction-"><code>AllocateFunction</code></a> and used to determine to which histories the snapshot will be added.
+				You can read more about the <a href="#-allocatefunction-"><code>AllocateFunction</code></a> <a href="#-allocatefunction-">here</a>.</p>
 				<p>Example:</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> vuexHistory = <span class="hljs-keyword">new</span> VuexMultiHistory({
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { VuexMultiHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'vuex-multi-history'</span>;
+
+<span class="hljs-keyword">const</span> vuexHistory = <span class="hljs-keyword">new</span> VuexMultiHistory({
   histories: {
     allocate: <span class="hljs-function">(<span class="hljs-params">mutation</span>) =&gt;</span> {
       <span class="hljs-keyword">return</span> mutation.type === <span class="hljs-string">'someType'</span> ? [<span class="hljs-string">'historyA'</span>] : [<span class="hljs-string">'historyB'</span>];
@@ -172,22 +177,22 @@
 				<a href="#using-a-history" id="using-a-history" style="color: inherit; text-decoration: none;">
 					<h3>Using a history</h3>
 				</a>
-				<p>Now anywhere in the code, where the Vuex-<code>Store</code> that uses this plugin is accessible, the <code>Store</code>&#39;s <code>history</code>-method can be used. <br>The <code>history</code>-method has the following signature:</p>
+				<p>Now anywhere in the code, where the Vuex-<code>Store</code> that uses this plugin is accessible, the <code>Store</code>&#39;s <a href="#store"><code>history</code></a>-method can be used. <br>The <a href="#store"><code>history</code></a>-method has the following signature:</p>
 				<pre><code class="language-typescript">history(historyKey?: <span class="hljs-built_in">string</span>): VuexHistory;</code></pre>
 				<blockquote>
 					<p><strong>INFO</strong>:</p>
 					<ul>
-						<li>If you do not pass a historyKey the plugin will assume that you mean the first key declared in <code>histories.keys</code>.</li>
-						<li>If you pass a key that is not declared in <code>histories.keys</code> an error will be thrown because this is a logical error.</li>
+						<li>If you do not pass a historyKey the plugin will assume that you mean the first key declared in <a href="#-histories--options"><code>histories.keys</code></a>.</li>
+						<li>If you pass a key that is not declared in <a href="#-histories--options"><code>histories.keys</code></a> an error will be thrown because this is a logical error.</li>
 					</ul>
 				</blockquote>
-				<p>After retrieving a <a href="#vuexhistory"><code>VuexHistory</code></a>-instance you can use it&#39;s methods and access it&#39;s properties which are listed <a href="#vuexhistory">here</a>.</p>
+				<p>After retrieving a <a href="#-vuexhistory-"><code>VuexHistory</code></a>-instance you can use it&#39;s methods and access it&#39;s properties which are listed <a href="#-vuexhistory-">here</a>.</p>
 				<p>Example:</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">this</span>.$store.history(<span class="hljs-string">'historyKey'</span>).undo();</code></pre>
 				<a href="#options" id="options" style="color: inherit; text-decoration: none;">
 					<h2>Options</h2>
 				</a>
-				<p>Options can be passed to the constructor of <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>. The type of these options is <a href="#options"><code>VuexMultiHistoryOptions</code></a>.</p>
+				<p>Options can be passed to the constructor of <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>. The type of these options is <a href="#options"><code>VuexMultiHistoryOptions</code></a>.</p>
 				<p>The available options are listed in the tables below:</p>
 				<blockquote>
 					<p>* default values written in related object</p>
@@ -209,7 +214,7 @@
 						</tr>
 						<tr>
 							<td>filter</td>
-							<td><a href="#filterfunction"><code>FilterFunction</code></a></td>
+							<td><a href="#-filterfunction-"><code>FilterFunction</code></a></td>
 							<td></td>
 							<td>Determines whether the given mutation is supported</td>
 						</tr>
@@ -230,8 +235,8 @@
 					<p>All the options above are optional</p>
 				</blockquote>
 				<br/>
-				<a href="#historiesoptions" id="historiesoptions" style="color: inherit; text-decoration: none;">
-					<h4>HistoriesOptions</h4>
+				<a href="#codehistoriescode-options" id="codehistoriescode-options" style="color: inherit; text-decoration: none;">
+					<h4><code>histories</code>-Options</h4>
 				</a>
 				<p>The options beneath are required when the <code>histories</code>-object is passed.</p>
 				<table>
@@ -245,7 +250,7 @@
 					</thead>
 					<tbody><tr>
 							<td>allocate</td>
-							<td><a href="#allocatefunction"><code>AllocateFunction</code></a></td>
+							<td><a href="#-allocatefunction-"><code>AllocateFunction</code></a></td>
 							<td>returns first key of <code>histories.keys</code></td>
 							<td>Determines which history/histories an snapshot should be added to</td>
 						</tr>
@@ -257,8 +262,8 @@
 						</tr>
 				</tbody></table>
 				<br/>
-				<a href="#transformoptions" id="transformoptions" style="color: inherit; text-decoration: none;">
-					<h4>TransformOptions</h4>
+				<a href="#codetransformcode-options" id="codetransformcode-options" style="color: inherit; text-decoration: none;">
+					<h4><code>transform</code>-Options</h4>
 				</a>
 				<p>The options beneath are required when the <code>transform</code>-object is passed.</p>
 				<table>
@@ -272,13 +277,13 @@
 					</thead>
 					<tbody><tr>
 							<td>serialize</td>
-							<td><a href="#serializefunction"><code>SerializeFunction</code></a></td>
+							<td><a href="#-serializefunction-"><code>SerializeFunction</code></a></td>
 							<td>returns complete state</td>
 							<td>Reduces the state-object when it will be added to the history</td>
 						</tr>
 						<tr>
 							<td>deserialize</td>
-							<td><a href="#deserializefunction"><code>DeserializeFunction</code></a></td>
+							<td><a href="#-deserializefunction-"><code>DeserializeFunction</code></a></td>
 							<td>returns complete snapshot-state</td>
 							<td>Will be used to merge the reduced state-object with the current state</td>
 						</tr>
@@ -289,23 +294,23 @@
 				<a href="#store" id="store" style="color: inherit; text-decoration: none;">
 					<h3>Store</h3>
 				</a>
-				<p>The plugin adds a method with the signature <code>history(historyKey?: string): VuexHistory</code> to the prototype of <code>Store</code>. <br>That makes is possible to call <code>store.history()</code> or <code>store.history(key)</code> to retrieve a <a href="#vuexhistory"><code>VuexHistory</code></a>.</p>
+				<p>The plugin adds a method with the signature <code>history(historyKey?: string): VuexHistory</code> to the prototype of <code>Store</code>. <br>That makes is possible to call <code>store.history()</code> or <code>store.history(key)</code> to retrieve a <a href="#-vuexhistory-"><code>VuexHistory</code></a>.</p>
 				<blockquote>
 					<p><strong>INFO</strong>:</p>
 					<ul>
-						<li>If you do not pass a historyKey the plugin will assume that you mean the first key declared in <code>histories.keys</code>.</li>
-						<li>If you pass a key that is not declared in <code>histories.keys</code> an error will be thrown because this is a logical error.</li>
+						<li>If you do not pass a historyKey the plugin will assume that you mean the first key declared in <a href="#-histories--options"><code>histories.keys</code></a>.</li>
+						<li>If you pass a key that is not declared in <a href="#-histories--options"><code>histories.keys</code></a> an error will be thrown because this is a logical error.</li>
 					</ul>
 				</blockquote>
-				<a href="#vuexmultihistory" id="vuexmultihistory" style="color: inherit; text-decoration: none;">
-					<h3>VuexMultiHistory</h3>
+				<a href="#codevuexmultihistorycode" id="codevuexmultihistorycode" style="color: inherit; text-decoration: none;">
+					<h3><code>VuexMultiHistory</code></h3>
 				</a>
-				<p>A <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>-object has the following constructor, properties and methods:</p>
+				<p>A <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>-object has the following constructor, properties and methods:</p>
 				<a href="#constructor" id="constructor" style="color: inherit; text-decoration: none;">
 					<h4>Constructor</h4>
 				</a>
 				<p>The options that can be passed to the plugin are listed <a href="#options">here</a>. <br>The constructor has the following signature:</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">new</span> (options: Partial&lt;VuexMultiHistoryOptions&gt;): VuexMultiHistory;</code></pre>
+				<pre><code class="language-typescript"><span class="hljs-keyword">new</span> VuexHistory(plugin: VuexMultiHistory, historyKey: <span class="hljs-built_in">string</span>): VuexHistory</code></pre>
 				<br/>
 				<a href="#properties" id="properties" style="color: inherit; text-decoration: none;">
 					<h4>Properties</h4>
@@ -339,7 +344,7 @@
 				<a href="#methods" id="methods" style="color: inherit; text-decoration: none;">
 					<h4>Methods</h4>
 				</a>
-				<p>For all these methods the <code>historyKey</code> will be the first key in <code>histories.keys</code> of the options.</p>
+				<p>For all these methods the <code>historyKey</code> will be the first key in <a href="#-histories--options"><code>histories.keys</code></a> of the options.</p>
 				<table>
 					<thead>
 						<tr>
@@ -349,21 +354,21 @@
 					</thead>
 					<tbody><tr>
 							<td><code>getHistory(historyKey?: string): VuexHistory</code></td>
-							<td>returns the <a href="#vuexhistory"><code>VuexHistory</code></a> with the given key; if there is no history for the key, an error will be thrown</td>
+							<td>returns the <a href="#-vuexhistory-"><code>VuexHistory</code></a> with the given key; if there is no history for the key, an error will be thrown</td>
 						</tr>
 						<tr>
 							<td><code>serialize(historyKey?: string, state: any): any</code></td>
-							<td>serializes the given state, you can read more <a href="#serializefunction">here</a></td>
+							<td>serializes the given state, you can read more <a href="#-serializefunction-">here</a></td>
 						</tr>
 						<tr>
 							<td><code>deserialize(historyKey?: string, data: any): any</code></td>
-							<td>deserialized the given data to a state, you can read more <a href="#deserializefunction">here</a></td>
+							<td>deserialized the given data to a state, you can read more <a href="#-deserializefunction-">here</a></td>
 						</tr>
 				</tbody></table>
-				<a href="#vuexhistory" id="vuexhistory" style="color: inherit; text-decoration: none;">
-					<h3>VuexHistory</h3>
+				<a href="#codevuexhistorycode" id="codevuexhistorycode" style="color: inherit; text-decoration: none;">
+					<h3><code>VuexHistory</code></h3>
 				</a>
-				<p>A <a href="#vuexhistory"><code>VuexHistory</code></a>-object has the following properties and methods:</p>
+				<p>A <a href="#-vuexhistory-"><code>VuexHistory</code></a>-object has the following properties and methods:</p>
 				<a href="#properties-1" id="properties-1" style="color: inherit; text-decoration: none;">
 					<h4>Properties</h4>
 				</a>
@@ -464,49 +469,48 @@
 						</tr>
 						<tr>
 							<td><code>serialize(state: any): any</code></td>
-							<td>gives access to the <a href="#serializefunction"><code>SerializeFunction</code></a>; should be used when manually adding an snapshot; you can read more <a href="#serializefunction">here</a></td>
+							<td>gives access to the <a href="#-serializefunction-"><code>SerializeFunction</code></a>; should be used when manually adding an snapshot; you can read more <a href="#-serializefunction-">here</a></td>
 						</tr>
 						<tr>
 							<td><code>deserialize(data: any): void</code></td>
-							<td>gives access to the <a href="#deserializefunction"><code>DeserializeFunction</code></a>; you can read more <a href="#deserializefunction">here</a></td>
+							<td>gives access to the <a href="#-deserializefunction-"><code>DeserializeFunction</code></a>; you can read more <a href="#-deserializefunction-">here</a></td>
 						</tr>
 				</tbody></table>
 				<a href="#functions" id="functions" style="color: inherit; text-decoration: none;">
 					<h3>Functions</h3>
 				</a>
-				<p>Every function will be called with having <code>this</code> set to the instance of <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>, this way the functions have access to properties and methods of <a href="#vuexmultihistory"><code>VuexMultiHistory</code></a>.</p>
-				<a href="#filterfunction" id="filterfunction" style="color: inherit; text-decoration: none;">
-					<h4>FilterFunction</h4>
+				<p>Every function will be called with having <code>this</code> set to the instance of <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>, this way the functions have access to properties and methods of <a href="#-vuexmultihistory-"><code>VuexMultiHistory</code></a>.</p>
+				<a href="#codefilterfunctioncode" id="codefilterfunctioncode" style="color: inherit; text-decoration: none;">
+					<h4><code>FilterFunction</code></h4>
 				</a>
-				<p>A <a href="#filterfunction"><code>FilterFunction</code></a> has the following signature:</p>
+				<p>A <a href="#-filterfunction-"><code>FilterFunction</code></a> has the following signature:</p>
 				<pre><code class="language-typescript">(mutation: MutationPayload): <span class="hljs-built_in">boolean</span>;</code></pre>
 				<p>The aim of this function is to determine whether the given <code>mutation</code> is allowed to be added to any history or not. <br>If the function returns <code>true</code>, it will be added, if it returns <code>false</code> the mutation will not processed any further and not added to any history.</p>
-				<a href="#allocatefunction" id="allocatefunction" style="color: inherit; text-decoration: none;">
-					<h4>AllocateFunction</h4>
+				<a href="#codeallocatefunctioncode" id="codeallocatefunctioncode" style="color: inherit; text-decoration: none;">
+					<h4><code>AllocateFunction</code></h4>
 				</a>
-				<p>The <a href="#allocatefunction"><code>AllocateFunction</code></a> is called after the <a href="#filterfunction"><code>FilterFunction</code></a> if it returned <code>true</code> or if the <code>filter</code> in the options was explicitly set to <code>undefined</code> or <code>null</code>. <br>It has the following signature:</p>
+				<p>The <a href="#-allocatefunction-"><code>AllocateFunction</code></a> is called after the <a href="#-filterfunction-"><code>FilterFunction</code></a> if it returned <code>true</code> or if the <code>filter</code> in the options was explicitly set to <code>undefined</code> or <code>null</code>. <br>It has the following signature:</p>
 				<pre><code class="language-typescript">(mutation: MutationPayload): <span class="hljs-built_in">string</span>[];</code></pre>
 				<p>The aim of this function is to determine, based on the <code>mutation</code>, to which histories the snapshot will be added.
-				The returned strings should be those or a subset of those, that are in the options in <code>histories.keys</code>.</p>
+				The returned strings should be those or a subset of those, that are in the options in <a href="#-histories--options"><code>histories.keys</code></a>.</p>
 				<blockquote>
 					<p><strong>INFO</strong>:</p>
-					<p>If a key is returned that is not in <code>histories.keys</code> an error will be thrown, because this is a logical error.</p>
+					<p>If a key is returned that is not in <a href="#-histories--options"><code>histories.keys</code></a> an error will be thrown, because this is a logical error.</p>
 				</blockquote>
-				<a href="#serializefunction" id="serializefunction" style="color: inherit; text-decoration: none;">
-					<h4>SerializeFunction</h4>
+				<a href="#codeserializefunctioncode" id="codeserializefunctioncode" style="color: inherit; text-decoration: none;">
+					<h4><code>SerializeFunction</code></h4>
 				</a>
-				<p>The <a href="#serializefunction"><code>SerializeFunction</code></a> is called when an snapshot is about to be saved. It determines which data will be saved in the snapshot and can be used to reduce the stored data drastically, as well as making it possible to just replace parts of the state. <br>It has the following signature:</p>
+				<p>The <a href="#-serializefunction-"><code>SerializeFunction</code></a> is called when an snapshot is about to be saved. It determines which data will be saved in the snapshot and can be used to reduce the stored data drastically, as well as making it possible to just replace parts of the state. <br>It has the following signature:</p>
 				<pre><code class="language-typescript">(historyKey: <span class="hljs-built_in">string</span>, state: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">any</span>;</code></pre>
-				<a href="#deserializefunction" id="deserializefunction" style="color: inherit; text-decoration: none;">
-					<h4>DeserializeFunction</h4>
+				<a href="#codedeserializefunctioncode" id="codedeserializefunctioncode" style="color: inherit; text-decoration: none;">
+					<h4><code>DeserializeFunction</code></h4>
 				</a>
-				<p>The <a href="#deserializefunction"><code>DeserializeFunction</code></a> is called when the data of an snapshot is taken to update the current state and it is supposed to rebuild the state of the snapshot by merging the current state with the data. <br>This way not the whole state will be brought back to it&#39;s state of the snapshot. <br>It has the following signature:</p>
+				<p>The <a href="#-deserializefunction-"><code>DeserializeFunction</code></a> is called when the data of an snapshot is taken to update the current state and it is supposed to rebuild the state of the snapshot by merging the current state with the data. <br>This way not the whole state will be brought back to it&#39;s state of the snapshot. <br>It has the following signature:</p>
 				<pre><code class="language-typescript">(historyKey: <span class="hljs-built_in">string</span>, data: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">any</span>;</code></pre>
 				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
 					<h2>Docs</h2>
 				</a>
 				<p>You can take a look at the docs <a href="https://veake.github.io/vuex-multi-history/">here</a> for in-depth type-declarations.</p>
-				<pre><code></code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -515,22 +519,70 @@
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_interfaces_.html">"<wbr>Interfaces"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_vuexhistory_.html">"<wbr>Vuex<wbr>History"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_vuexmultihistory_.html">"<wbr>Vuex<wbr>Multi<wbr>History"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_index_.html">"index"</a>
+					<li class=" tsd-kind-module tsd-is-not-exported">
+						<a href="modules/_vuex_.html">"vuex"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/vuexhistory.html" class="tsd-kind-icon">Vuex<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/vuexmultihistory.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/historyinterface.html" class="tsd-kind-icon">History<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/historysnapshot.html" class="tsd-kind-icon">History<wbr>Snapshot</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/vuexmultihistoryoptions.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#allocatefunction" class="tsd-kind-icon">Allocate<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#defaultkey" class="tsd-kind-icon">Default<wbr>Key</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#deserializefunction" class="tsd-kind-icon">Deserialize<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#filterfunction" class="tsd-kind-icon">Filter<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#historymap" class="tsd-kind-icon">History<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#serializefunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#vuexplugin" class="tsd-kind-icon">Vuex<wbr>Plugin</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#default_key" class="tsd-kind-icon">DEFAULT_<wbr>KEY</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#default_allocation" class="tsd-kind-icon">DEFAULT_<wbr>ALLOCATION</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#default_deserializer" class="tsd-kind-icon">DEFAULT_<wbr>DESERIALIZER</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#default_filter" class="tsd-kind-icon">DEFAULT_<wbr>FILTER</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

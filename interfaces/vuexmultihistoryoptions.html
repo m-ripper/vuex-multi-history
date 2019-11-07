@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>HistorySnapshot | vuex-multi-history</title>
+	<title>VuexMultiHistoryOptions | vuex-multi-history</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,29 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_vuexhistory_.html">&quot;VuexHistory&quot;</a>
-				</li>
-				<li>
-					<a href="_vuexhistory_.historysnapshot.html">HistorySnapshot</a>
+					<a href="vuexmultihistoryoptions.html">VuexMultiHistoryOptions</a>
 				</li>
 			</ul>
-			<h1>Interface HistorySnapshot</h1>
+			<h1>Interface VuexMultiHistoryOptions&lt;K&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">HistorySnapshot</span>
+						<span class="target">VuexMultiHistoryOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -84,8 +89,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_vuexhistory_.historysnapshot.html#mutation" class="tsd-kind-icon">mutation</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_vuexhistory_.historysnapshot.html#statedata" class="tsd-kind-icon">state<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="vuexmultihistoryoptions.html#filter" class="tsd-kind-icon">filter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="vuexmultihistoryoptions.html#histories" class="tsd-kind-icon">histories</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="vuexmultihistoryoptions.html#size" class="tsd-kind-icon">size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="vuexmultihistoryoptions.html#transform" class="tsd-kind-icon">transform</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,22 +101,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mutation" class="tsd-anchor"></a>
-					<h3>mutation</h3>
-					<div class="tsd-signature tsd-kind-icon">mutation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="filter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> filter</h3>
+					<div class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">:</span> <a href="../globals.html#filterfunction" class="tsd-signature-type">FilterFunction</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/7616f71/src/VuexHistory.ts#L6">VuexHistory.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/9fde768/src/VuexMultiHistory.ts#L55">VuexMultiHistory.ts:55</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="statedata" class="tsd-anchor"></a>
-					<h3>state<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">state<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="histories" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> histories</h3>
+					<div class="tsd-signature tsd-kind-icon">histories<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/7616f71/src/VuexHistory.ts#L7">VuexHistory.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/9fde768/src/VuexMultiHistory.ts#L56">VuexMultiHistory.ts:56</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="size" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> size</h3>
+					<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/9fde768/src/VuexMultiHistory.ts#L54">VuexMultiHistory.ts:54</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="transform" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> transform</h3>
+					<div class="tsd-signature tsd-kind-icon">transform<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/9fde768/src/VuexMultiHistory.ts#L60">VuexMultiHistory.ts:60</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -121,43 +148,85 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"<wbr>Interfaces"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_vuexhistory_.html">"<wbr>Vuex<wbr>History"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_vuexmultihistory_.html">"<wbr>Vuex<wbr>Multi<wbr>History"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_index_.html">"index"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_vuexhistory_.vuexhistory.html" class="tsd-kind-icon">Vuex<wbr>History</a>
+					<li class=" tsd-kind-class">
+						<a href="../classes/vuexhistory.html" class="tsd-kind-icon">Vuex<wbr>History</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_vuexhistory_.historyinterface.html" class="tsd-kind-icon">History<wbr>Interface</a>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/vuexmultihistory.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="historyinterface.html" class="tsd-kind-icon">History<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="historysnapshot.html" class="tsd-kind-icon">History<wbr>Snapshot</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_vuexhistory_.historysnapshot.html" class="tsd-kind-icon">History<wbr>Snapshot</a>
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
+						<a href="vuexmultihistoryoptions.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_vuexhistory_.historysnapshot.html#mutation" class="tsd-kind-icon">mutation</a>
+								<a href="vuexmultihistoryoptions.html#filter" class="tsd-kind-icon">filter</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_vuexhistory_.historysnapshot.html#statedata" class="tsd-kind-icon">state<wbr>Data</a>
+								<a href="vuexmultihistoryoptions.html#histories" class="tsd-kind-icon">histories</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="vuexmultihistoryoptions.html#size" class="tsd-kind-icon">size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="vuexmultihistoryoptions.html#transform" class="tsd-kind-icon">transform</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#allocatefunction" class="tsd-kind-icon">Allocate<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#defaultkey" class="tsd-kind-icon">Default<wbr>Key</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#deserializefunction" class="tsd-kind-icon">Deserialize<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#filterfunction" class="tsd-kind-icon">Filter<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="../globals.html#historymap" class="tsd-kind-icon">History<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#serializefunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#vuexplugin" class="tsd-kind-icon">Vuex<wbr>Plugin</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#default_key" class="tsd-kind-icon">DEFAULT_<wbr>KEY</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#default_allocation" class="tsd-kind-icon">DEFAULT_<wbr>ALLOCATION</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#default_deserializer" class="tsd-kind-icon">DEFAULT_<wbr>DESERIALIZER</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#default_filter" class="tsd-kind-icon">DEFAULT_<wbr>FILTER</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
