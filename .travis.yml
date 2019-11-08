@@ -2,13 +2,17 @@ language: node_js
 node_js:
   - node
 
+install:
+  - npm install -g codecov
+
 before_script:
   - npm install
   - npm run build
 
 script:
   - npm run lint
-  - npm run test
+  - npm run test:collect
+  - codecov
 
 after_success:
   - npm run prettier:format

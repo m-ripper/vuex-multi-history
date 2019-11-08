@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/Veake/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-multi-history)
 [![npm version](https://badge.fury.io/js/vuex-multi-history.svg)](https://badge.fury.io/js/vuex-multi-history)
+[![codecov](https://codecov.io/gh/Veake/vuex-multi-history/branch/master/graph/badge.svg)](https://codecov.io/gh/Veake/vuex-multi-history)
 
 Multiple histories for Vuex
 
