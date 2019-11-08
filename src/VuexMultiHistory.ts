@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import { MutationPayload, Store } from 'vuex';
 
+import { InvalidOptionsError } from './errors/InvalidOptionsError';
+import { InvalidTypeError } from './errors/InvalidTypeError';
 import {
   AllocateFunction,
   DefaultKey,
@@ -84,6 +86,8 @@ export class VuexMultiHistory<K extends string = string> {
     this.data = Vue.observable<Data>(dataObj);
 
     this.plugin = (store: Store<any>) => {
+      this.validateOptions();
+
       for (const key in this.data.historyMap) {
         if (this.data.historyMap.hasOwnProperty(key)) {
           this.data.historyMap[key].init(store);
@@ -132,8 +136,40 @@ export class VuexMultiHistory<K extends string = string> {
   }
 
   private validateOptions() {
-    if (this.options.histories.keys.length === 0) {
-      throw new Error('At least one key has to be provided!');
+    const errors: Error[] = [];
+
+    const size = this.options.size;
+    if (typeof size !== 'number') {
+      errors.push(new InvalidTypeError('size', 'number'));
+    }
+
+    const filter = this.options.filter;
+    if (typeof filter !== 'function') {
+      errors.push(new InvalidTypeError('filter', 'function'));
+    }
+
+    const { allocate, keys } = this.options.histories;
+    if (typeof allocate !== 'function') {
+      errors.push(new InvalidTypeError('allocate', 'function'));
+    }
+
+    if (typeof keys !== 'object' || !Array.isArray(keys)) {
+      errors.push(new InvalidTypeError('keys', 'array'));
+    } else if (keys.length === 0) {
+      errors.push(new Error(`'${keys}' cannot be empty!`));
+    }
+
+    const { serialize, deserialize } = this.options.transform;
+    if (typeof serialize !== 'function') {
+      errors.push(new InvalidTypeError('serialize', 'function'));
+    }
+
+    if (typeof deserialize !== 'function') {
+      errors.push(new InvalidTypeError('deserialize', 'function'));
+    }
+
+    if (errors.length > 0) {
+      throw new InvalidOptionsError(...errors);
     }
   }
 

@@ -8,3 +8,5 @@ declare module 'vuex' {
 
 export * from './Interfaces';
 export * from './VuexMultiHistory';
+export * from './errors/InvalidTypeError';
+export * from './errors/InvalidOptionsError';

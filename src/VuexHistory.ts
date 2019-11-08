@@ -86,10 +86,16 @@ export class VuexHistory implements HistoryInterface {
   }
 
   getSnapshot(index: number): HistorySnapshot | undefined {
+    if (index >= this.length) {
+      return undefined;
+    }
     return { ...this.snapshots[index] };
   }
 
   updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory {
+    if (index >= this.length) {
+      return this;
+    }
     this.snapshots.splice(index, 1, snapshot);
     return this;
   }

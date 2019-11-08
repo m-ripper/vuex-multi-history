@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { MutationPayload, Store } from 'vuex';
 
-import { DEFAULT_KEY, VuexMultiHistory } from '../src';
+import { DEFAULT_KEY, VuexMultiHistory, VuexMultiHistoryOptions } from '../src';
 import { VuexHistory } from '../src/VuexHistory';
 
 import {
@@ -145,6 +145,110 @@ describe('VuexHistoryPlugin', () => {
       store.commit('add', 2);
       store.commit('sub', 2);
       expect(store.history().length).toBe(1);
+    });
+
+    describe('validateOptions', () => {
+      test('`size` wrong type or undefined', () => {
+        const options: any = {
+          size: {},
+        };
+
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
+      test('`filter` wrong type or undefined', () => {
+        const options: any = {
+          filter: {},
+        };
+
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
+      test('`histories.keys` wrong type or undefined', () => {
+        const options: any = {
+          histories: {
+            allocate: (mutation: MutationPayload) => {
+              return [''];
+            },
+            keys: undefined,
+          },
+        };
+
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
+      test('`histories.keys` wrong type or undefined', () => {
+        const options: any = {
+          histories: {
+            allocate: (mutation: MutationPayload) => {
+              return [''];
+            },
+            keys: undefined,
+          },
+        };
+
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
+      test('`histories.keys` empty', () => {
+        const options: VuexMultiHistoryOptions = {
+          histories: {
+            allocate: (mutation: MutationPayload) => {
+              return [''];
+            },
+            keys: [],
+          },
+        };
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
+      test('`histories.allocate` wrong type or undefined', () => {
+        const options: any = {
+          histories: {
+            allocate: 1,
+            keys: ['test'],
+          },
+        };
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+      test('`transform.serialize` wrong type or undefined', () => {
+        const options: any = {
+          transform: {
+            serialize: {},
+            deserialize: (historyKey: string, stateData: any) => {
+              return stateData;
+            }
+          }
+        };
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+      test('`transform.deserialize` wrong type or undefined', () => {
+        const options: any = {
+          transform: {
+            serialize: (historyKey: string, state: any) => {
+              return state;
+            },
+            deserialize: {}
+          }
+        };
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
     });
   });
 });
