@@ -139,13 +139,13 @@ The available options are listed in the tables below:
 
 > \* default values written in related object
 
-| key       | type                                | default | description                                                                                             |
-| --------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| debug     | `boolean`                           |         | Determines whether error-messages should be printed                                                     |
-| size      | `number`                            |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed |
-| filter    | [`FilterFunction`](#filterfunction) |         | Determines whether the given mutation is supported                                                      |
-| histories | `HistoriesOptions`                  | \*      | Options related to the histories                                                                        |
-| transform | `TransformOptions`                  | \*      | Options related to serializing and deserializing state-data                                             |
+| key       | type                                | default      | description                                                                                             |
+| --------- | ----------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------- |
+| debug     | `boolean`                           | false        | Determines whether error-messages should be printed                                                     |
+| size      | `number`                            | 50           | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed |
+| filter    | [`FilterFunction`](#filterfunction) | returns true | Determines whether the given mutation is supported                                                      |
+| histories | `HistoriesOptions`                  | \*           | Options related to the histories                                                                        |
+| transform | `TransformOptions`                  | \*           | Options related to serializing and deserializing state-data                                             |
 
 > All the options above are optional
 
@@ -238,7 +238,7 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 | length       | number | returns the amount of snapshots the history has                                    |
 | index        | number | returns the index the history is currently at                                      |
 | initialState | any    | returns the initial state of the history; the result is automatically deserialized |
-| idCount      | number | returns the number the id counter is currenly at                                   |
+| idCount      | number | returns the number the id counter is currently at                                   |
 
 #### Find Options
 
