@@ -15,4 +15,8 @@ export type FilterFunction<T extends MutationPayload = MutationPayload> = (
   mutation: T,
 ) => boolean;
 export type SerializeFunction<K extends string = string> = (this: VuexMultiHistory, historyKey: K, state: any) => any;
-export type DeserializeFunction<K extends string = string> = (this: VuexMultiHistory, historyKey: K, stateData: any) => any;
+export type DeserializeFunction<K extends string = string> = (
+  this: VuexMultiHistory,
+  historyKey: K,
+  stateData: any,
+) => any;
