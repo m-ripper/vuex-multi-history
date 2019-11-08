@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Store } from 'vuex';
 
 import { VuexMultiHistory } from '../../src';

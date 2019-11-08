@@ -140,13 +140,13 @@ The available options are listed in the tables below:
 
 > \* default values written in related object
 
-| key       | type                                | default | description                                                                                              |
-| --------- | ----------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| key       | type                                | default | description                                                                                             |
+| --------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
 | debug     | `boolean`                           |         | Determines whether error-messages should be printed                                                     |
 | size      | `number`                            |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed |
-| filter    | [`FilterFunction`](#filterfunction) |         | Determines whether the given mutation is supported                                                       |
-| histories | `HistoriesOptions`                  | \*      | Options related to the histories                                                                         |
-| transform | `TransformOptions`                  | \*      | Options related to serializing and deserializing state-data                                              |
+| filter    | [`FilterFunction`](#filterfunction) |         | Determines whether the given mutation is supported                                                      |
+| histories | `HistoriesOptions`                  | \*      | Options related to the histories                                                                        |
+| transform | `TransformOptions`                  | \*      | Options related to serializing and deserializing state-data                                             |
 
 > All the options above are optional
 
@@ -265,13 +265,14 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 | `getSnapshotIndex(options: GetSnapshotIndexOptions): number`                                              | returns the index of a snapshot of the history                                                                                                              |
 | `removeSnapshot(options: FindSnapshotOptions): ReferencableHistorySnapshot`<code>&#124;</code>`undefined` | deletes a snapshot of the history                                                                                                                           |
 | `updateSnapshot(options: FindSnapshotOptions, snapshot: ReferencableHistorySnapshot): VuexHistory`        | updates a snapshot of the history                                                                                                                           |
-| `canUndo(): boolean`                                                                                      | returns if undo is possible                                                                                                                                 |
-| `undo(): VuexHistory`                                                                                     | undoes the last snapshot                                                                                                                                    |
-| `canRedo(): boolean`                                                                                      | returns if redo is possible                                                                                                                                 |
-| `redo(): VuexHistory`                                                                                     | redoes the next possible snapshot                                                                                                                           |
+| `goto(options: FindSnapshotOptions): VuexHistory`                                                         | jumps to the state of the related snapshot if there is any                                                                                                  |
+| `canUndo(amount: number = 1): boolean`                                                                    | returns if undo is possible                                                                                                                                 |
+| `undo(amount: number = 1): VuexHistory`                                                                   | undoes the last snapshot                                                                                                                                    |
+| `canRedo(amount: number = 1): boolean`                                                                    | returns if redo is possible                                                                                                                                 |
+| `redo(amount: number = 1): VuexHistory`                                                                   | redoes the next possible snapshot                                                                                                                           |
 | `hasChanges(): boolean`                                                                                   | returns if there are any snapshots in the history                                                                                                           |
 | `overrideInitialState(state): VuexHistory`                                                                | overrides the initial state                                                                                                                                 |
-| `clearHistory(overrideInitialState = true): void`                                                         | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                          |
+| `clearHistory(overrideInitialState: boolean = true): void`                                                | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                          |
 | `reset(): void`                                                                                           | clears the history and replaces the current state with the initial                                                                                          |
 | `serialize(state: any): any`                                                                              | gives access to the [`SerializeFunction`](#serializefunction); should be used when manually adding a snapshot; you can read more [here](#serializefunction) |
 | `deserialize(data: any): void`                                                                            | gives access to the [`DeserializeFunction`](#deserializefunction); you can read more [here](#deserializefunction)                                           |

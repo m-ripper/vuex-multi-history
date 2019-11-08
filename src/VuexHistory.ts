@@ -48,13 +48,15 @@ export interface HistoryInterface {
 
   hasChanges(): boolean;
 
-  canUndo(): boolean;
+  canUndo(amount?: number): boolean;
 
-  canRedo(): boolean;
+  canRedo(amount?: number): boolean;
 
-  undo(): HistoryInterface;
+  undo(amount?: number): HistoryInterface;
 
-  redo(): HistoryInterface;
+  redo(amount?: number): HistoryInterface;
+
+  goto(options: FindSnapshotOptions): HistoryInterface;
 
   clearHistory(overrideInitialState?: boolean): void;
 
@@ -151,14 +153,14 @@ export class VuexHistory implements HistoryInterface {
     return this;
   }
 
-  canRedo(): boolean {
-    const nextIndex = this.currentIndex + 1;
+  canRedo(amount = 1): boolean {
+    const nextIndex = this.currentIndex + amount;
     return nextIndex >= 0 && nextIndex < this.snapshots.length;
   }
 
-  canUndo(): boolean {
-    const prevIndex = this.currentIndex - 1;
-    return prevIndex >= -1 && this.snapshots.length > prevIndex;
+  canUndo(amount = 1): boolean {
+    const prevIndex = this.currentIndex - amount;
+    return prevIndex >= -1 && prevIndex < this.snapshots.length;
   }
 
   clearHistory(overrideInitialState = true): void {
@@ -173,17 +175,37 @@ export class VuexHistory implements HistoryInterface {
     return this.snapshots.length > 0;
   }
 
+  goto(options: FindSnapshotOptions): HistoryInterface {
+    let index = (options as FindSnapshotByIndexOptions).index;
+    if (typeof index !== 'number') {
+      index = this.getSnapshotIndex(options as GetSnapshotIndexOptions);
+    }
+
+    if (index >= 0) {
+      const difference = index - this.currentIndex;
+      if (difference === 0) {
+        return this;
+      }
+      const total = Math.abs(difference);
+      const funcKey: keyof VuexHistory = difference > 0 ? 'redo' : 'undo';
+
+      this[funcKey](total);
+    }
+
+    return this;
+  }
+
   overrideInitialState(state: any): VuexHistory {
     this.initialStateData = this.serialize(state);
     return this;
   }
 
-  redo(): VuexHistory {
-    const nextIndex = this.currentIndex + 1;
-    if (this.canRedo()) {
+  redo(amount = 1): VuexHistory {
+    const nextIndex = this.currentIndex + amount;
+    if (this.canRedo(amount)) {
       const nextStateData = this.snapshots[nextIndex].stateData;
       this.replaceState(nextStateData);
-      this.currentIndex++;
+      this.currentIndex += amount;
     }
     return this;
   }
@@ -193,12 +215,12 @@ export class VuexHistory implements HistoryInterface {
     this.store.replaceState(this.initialStateData);
   }
 
-  undo(): VuexHistory {
-    const prevIndex = this.currentIndex - 1;
-    if (this.canUndo()) {
-      const prevStateData = prevIndex === -1 ? this.initialStateData : this.snapshots[prevIndex].stateData;
+  undo(amount = 1): VuexHistory {
+    const prevIndex = this.currentIndex - amount;
+    if (this.canUndo(amount)) {
+      const prevStateData = prevIndex < 0 ? this.initialStateData : this.snapshots[prevIndex].stateData;
       this.replaceState(prevStateData);
-      this.currentIndex--;
+      this.currentIndex -= amount;
     }
     return this;
   }

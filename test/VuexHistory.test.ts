@@ -261,6 +261,32 @@ describe('VuexHistory', () => {
     });
   });
 
+  describe('goto', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+      addTestSnapshot(history, 8);
+    });
+
+    test(`'index' in options`, () => {
+      history.goto({ index: 0 });
+      expect(history.index).toBe(0);
+    });
+
+    test(`not 'index' in options`, () => {
+      history.goto({ id: 2 });
+      expect(history.index).toBe(1);
+    });
+
+    test('resulting index of options is the same as the current index > nothing happens', () => {
+      history.goto({id: 3});
+      expect(history.index).toBe(2);
+    });
+  });
+
   test('canUndo', () => {
     expect(history.canUndo()).toBeFalsy();
     addTestSnapshot(history, 2);
