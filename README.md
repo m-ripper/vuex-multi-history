@@ -59,8 +59,10 @@ Multiple histories for Vuex
     - [Constructor](#constructor)
     - [Properties](#properties)
     - [Methods](#methods)
+  - [`HistorySnapshot`](#historysnapshot)
   - [`VuexHistory`](#vuexhistory)
     - [Properties](#properties-1)
+    - [Properties](#find-options)
     - [Methods](#methods-1)
   - [Functions](#functions)
     - [`FilterFunction`](#filterfunction)
@@ -140,25 +142,22 @@ The available options are listed in the tables below:
 
 | key       | type                                | default | description                                                                                              |
 | --------- | ----------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| size      | `number`                            |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed. |
+| debug     | `boolean`                           |         | Determines whether error-messages should be printed                                                     |
+| size      | `number`                            |         | Maximum amount of snapshots a history can hold. If the maximum is reached the first one will be removed |
 | filter    | [`FilterFunction`](#filterfunction) |         | Determines whether the given mutation is supported                                                       |
 | histories | `HistoriesOptions`                  | \*      | Options related to the histories                                                                         |
 | transform | `TransformOptions`                  | \*      | Options related to serializing and deserializing state-data                                              |
 
 > All the options above are optional
 
-<br/>
-
 #### `histories`-Options
 
 The options beneath are required when the `histories`-object is passed.
 
-| key      | type                                    | default                               | description                                                       |
-| -------- | --------------------------------------- | ------------------------------------- | ----------------------------------------------------------------- |
-| allocate | [`AllocateFunction`](#allocatefunction) | returns first key of `histories.keys` | Determines which history/histories an snapshot should be added to |
-| keys     | `string[]`                              | `['default']`                         | For each given key a separate history will be created             |
-
-<br/>
+| key      | type                                    | default                               | description                                                      |
+| -------- | --------------------------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+| allocate | [`AllocateFunction`](#allocatefunction) | returns first key of `histories.keys` | Determines which history/histories a snapshot should be added to |
+| keys     | `string[]`                              | `['default']`                         | For each given key a separate history will be created            |
 
 #### `transform`-Options
 
@@ -194,8 +193,6 @@ The constructor has the following signature:
 new VuexHistory(plugin: VuexMultiHistory, historyKey: string): VuexHistory
 ```
 
-<br/>
-
 #### Properties
 
 All properties are `readonly` and cannot be replaced.
@@ -206,8 +203,6 @@ All properties are `readonly` and cannot be replaced.
 | data    | `{ historyMap: { [key: string]: VuexHistory } }` | keeps track of the histories                                                      |
 | plugin  | `VuexPlugin`                                     | plugin-instance that has to be added `plugins` when initializing the Vuex-`Store` |
 
-<br/>
-
 #### Methods
 
 For all these methods the `historyKey` will be the first key in [`histories.keys`](#histories-options) of the options.
@@ -217,6 +212,21 @@ For all these methods the `historyKey` will be the first key in [`histories.keys
 | `getHistory(historyKey?: string): VuexHistory`     | returns the [`VuexHistory`](#vuexhistory) with the given key; if there is no history for the key, an error will be thrown |
 | `serialize(historyKey?: string, state: any): any`  | serializes the given state, you can read more [here](#serializefunction)                                                  |
 | `deserialize(historyKey?: string, data: any): any` | deserialized the given data to a state, you can read more [here](#deserializefunction)                                    |
+
+### `HistorySnapshot`
+
+A [`HistorySnapshot`](#historysnapshot) is an object hat has the following signature:
+
+```typescript
+{
+  mutation: string;
+  stateData: any;
+}
+```
+
+Whenever a mutation occurs in the Vuex-`Store` and it passes the [`filter`](#options) as well as the [`allocate`](#histories-options)-function the `addSnapshot`-function of the [`VuexHistory`](#vuexhistory) will be called and a new instance of [`ReferencableHistorySnapshot`](#historysnapshot) will be created.
+
+The difference between [`ReferencableHistorySnapshot`](#historysnapshot) and [`HistorySnapshot`](#historysnapshot) is that [`ReferencableHistorySnapshot`](#historysnapshot) has an additional `id`-property which will be managed by the [`VuexHistory`](#vuexhistory)-instance.
 
 ### `VuexHistory`
 
@@ -229,30 +239,42 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 | length       | number | returns the amount of snapshots the history has                                    |
 | index        | number | returns the index the history is currently at                                      |
 | initialState | any    | returns the initial state of the history; the result is automatically deserialized |
+| idCount      | number | returns the number the id counter is currenly at                                   |
 
-<br/>
+#### Find Options
+
+`FindSnapshotOptions`: accepts `{ id: number }` or `{ index: number }` or `{ instance: ReferencableHistorySnapshot }`
+
+`GetSnapshotOptions`: accepts `{ id: number }` or `{ index: number }`
+
+`GetSnapshotIndexOptions`: accepts `{ id: number }` or `{ instance: ReferencableHistorySnapshot }`
+
+> **INFO**:
+>
+> If more than one option is provided, the function will return `undefined` (`getSnapshot`) or `-1` (`getSnapshotIndex`). \
+> Examples: \
+> `getSnapshot({ id: 1, index: 0 })` will return `undefined` \
+> `getSnapshotIndex({ id: 1, instance: someInstance })` will return `-1`
 
 #### Methods
 
-| signature                                                                      | description                                                                                                                                                  |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
-| `getSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined`    | returns a copy of an snapshot of the history                                                                                                                 |
-| `removeSnapshot(index: number): HistorySnapshot`<code>&#124;</code>`undefined` | deletes an snapshot of the history                                                                                                                           |
-| `updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory`        | updates an snapshot of the history                                                                                                                           |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
-| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                          | adds an snapshot to the history                                                                                                                              |
-| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                  |
-| `canUndo(): boolean`                                                           | returns if undo is possible                                                                                                                                  |
-| `undo(): VuexHistory`                                                          | undoes the last snapshot                                                                                                                                     |
-| `canRedo(): boolean`                                                           | returns if redo is possible                                                                                                                                  |
-| `redo(): VuexHistory`                                                          | redoes the next possible snapshot                                                                                                                            |
-| `hasChanges(): boolean`                                                        | returns if there are any snapshots in the history                                                                                                            |
-| `overrideInitialState(state): VuexHistory`                                     | overrides the initial state                                                                                                                                  |
-| `clearHistory(overrideInitialState = true): void`                              | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                           |
-| `reset(): void`                                                                | clears the history and replaces the current state with the initial                                                                                           |
-| `serialize(state: any): any`                                                   | gives access to the [`SerializeFunction`](#serializefunction); should be used when manually adding an snapshot; you can read more [here](#serializefunction) |
-| `deserialize(data: any): void`                                                 | gives access to the [`DeserializeFunction`](#deserializefunction); you can read more [here](#deserializefunction)                                            |
+| signature                                                                                                 | description                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                                                     | adds a snapshot to the history                                                                                                                              |
+| `getSnapshot(options: GetSnapshotOptions): ReferencableHistorySnapshot`<code>&#124;</code>`undefined`     | returns a copy of a snapshot of the history                                                                                                                 |
+| `getSnapshotIndex(options: GetSnapshotIndexOptions): number`                                              | returns the index of a snapshot of the history                                                                                                              |
+| `removeSnapshot(options: FindSnapshotOptions): ReferencableHistorySnapshot`<code>&#124;</code>`undefined` | deletes a snapshot of the history                                                                                                                           |
+| `updateSnapshot(options: FindSnapshotOptions, snapshot: ReferencableHistorySnapshot): VuexHistory`        | updates a snapshot of the history                                                                                                                           |
+| `canUndo(): boolean`                                                                                      | returns if undo is possible                                                                                                                                 |
+| `undo(): VuexHistory`                                                                                     | undoes the last snapshot                                                                                                                                    |
+| `canRedo(): boolean`                                                                                      | returns if redo is possible                                                                                                                                 |
+| `redo(): VuexHistory`                                                                                     | redoes the next possible snapshot                                                                                                                           |
+| `hasChanges(): boolean`                                                                                   | returns if there are any snapshots in the history                                                                                                           |
+| `overrideInitialState(state): VuexHistory`                                                                | overrides the initial state                                                                                                                                 |
+| `clearHistory(overrideInitialState = true): void`                                                         | clears the history and by default overrides the initial state, this flag can be set to `false` to avoid overriding                                          |
+| `reset(): void`                                                                                           | clears the history and replaces the current state with the initial                                                                                          |
+| `serialize(state: any): any`                                                                              | gives access to the [`SerializeFunction`](#serializefunction); should be used when manually adding a snapshot; you can read more [here](#serializefunction) |
+| `deserialize(data: any): void`                                                                            | gives access to the [`DeserializeFunction`](#deserializefunction); you can read more [here](#deserializefunction)                                           |
 
 ### Functions
 
@@ -287,7 +309,7 @@ The returned strings should be those or a subset of those, that are in the optio
 
 #### `SerializeFunction`
 
-The [`SerializeFunction`](#serializefunction) is called when an snapshot is about to be saved. It determines which data will be saved in the snapshot and can be used to reduce the stored data drastically, as well as making it possible to just replace parts of the state. \
+The [`SerializeFunction`](#serializefunction) is called when a snapshot is about to be saved. It determines which data will be saved in the snapshot and can be used to reduce the stored data drastically, as well as making it possible to just replace parts of the state. \
 It has the following signature:
 
 ```typescript
@@ -296,7 +318,7 @@ It has the following signature:
 
 #### `DeserializeFunction`
 
-The [`DeserializeFunction`](#deserializefunction) is called when the data of an snapshot is taken to update the current state and it is supposed to rebuild the state of the snapshot by merging the current state with the data. \
+The [`DeserializeFunction`](#deserializefunction) is called when the data of a snapshot is taken to update the current state and it is supposed to rebuild the state of the snapshot by merging the current state with the data. \
 This way not the whole state will be brought back to it's state of the snapshot. \
 It has the following signature:
 
@@ -306,4 +328,4 @@ It has the following signature:
 
 ## Docs
 
-You can take a look at the docs [here](https://veake.github.io/vuex-multi-history/) for in-depth type-declarations.
+You can take a look at the docs [here](https://veake.github.io/vuex-multi-history/) for in-depth and up-to-date type-declarations.
