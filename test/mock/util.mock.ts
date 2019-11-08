@@ -5,10 +5,12 @@ import { VuexMultiHistory } from '../../src';
 export interface MockupSingleState {
   sum: number;
 }
+
 export interface MockupMultiEntity {
   id: string;
   value: string;
 }
+
 export interface MockupMultiState {
   editor: {
     entity: MockupMultiEntity | null;
@@ -17,6 +19,7 @@ export interface MockupMultiState {
     entities: MockupMultiEntity[];
   };
 }
+
 export type MockupMultiHistoryKeys = 'editor' | 'entities';
 export const INITIAL_SINGLE_STATE_SUM = 0;
 export const INITIAL_SINGLE_STATE: MockupSingleState = { sum: INITIAL_SINGLE_STATE_SUM };
@@ -41,7 +44,7 @@ export function initMockupSingleStore(
       },
       sub(state, value) {
         state.sum -= value;
-      }
+      },
     },
     plugins: [plugin.plugin],
   });

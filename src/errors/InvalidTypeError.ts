@@ -1,6 +1,8 @@
-export class InvalidTypeError extends Error {
+import { BaseError } from './BaseError';
+
+export class InvalidTypeError extends BaseError {
   constructor(key: string, requiredType: string) {
-    super();
+    super(InvalidTypeError);
     let article = 'a';
     switch (requiredType.charAt(0)) {
       case 'a':

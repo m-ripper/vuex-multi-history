@@ -217,7 +217,8 @@ export class VuexHistory implements HistoryInterface {
       return this.snapshots.find(this.findSnapshotClosure.bind(null, options));
     } catch (e) {
       if (this.plugin.options.debug) {
-        console.error(e);
+        const errorText = e.stack || e.message;
+        console.error(errorText);
       }
       return undefined;
     }
@@ -229,7 +230,8 @@ export class VuexHistory implements HistoryInterface {
       return this.snapshots.findIndex(this.findSnapshotClosure.bind(null, options));
     } catch (e) {
       if (this.plugin.options.debug) {
-        console.error(e);
+        const errorText = e.stack || e.message;
+        console.error(errorText);
       }
       return -1;
     }

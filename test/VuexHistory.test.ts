@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 
-import { DEFAULT_KEY, HistorySnapshot, InvalidOptionsError, VuexMultiHistory } from '../src';
+import { DEFAULT_KEY, VuexMultiHistory } from '../src';
 import { VuexHistory } from '../src/VuexHistory';
 
 import { initMockupSingleStore, INITIAL_SINGLE_STATE_SUM, MockupSingleState } from './mock/util.mock';
-import Mock = jest.Mock;
 
 Vue.use(Vuex);
 
@@ -37,6 +36,7 @@ describe('VuexHistory', () => {
 
     test('print validation errors when debug enabled', () => {
       const BACKUP_ERROR = console.error;
+      // tslint:disable-next-line
       console.error = () => {};
       const spy = jest.spyOn(console, 'error');
       plugin.options.debug = true;

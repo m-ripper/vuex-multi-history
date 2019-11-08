@@ -10,6 +10,7 @@ export * from './Interfaces';
 export * from './HistorySnapshot';
 export * from './VuexHistory';
 export * from './VuexMultiHistory';
+export * from './errors/BaseError';
 export * from './errors/InvalidTypeError';
 export * from './errors/InvalidValueError';
 export * from './errors/InvalidOptionsError';
