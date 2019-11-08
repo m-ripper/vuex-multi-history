@@ -154,11 +154,17 @@ export class VuexHistory implements HistoryInterface {
   }
 
   canRedo(amount = 1): boolean {
+    if (amount <= 0) {
+      return false;
+    }
     const nextIndex = this.currentIndex + amount;
     return nextIndex >= 0 && nextIndex < this.snapshots.length;
   }
 
   canUndo(amount = 1): boolean {
+    if (amount <= 0) {
+      return false;
+    }
     const prevIndex = this.currentIndex - amount;
     return prevIndex >= -1 && prevIndex < this.snapshots.length;
   }
@@ -201,6 +207,9 @@ export class VuexHistory implements HistoryInterface {
   }
 
   redo(amount = 1): VuexHistory {
+    if (amount <= 0) {
+      return this;
+    }
     const nextIndex = this.currentIndex + amount;
     if (this.canRedo(amount)) {
       const nextStateData = this.snapshots[nextIndex].stateData;
@@ -216,6 +225,9 @@ export class VuexHistory implements HistoryInterface {
   }
 
   undo(amount = 1): VuexHistory {
+    if (amount <= 0) {
+      return this;
+    }
     const prevIndex = this.currentIndex - amount;
     if (this.canUndo(amount)) {
       const prevStateData = prevIndex < 0 ? this.initialStateData : this.snapshots[prevIndex].stateData;

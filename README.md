@@ -8,7 +8,6 @@ Multiple histories for Vuex
 
 ## Requirements
 
-- Node.js v8 or higher
 - npm or yarn
 
 ## Getting Started

@@ -282,24 +282,133 @@ describe('VuexHistory', () => {
     });
 
     test('resulting index of options is the same as the current index > nothing happens', () => {
-      history.goto({id: 3});
+      history.goto({ id: 3 });
       expect(history.index).toBe(2);
     });
   });
 
-  test('canUndo', () => {
-    expect(history.canUndo()).toBeFalsy();
-    addTestSnapshot(history, 2);
-    expect(history.canUndo()).toBeTruthy();
-    history.undo();
-    expect(history.canUndo()).toBeFalsy();
+  describe('canUndo', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+    });
+
+    test('no argument passed', () => {
+      expect(history.canUndo()).toBeFalsy();
+      addTestSnapshot(history, 2);
+      expect(history.canUndo()).toBeTruthy();
+    });
+
+    test(`'amount' passed but invalid`, () => {
+      addTestSnapshot(history, 2);
+      expect(history.canUndo(0)).toBeFalsy();
+    });
+
+    test('cannot undo after undo', () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      expect(history.canUndo()).toBeFalsy();
+    });
+
+    test(`'amount' passed and valid`, () => {
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+      expect(history.canUndo(2)).toBeTruthy();
+    });
   });
 
-  test('canRedo', () => {
-    expect(history.canRedo()).toBeFalsy();
-    addTestSnapshot(history, 2);
-    history.undo();
-    expect(history.canRedo()).toBeTruthy();
+  describe('canRedo', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+    });
+
+    test('no argument passed', () => {
+      expect(history.canRedo()).toBeFalsy();
+      addTestSnapshot(history, 2);
+      history.undo();
+      expect(history.canRedo()).toBeTruthy();
+    });
+
+    test(`'amount' passed but invalid`, () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      expect(history.canRedo(0)).toBeFalsy();
+    });
+
+    test('cannot redo after redo', () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      history.redo();
+      expect(history.canUndo()).toBeTruthy();
+      expect(history.canRedo()).toBeFalsy();
+    });
+
+    test(`'amount' passed and valid`, () => {
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+      history.undo(2);
+      expect(history.canRedo(2)).toBeTruthy();
+    });
+  });
+
+  describe('undo', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+    });
+
+    test('no argument passed', () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      expect(history.index).toBe(-1);
+    });
+
+    test(`'amount' passed but invalid`, () => {
+      addTestSnapshot(history, 2);
+      history.undo(0);
+      expect(history.index).toBe(0);
+    });
+
+    test(`'amount' passed and valid`, () => {
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+      history.undo(2);
+      expect(history.index).toBe(-1);
+    });
+  });
+
+  describe('redo', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+    });
+
+    test('no argument passed', () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      history.redo();
+      expect(history.index).toBe(0);
+    });
+
+    test(`'amount' passed but invalid`, () => {
+      addTestSnapshot(history, 2);
+      history.undo();
+      history.redo(0);
+      expect(history.index).toBe(-1);
+    });
+
+    test(`'amount' passed and valid`, () => {
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+      history.undo(2);
+      history.redo(2);
+      expect(history.index).toBe(1);
+    });
   });
 
   test('hasChanges', () => {
@@ -319,27 +428,11 @@ describe('VuexHistory', () => {
     expect(store.state.sum).toBe(10);
   });
 
-  test('redo', () => {
-    addTestSnapshot(history, 2);
-    history.undo().redo();
-
-    expect(store.state.sum).toBe(2);
-  });
-
   test('reset', () => {
     addTestSnapshot(history, 2);
     history.reset();
 
     expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
-    expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
-  });
-
-  test('undo', () => {
-    history.addSnapshot({
-      mutation: 'add',
-      stateData: { sum: 2 },
-    });
-    history.undo();
     expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
   });
 });
