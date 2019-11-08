@@ -76,6 +76,70 @@ describe('VuexHistory', () => {
       history = new VuexHistory(plugin, 'test').init(store);
     });
 
+    test('getSnapshot - index in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    });
+
+    test('getSnapshot - index not in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      expect(history.getSnapshot(1)).toBeUndefined();
+    });
+
+    test('removeSnapshot - index in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 4 },
+      });
+      const removed = history.removeSnapshot(1);
+      expect(removed!.stateData.sum).toBe(4);
+      expect(history.length).toBe(1);
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    });
+
+    test('removeSnapshot - index not in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      const removed = history.removeSnapshot(1);
+      expect(removed).toBeUndefined();
+    });
+
+    test('updateSnapshot - index in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      history.updateSnapshot(0, {
+        mutation: 'add',
+        stateData: { sum: 1 },
+      });
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(1);
+    });
+
+    test('updateSnapshot - index not in range', () => {
+      history.addSnapshot({
+        mutation: 'add',
+        stateData: { sum: 2 },
+      });
+      history.updateSnapshot(1, {
+        mutation: 'add',
+        stateData: { sum: 1 },
+      });
+      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    });
+
     test('canUndo', () => {
       expect(history.canUndo()).toBeFalsy();
       history.addSnapshot({
