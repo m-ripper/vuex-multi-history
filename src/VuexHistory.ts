@@ -1,41 +1,80 @@
 import { Store } from 'vuex';
 
+import { InvalidOptionsError } from './errors/InvalidOptionsError';
+import { InvalidTypeError } from './errors/InvalidTypeError';
+import { InvalidValueError } from './errors/InvalidValueError';
+import {
+  HistorySnapshot,
+  HistorySnapshotId,
+  HISTORY_SNAPSHOT_ID_TYPE,
+  ReferencableHistorySnapshot,
+} from './HistorySnapshot';
 import { VuexMultiHistory } from './VuexMultiHistory';
 
-export interface HistorySnapshot {
-  mutation: string;
-  stateData: any;
+export interface BaseFindSnapshotOptions {}
+
+export interface FindSnapshotByIdOptions extends BaseFindSnapshotOptions {
+  id: HistorySnapshotId;
 }
+
+export interface FindSnapshotByIndexOptions extends BaseFindSnapshotOptions {
+  index: number;
+}
+
+export interface FindSnapshotByInstanceOptions extends BaseFindSnapshotOptions {
+  instance: ReferencableHistorySnapshot;
+}
+
+export type FindSnapshotOptions = FindSnapshotByIdOptions | FindSnapshotByIndexOptions | FindSnapshotByInstanceOptions;
+
+export type GetSnapshotOptions = Exclude<FindSnapshotOptions, FindSnapshotByInstanceOptions>;
+export type GetSnapshotIndexOptions = Exclude<FindSnapshotOptions, FindSnapshotByIndexOptions>;
 
 export interface HistoryInterface {
   readonly length: number;
   readonly index: number;
   readonly initialState: any;
+  readonly idCount: number;
 
   addSnapshot(snapshot: HistorySnapshot): HistoryInterface;
-  getSnapshot(index: number): HistorySnapshot | undefined;
-  removeSnapshot(index: number): HistorySnapshot | undefined;
-  updateSnapshot(index: number, snapshot: HistorySnapshot): HistoryInterface;
+
+  getSnapshot(options: GetSnapshotOptions): ReferencableHistorySnapshot | undefined;
+
+  getSnapshotIndex(options: GetSnapshotIndexOptions): number;
+
+  removeSnapshot(options: FindSnapshotOptions): HistorySnapshot | undefined;
+
+  updateSnapshot(id: FindSnapshotOptions, snapshot: HistorySnapshot): HistoryInterface;
+
   hasChanges(): boolean;
+
   canUndo(): boolean;
+
   canRedo(): boolean;
+
   undo(): HistoryInterface;
+
   redo(): HistoryInterface;
+
   clearHistory(overrideInitialState?: boolean): void;
+
   reset(): void;
+
   overrideInitialState(state: any): HistoryInterface;
 }
 
 export class VuexHistory implements HistoryInterface {
   private currentIndex: number;
-  private readonly snapshots: HistorySnapshot[];
+  private readonly snapshots: ReferencableHistorySnapshot[];
   private initialStateData: any;
   private hasInitialized: boolean;
+  private idCounter: number;
 
   private store!: Store<any>;
 
   constructor(private readonly plugin: VuexMultiHistory, private readonly historyKey: string) {
     this.currentIndex = -1;
+    this.idCounter = 0;
     this.snapshots = [];
     this.initialStateData = null;
     this.hasInitialized = false;
@@ -53,6 +92,10 @@ export class VuexHistory implements HistoryInterface {
     return this.deserialize(this.initialStateData);
   }
 
+  get idCount(): number {
+    return this.idCounter;
+  }
+
   init(store: Store<any>): VuexHistory {
     if (!this.hasInitialized) {
       this.store = store;
@@ -63,6 +106,10 @@ export class VuexHistory implements HistoryInterface {
   }
 
   addSnapshot(snapshot: HistorySnapshot): VuexHistory {
+    this.idCounter++;
+
+    const referencableSnapshot = new ReferencableHistorySnapshot(this.idCounter, snapshot);
+
     // needed because everything after the currentIndex will be removed if something was undone and then added
     const isLatestSnapshot = this.currentIndex + 1 < this.snapshots.length;
 
@@ -73,7 +120,7 @@ export class VuexHistory implements HistoryInterface {
       this.currentIndex--;
     }
 
-    this.snapshots.splice(this.currentIndex, 1, snapshot);
+    this.snapshots.splice(this.currentIndex, 1, referencableSnapshot);
 
     if (isLatestSnapshot) {
       this.snapshots.splice(this.currentIndex + 1);
@@ -81,22 +128,26 @@ export class VuexHistory implements HistoryInterface {
     return this;
   }
 
-  removeSnapshot(index: number): HistorySnapshot | undefined {
-    return this.length > index ? this.snapshots.splice(index, 1)[0] : undefined;
+  getSnapshot(options: GetSnapshotOptions): ReferencableHistorySnapshot | undefined {
+    return this.findSnapshot(options);
   }
 
-  getSnapshot(index: number): HistorySnapshot | undefined {
-    if (index >= this.length) {
-      return undefined;
-    }
-    return { ...this.snapshots[index] };
+  getSnapshotIndex(options: GetSnapshotIndexOptions): number {
+    return this.findSnapshotIndex(options);
   }
 
-  updateSnapshot(index: number, snapshot: HistorySnapshot): VuexHistory {
-    if (index >= this.length) {
+  removeSnapshot(options: FindSnapshotOptions): HistorySnapshot | undefined {
+    const index = this.findSnapshotIndex(options);
+    return index >= 0 && this.length > index ? this.snapshots.splice(index, 1)[0] : undefined;
+  }
+
+  updateSnapshot(options: FindSnapshotOptions, snapshot: HistorySnapshot): VuexHistory {
+    const index = this.findSnapshotIndex(options);
+    if (index < 0 || index >= this.length) {
       return this;
     }
-    this.snapshots.splice(index, 1, snapshot);
+    const referencableSnapshot = new ReferencableHistorySnapshot(this.snapshots[index].id, snapshot);
+    this.snapshots.splice(index, 1, referencableSnapshot);
     return this;
   }
 
@@ -156,8 +207,103 @@ export class VuexHistory implements HistoryInterface {
     return this.plugin.serialize(this.historyKey, state);
   }
 
-  deserialize(data: any): any {
-    return this.plugin.deserialize(this.historyKey, data);
+  deserialize(stateData: any): any {
+    return this.plugin.deserialize(this.historyKey, stateData);
+  }
+
+  private findSnapshot(options: FindSnapshotOptions): ReferencableHistorySnapshot | undefined {
+    try {
+      this.validateSnapshotOptions(options);
+      return this.snapshots.find(this.findSnapshotClosure.bind(null, options));
+    } catch (e) {
+      if (this.plugin.options.debug) {
+        console.error(e);
+      }
+      return undefined;
+    }
+  }
+
+  private findSnapshotIndex(options: FindSnapshotOptions): number {
+    try {
+      this.validateSnapshotOptions(options);
+      return this.snapshots.findIndex(this.findSnapshotClosure.bind(null, options));
+    } catch (e) {
+      if (this.plugin.options.debug) {
+        console.error(e);
+      }
+      return -1;
+    }
+  }
+
+  private findSnapshotClosure(
+    options: FindSnapshotOptions,
+    snapshot: ReferencableHistorySnapshot,
+    snapshotIndex: number,
+  ): boolean {
+    const id = (options as FindSnapshotByIdOptions).id;
+    const index = (options as FindSnapshotByIndexOptions).index;
+    const instance = (options as FindSnapshotByInstanceOptions).instance;
+
+    if (!isNaN(id)) {
+      return snapshot.id === id;
+    }
+    if (!isNaN(index)) {
+      return snapshotIndex === index;
+    }
+    if (instance) {
+      return instance.id === snapshot.id;
+    }
+    return false;
+  }
+
+  private validateSnapshotOptions(options: FindSnapshotOptions) {
+    const errors: Error[] = [];
+    let hasOptionProvided = false;
+    let attemptedToProvideMoreOptions = false;
+    const id = (options as FindSnapshotByIdOptions).id;
+    const index = (options as FindSnapshotByIndexOptions).index;
+    const instance = (options as FindSnapshotByInstanceOptions).instance;
+
+    if (typeof id !== 'undefined') {
+      if (typeof id !== HISTORY_SNAPSHOT_ID_TYPE) {
+        errors.push(new InvalidTypeError('id', HISTORY_SNAPSHOT_ID_TYPE));
+      } else if (id <= 0) {
+        errors.push(new InvalidValueError('id', 'has to be greater than zero'));
+      }
+      hasOptionProvided = true;
+    }
+    if (typeof index !== 'undefined') {
+      if (!hasOptionProvided) {
+        if (typeof index !== 'number') {
+          errors.push(new InvalidTypeError('index', 'number'));
+        } else if (index < 0) {
+          errors.push(new InvalidValueError('index', 'has to be greater than or equal to zero'));
+        } else if (index >= this.length) {
+          errors.push(new InvalidValueError('index', 'has to be less than the length of the history'));
+        }
+        hasOptionProvided = true;
+      } else {
+        attemptedToProvideMoreOptions = true;
+      }
+    }
+    if (typeof instance !== 'undefined') {
+      if (!hasOptionProvided) {
+        if (!(instance instanceof ReferencableHistorySnapshot)) {
+          throw new InvalidValueError('instance', `has to be an instance of 'ReferencableHistorySnapshot'`);
+        }
+      } else {
+        attemptedToProvideMoreOptions = true;
+      }
+    }
+
+    if (attemptedToProvideMoreOptions) {
+      errors.push(new Error(`Either 'id', 'index' or 'instance' has to be set, but only one of them.`));
+    }
+
+    if (errors.length > 0) {
+      const introText = ``;
+      throw new InvalidOptionsError(introText, ...errors);
+    }
   }
 
   private replaceState(stateData: any) {

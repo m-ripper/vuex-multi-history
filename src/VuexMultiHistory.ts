@@ -1,17 +1,19 @@
 import Vue from 'vue';
 import { MutationPayload, Store } from 'vuex';
 
-import { InvalidOptionsError } from './errors/InvalidOptionsError';
-import { InvalidTypeError } from './errors/InvalidTypeError';
 import {
   AllocateFunction,
   DefaultKey,
   DeserializeFunction,
   FilterFunction,
+  HistorySnapshot,
+  InvalidOptionsError,
+  InvalidTypeError,
+  InvalidValueError,
   SerializeFunction,
   VuexPlugin,
-} from './Interfaces';
-import { HistorySnapshot, VuexHistory } from './VuexHistory';
+} from './';
+import { VuexHistory } from './VuexHistory';
 
 // tslint:disable-next-line
 const DEFAULT_FILTER: FilterFunction = function(mutation: MutationPayload) {
@@ -31,8 +33,29 @@ const DEFAULT_DESERIALIZER: DeserializeFunction = function(historyKey: string, d
 };
 export const DEFAULT_KEY: DefaultKey = 'default';
 
-const DEFAULT_OPTIONS: () => Required<VuexMultiHistoryOptions> = () => {
+type HistoryMap = Record<string, VuexHistory>;
+
+interface Data {
+  historyMap: HistoryMap;
+}
+
+export interface VuexMultiHistoryOptions<K extends string = string> {
+  debug?: boolean;
+  size?: number;
+  filter?: FilterFunction;
+  histories?: {
+    allocate: AllocateFunction<K>;
+    keys: K[];
+  };
+  transform?: {
+    serialize: SerializeFunction;
+    deserialize: DeserializeFunction;
+  };
+}
+
+const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
   return {
+    debug: false,
     size: 50,
     filter: DEFAULT_FILTER,
     histories: {
@@ -46,32 +69,13 @@ const DEFAULT_OPTIONS: () => Required<VuexMultiHistoryOptions> = () => {
   };
 };
 
-type HistoryMap = Record<string, VuexHistory>;
-
-interface Data {
-  historyMap: HistoryMap;
-}
-
-export interface VuexMultiHistoryOptions<K extends string = string> {
-  size?: number;
-  filter?: FilterFunction;
-  histories?: {
-    allocate: AllocateFunction<K>;
-    keys: K[];
-  };
-  transform?: {
-    serialize: SerializeFunction;
-    deserialize: DeserializeFunction;
-  };
-}
-
 export class VuexMultiHistory<K extends string = string> {
   readonly plugin: VuexPlugin;
   readonly data: Data;
   readonly options: Required<VuexMultiHistoryOptions<K>>;
 
   constructor(options?: Partial<VuexMultiHistoryOptions<K>>) {
-    this.options = Object.assign(DEFAULT_OPTIONS(), options);
+    this.options = Object.assign(generateDefaultOptions(), options);
 
     this.validateOptions();
 
@@ -131,8 +135,8 @@ export class VuexMultiHistory<K extends string = string> {
     return this.removeObservers(this.options.transform.serialize.call(this, historyKey, state));
   }
 
-  deserialize(historyKey: string, data: any): any {
-    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, data));
+  deserialize(historyKey: string, stateData: any): any {
+    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, stateData));
   }
 
   private validateOptions() {
@@ -141,6 +145,8 @@ export class VuexMultiHistory<K extends string = string> {
     const size = this.options.size;
     if (typeof size !== 'number') {
       errors.push(new InvalidTypeError('size', 'number'));
+    } else if (size <= 0) {
+      errors.push(new InvalidValueError('size', 'has to be greater than zero'));
     }
 
     const filter = this.options.filter;
@@ -156,7 +162,7 @@ export class VuexMultiHistory<K extends string = string> {
     if (typeof keys !== 'object' || !Array.isArray(keys)) {
       errors.push(new InvalidTypeError('keys', 'array'));
     } else if (keys.length === 0) {
-      errors.push(new Error(`'${keys}' cannot be empty!`));
+      errors.push(new InvalidValueError('keys', 'cannot be empty'));
     }
 
     const { serialize, deserialize } = this.options.transform;
@@ -169,7 +175,8 @@ export class VuexMultiHistory<K extends string = string> {
     }
 
     if (errors.length > 0) {
-      throw new InvalidOptionsError(...errors);
+      const introLine = `The following errors occurred when validating the options of 'VuexMultiHistory':`;
+      throw new InvalidOptionsError(introLine, ...errors);
     }
   }
 

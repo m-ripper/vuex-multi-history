@@ -11,7 +11,7 @@ import {
   MockupMultiHistoryKeys,
   MockupMultiState,
   MockupSingleState,
-} from './mock/util';
+} from './mock/util.mock';
 
 Vue.use(Vuex);
 
@@ -158,6 +158,16 @@ describe('VuexHistoryPlugin', () => {
         }).toThrowError();
       });
 
+      test('`size` less than or equal to zero', () => {
+        const options: any = {
+          size: 0,
+        };
+
+        expect(() => {
+          return new VuexMultiHistory(options);
+        }).toThrowError();
+      });
+
       test('`filter` wrong type or undefined', () => {
         const options: any = {
           filter: {},
@@ -229,8 +239,8 @@ describe('VuexHistoryPlugin', () => {
             serialize: {},
             deserialize: (historyKey: string, stateData: any) => {
               return stateData;
-            }
-          }
+            },
+          },
         };
         expect(() => {
           return new VuexMultiHistory(options);
@@ -242,8 +252,8 @@ describe('VuexHistoryPlugin', () => {
             serialize: (historyKey: string, state: any) => {
               return state;
             },
-            deserialize: {}
-          }
+            deserialize: {},
+          },
         };
         expect(() => {
           return new VuexMultiHistory(options);

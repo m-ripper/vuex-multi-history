@@ -7,8 +7,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "test": "jest",
-    "test:collect": "jest --coverage",
+    "test": "jest --no-cache",
+    "test:collect": "jest --coverage --no-cache",
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix",
     "prettier:check": "prettier --check src/**/*.{ts,vue,json}",

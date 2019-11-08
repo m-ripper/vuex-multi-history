@@ -1,12 +1,20 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 
-import { DEFAULT_KEY, VuexMultiHistory } from '../src';
+import { DEFAULT_KEY, HistorySnapshot, InvalidOptionsError, VuexMultiHistory } from '../src';
 import { VuexHistory } from '../src/VuexHistory';
 
-import { initMockupSingleStore, INITIAL_SINGLE_STATE_SUM, MockupSingleState } from './mock/util';
+import { initMockupSingleStore, INITIAL_SINGLE_STATE_SUM, MockupSingleState } from './mock/util.mock';
+import Mock = jest.Mock;
 
 Vue.use(Vuex);
+
+function addTestSnapshot(history: VuexHistory, sum: number) {
+  history.addSnapshot({
+    mutation: 'test',
+    stateData: { sum },
+  });
+}
 
 describe('VuexHistory', () => {
   let plugin!: VuexMultiHistory;
@@ -16,7 +24,88 @@ describe('VuexHistory', () => {
   beforeEach(() => {
     plugin = new VuexMultiHistory();
     store = initMockupSingleStore(plugin);
-    history = new VuexHistory(plugin, 'test');
+    history = new VuexHistory(plugin, 'test').init(store);
+  });
+
+  describe('validateFindOptions', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
+    });
+
+    test('print validation errors when debug enabled', () => {
+      const BACKUP_ERROR = console.error;
+      console.error = () => {};
+      const spy = jest.spyOn(console, 'error');
+      plugin.options.debug = true;
+      history.getSnapshot({ id: 0 });
+      history.getSnapshotIndex({ id: 0 });
+      expect(spy).toHaveBeenCalledTimes(2);
+      console.error = BACKUP_ERROR;
+    });
+
+    describe(`'id' provided`, () => {
+      beforeEach(() => {
+        plugin = new VuexMultiHistory();
+        store = initMockupSingleStore(plugin);
+        history = new VuexHistory(plugin, 'test').init(store);
+        addTestSnapshot(history, 2);
+      });
+
+      test('wrong type or undefined', () => {
+        expect(history.getSnapshot({ id: {} } as any)).toBeUndefined();
+      });
+
+      test('less than or equal to zero', () => {
+        expect(history.getSnapshot({ id: 0 })).toBeUndefined();
+      });
+    });
+
+    describe(`'index' provided`, () => {
+      beforeEach(() => {
+        plugin = new VuexMultiHistory();
+        store = initMockupSingleStore(plugin);
+        history = new VuexHistory(plugin, 'test').init(store);
+        addTestSnapshot(history, 2);
+      });
+
+      test('wrong type or undefined', () => {
+        expect(history.getSnapshot({ index: {} } as any)).toBeUndefined();
+      });
+
+      test('less than or equal to zero', () => {
+        expect(history.getSnapshot({ index: -1 })).toBeUndefined();
+      });
+
+      test(`has 'id' set already`, () => {
+        expect(history.getSnapshot({ id: 1, index: 0 })).toBeUndefined();
+      });
+    });
+
+    describe(`'instance' provided`, () => {
+      beforeEach(() => {
+        plugin = new VuexMultiHistory();
+        store = initMockupSingleStore(plugin);
+        history = new VuexHistory(plugin, 'test').init(store);
+        addTestSnapshot(history, 2);
+        addTestSnapshot(history, 4);
+      });
+
+      test('wrong type or undefined', () => {
+        expect(history.getSnapshot({ instance: {} } as any)).toBeUndefined();
+      });
+
+      test(`has set 'id' or 'index' already`, () => {
+        const snapshot = history.getSnapshot({ index: 0 });
+        expect(history.getSnapshot({ id: 1, index: 0, instance: snapshot } as any)).toBeUndefined();
+      });
+    });
+
+    test('none of the above provided', () => {
+      expect(history.getSnapshot({} as any)).toBeUndefined();
+    });
   });
 
   describe('addSnapshot', () => {
@@ -26,210 +115,205 @@ describe('VuexHistory', () => {
       history = new VuexHistory(plugin, 'test').init(store);
     });
 
+    test('increment idCount', () => {
+      addTestSnapshot(history, 2);
+      expect(history.idCount).toBe(1);
+    });
+
     test('no override, because max-size is not reached', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
+      plugin.options.size = 1;
+
+      addTestSnapshot(history, 2);
+
       expect(history.length).toBe(1);
       expect(history.index).toBe(0);
     });
 
     test('override, because max-size is reached', () => {
       plugin.options.size = 1;
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 4 },
-      });
+
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
+
       expect(history.length).toBe(1);
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(4);
+      expect(history.getSnapshot({ index: 0 })!.stateData.sum).toBe(4);
     });
 
-    test('latest snapshots will be removed when adding after undoing', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 4 },
-      });
+    test('latest snapshots will be removed when not sync with latest snapshot', () => {
+      addTestSnapshot(history, 2);
+      addTestSnapshot(history, 4);
       history.undo();
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 8 },
-      });
+      addTestSnapshot(history, 8);
+
       expect(history.length).toBe(2);
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
-      expect(history.getSnapshot(1)!.stateData.sum).toBe(8);
+      expect(history.getSnapshot({ index: 0 })!.stateData.sum).toBe(2);
+      expect(history.getSnapshot({ index: 1 })!.stateData.sum).toBe(8);
     });
   });
 
-  describe('methods', () => {
+  describe('getSnapshot', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
       history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
     });
 
-    test('getSnapshot - index in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    test(`valid 'id'`, () => {
+      expect(history.getSnapshot({ id: 1 })).toBeDefined();
     });
 
-    test('getSnapshot - index not in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      expect(history.getSnapshot(1)).toBeUndefined();
+    test(`invalid 'id'`, () => {
+      expect(history.getSnapshot({ id: 0 })).toBeUndefined();
     });
 
-    test('removeSnapshot - index in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 4 },
-      });
-      const removed = history.removeSnapshot(1);
-      expect(removed!.stateData.sum).toBe(4);
-      expect(history.length).toBe(1);
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    test(`valid 'index'`, () => {
+      expect(history.getSnapshot({ index: 0 })).toBeDefined();
     });
 
-    test('removeSnapshot - index not in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      const removed = history.removeSnapshot(1);
+    test(`invalid 'index'`, () => {
+      expect(history.getSnapshot({ index: 1 })).toBeUndefined();
+    });
+  });
+
+  describe('getSnapshotIndex', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
+    });
+
+    test(`valid 'id'`, () => {
+      expect(history.getSnapshotIndex({ id: 1 })).toBe(0);
+    });
+
+    test(`invalid 'id'`, () => {
+      expect(history.getSnapshotIndex({ id: 0 })).toBe(-1);
+    });
+
+    test(`valid 'instance'`, () => {
+      const snapshot = history.getSnapshot({ index: 0 })!;
+      expect(history.getSnapshotIndex({ instance: snapshot })).toBe(0);
+    });
+
+    test(`invalid 'instance'`, () => {
+      expect(history.getSnapshotIndex({ instance: { mutation: 'test', stateData: {} } as any })).toBe(-1);
+    });
+  });
+
+  describe('removeSnapshot', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
+    });
+
+    test('success', () => {
+      const removed = history.removeSnapshot({ index: 0 })!;
+
+      expect(removed.stateData.sum).toBe(2);
+    });
+
+    test('failure', () => {
+      const removed = history.removeSnapshot({ index: 1 });
+
       expect(removed).toBeUndefined();
     });
+  });
 
-    test('updateSnapshot - index in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.updateSnapshot(0, {
-        mutation: 'add',
-        stateData: { sum: 1 },
-      });
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(1);
+  describe('updateSnapshot', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
+      addTestSnapshot(history, 2);
     });
 
-    test('updateSnapshot - index not in range', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.updateSnapshot(1, {
-        mutation: 'add',
-        stateData: { sum: 1 },
-      });
-      expect(history.getSnapshot(0)!.stateData.sum).toBe(2);
+    test('success', () => {
+      history.updateSnapshot({ index: 0 }, { mutation: 'test', stateData: { sum: 4 } });
+      expect(history.getSnapshot({ index: 0 })!.stateData.sum).toBe(4);
     });
 
-    test('canUndo', () => {
-      expect(history.canUndo()).toBeFalsy();
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      expect(history.canUndo()).toBeTruthy();
-      history.undo();
-      expect(history.canUndo()).toBeFalsy();
+    test('failure', () => {
+      history.updateSnapshot({ index: 1 }, { mutation: 'test', stateData: { sum: 4 } });
+      expect(history.getSnapshot({ index: 0 })!.stateData.sum).toBe(2);
     });
+  });
 
-    test('canRedo', () => {
-      expect(history.canRedo()).toBeFalsy();
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.undo();
-      expect(history.canRedo()).toBeTruthy();
-    });
-
-    test('clearHistory - override initial stateData', () => {
+  describe('clearHistory', () => {
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+      history = new VuexHistory(plugin, 'test').init(store);
       store.commit('add', 2);
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
+    });
+
+    test('override initial state', () => {
       history.clearHistory();
-      expect(history.length).toBe(0);
       expect(history.initialState.sum).toBe(2);
     });
 
-    test('clearHistory - not overriding', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
+    test('does not override initial state', () => {
       history.clearHistory(false);
-      expect(history.length).toBe(0);
-      expect(history.initialState.sum).toBe(INITIAL_SINGLE_STATE_SUM);
+      expect(history.initialState.sum).toBe(0);
     });
+  });
 
-    test('hasChanges', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      expect(history.hasChanges()).toBeTruthy();
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 0 },
-      });
-      expect(history.hasChanges()).toBeTruthy();
-    });
+  test('canUndo', () => {
+    expect(history.canUndo()).toBeFalsy();
+    addTestSnapshot(history, 2);
+    expect(history.canUndo()).toBeTruthy();
+    history.undo();
+    expect(history.canUndo()).toBeFalsy();
+  });
 
-    test('overrideInitialState', () => {
-      const state = {
-        sum: 10,
-      };
-      history.overrideInitialState(state);
-      history.reset();
-      expect(store.state.sum).toBe(10);
-    });
+  test('canRedo', () => {
+    expect(history.canRedo()).toBeFalsy();
+    addTestSnapshot(history, 2);
+    history.undo();
+    expect(history.canRedo()).toBeTruthy();
+  });
 
-    test('redo', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.undo().redo();
-      expect(store.state.sum).toBe(2);
-    });
+  test('hasChanges', () => {
+    addTestSnapshot(history, 2);
+    expect(history.hasChanges()).toBeTruthy();
+    history.clearHistory(false);
+    expect(history.hasChanges()).toBeFalsy();
+  });
 
-    test('reset', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.reset();
-      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
-      expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
-    });
+  test('overrideInitialState', () => {
+    const state = {
+      sum: 10,
+    };
+    history.overrideInitialState(state);
+    history.reset();
 
-    test('undo', () => {
-      history.addSnapshot({
-        mutation: 'add',
-        stateData: { sum: 2 },
-      });
-      history.undo();
-      expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
+    expect(store.state.sum).toBe(10);
+  });
+
+  test('redo', () => {
+    addTestSnapshot(history, 2);
+    history.undo().redo();
+
+    expect(store.state.sum).toBe(2);
+  });
+
+  test('reset', () => {
+    addTestSnapshot(history, 2);
+    history.reset();
+
+    expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
+    expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
+  });
+
+  test('undo', () => {
+    history.addSnapshot({
+      mutation: 'add',
+      stateData: { sum: 2 },
     });
+    history.undo();
+    expect(store.state.sum).toBe(INITIAL_SINGLE_STATE_SUM);
   });
 });
