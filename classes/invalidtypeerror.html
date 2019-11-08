@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Error</span>
+						<a href="baseerror.html" class="tsd-signature-type">BaseError</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">InvalidTypeError</span>
@@ -86,16 +86,15 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="invalidtypeerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="invalidtypeerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="invalidtypeerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="invalidtypeerror.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="invalidtypeerror.html#stack" class="tsd-kind-icon">stack</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="invalidtypeerror.html#error" class="tsd-kind-icon">Error</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,17 +102,18 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>Invalid<wbr>Type<wbr>Error<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, requiredType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="invalidtypeerror.html" class="tsd-signature-type">InvalidTypeError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides <a href="baseerror.html">BaseError</a>.<a href="baseerror.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/errors/InvalidTypeError.ts#L1">errors/InvalidTypeError.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/errors/InvalidTypeError.ts#L3">errors/InvalidTypeError.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -130,7 +130,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="message" class="tsd-anchor"></a>
@@ -165,16 +165,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="error" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> Error</h3>
-					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in /home/travis/build/Veake/vuex-multi-history/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:984</li>
-						</ul>
-					</aside>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -188,6 +178,9 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="baseerror.html" class="tsd-kind-icon">Base<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="invalidoptionserror.html" class="tsd-kind-icon">Invalid<wbr>Options<wbr>Error</a>
 					</li>
 				</ul>
@@ -195,7 +188,7 @@
 					<li class="current tsd-kind-class">
 						<a href="invalidtypeerror.html" class="tsd-kind-icon">Invalid<wbr>Type<wbr>Error</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 								<a href="invalidtypeerror.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -207,21 +200,36 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="invalidtypeerror.html#stack" class="tsd-kind-icon">stack</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="invalidtypeerror.html#error" class="tsd-kind-icon">Error</a>
-							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="invalidvalueerror.html" class="tsd-kind-icon">Invalid<wbr>Value<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="referencablehistorysnapshot.html" class="tsd-kind-icon">Referencable<wbr>History<wbr>Snapshot</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="vuexhistory.html" class="tsd-kind-icon">Vuex<wbr>History</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="vuexmultihistory.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/basefindsnapshotoptions.html" class="tsd-kind-icon">Base<wbr>Find<wbr>Snapshot<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="../interfaces/data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/findsnapshotbyidoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ById<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/findsnapshotbyindexoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ByIndex<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/findsnapshotbyinstanceoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ByInstance<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/historyinterface.html" class="tsd-kind-icon">History<wbr>Interface</a>
@@ -244,8 +252,20 @@
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#filterfunction" class="tsd-kind-icon">Filter<wbr>Function</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#findsnapshotoptions" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#getsnapshotindexoptions" class="tsd-kind-icon">Get<wbr>Snapshot<wbr>Index<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#getsnapshotoptions" class="tsd-kind-icon">Get<wbr>Snapshot<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-is-not-exported">
 						<a href="../globals.html#historymap" class="tsd-kind-icon">History<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#historysnapshotid" class="tsd-kind-icon">History<wbr>Snapshot<wbr>Id</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#serializefunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
@@ -255,6 +275,9 @@
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#default_key" class="tsd-kind-icon">DEFAULT_<wbr>KEY</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#history_snapshot_id_type" class="tsd-kind-icon">HISTORY_<wbr>SNAPSHOT_<wbr>ID_<wbr>TYPE</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="../globals.html#default_allocation" class="tsd-kind-icon">DEFAULT_<wbr>ALLOCATION</a>
@@ -266,10 +289,10 @@
 						<a href="../globals.html#default_filter" class="tsd-kind-icon">DEFAULT_<wbr>FILTER</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="../globals.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+						<a href="../globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="../globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
+						<a href="../globals.html#generatedefaultoptions" class="tsd-kind-icon">generate<wbr>Default<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>

@@ -87,6 +87,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="historyinterface.html#idcount" class="tsd-kind-icon">id<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="historyinterface.html#index" class="tsd-kind-icon">index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="historyinterface.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="historyinterface.html#length" class="tsd-kind-icon">length</a></li>
@@ -100,6 +101,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#canundo" class="tsd-kind-icon">can<wbr>Undo</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#clearhistory" class="tsd-kind-icon">clear<wbr>History</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#getsnapshot" class="tsd-kind-icon">get<wbr>Snapshot</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#getsnapshotindex" class="tsd-kind-icon">get<wbr>Snapshot<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#goto" class="tsd-kind-icon">goto</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#haschanges" class="tsd-kind-icon">has<wbr>Changes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#overrideinitialstate" class="tsd-kind-icon">override<wbr>Initial<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="historyinterface.html#redo" class="tsd-kind-icon">redo</a></li>
@@ -115,12 +118,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="idcount" class="tsd-anchor"></a>
+					<h3>id<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">id<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L37">VuexHistory.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="index" class="tsd-anchor"></a>
 					<h3>index</h3>
 					<div class="tsd-signature tsd-kind-icon">index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L12">VuexHistory.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L35">VuexHistory.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -130,7 +143,7 @@
 					<div class="tsd-signature tsd-kind-icon">initial<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L13">VuexHistory.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L36">VuexHistory.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L11">VuexHistory.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L34">VuexHistory.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -157,7 +170,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L15">VuexHistory.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L39">VuexHistory.ts:39</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,15 +187,21 @@
 					<a name="canredo" class="tsd-anchor"></a>
 					<h3>can<wbr>Redo</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">can<wbr>Redo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">can<wbr>Redo<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L21">VuexHistory.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L53">VuexHistory.ts:53</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> amount: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -191,15 +210,21 @@
 					<a name="canundo" class="tsd-anchor"></a>
 					<h3>can<wbr>Undo</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">can<wbr>Undo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">can<wbr>Undo<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L20">VuexHistory.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L51">VuexHistory.ts:51</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> amount: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -214,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L24">VuexHistory.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L61">VuexHistory.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -231,25 +256,71 @@
 					<a name="getsnapshot" class="tsd-anchor"></a>
 					<h3>get<wbr>Snapshot</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Snapshot<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Snapshot<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#getsnapshotoptions" class="tsd-signature-type">GetSnapshotOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/referencablehistorysnapshot.html" class="tsd-signature-type">ReferencableHistorySnapshot</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L16">VuexHistory.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L41">VuexHistory.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
+									<h5>options: <a href="../globals.html#getsnapshotoptions" class="tsd-signature-type">GetSnapshotOptions</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/referencablehistorysnapshot.html" class="tsd-signature-type">ReferencableHistorySnapshot</a>
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">undefined</span>
 							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getsnapshotindex" class="tsd-anchor"></a>
+					<h3>get<wbr>Snapshot<wbr>Index</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Snapshot<wbr>Index<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#getsnapshotindexoptions" class="tsd-signature-type">GetSnapshotIndexOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L43">VuexHistory.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../globals.html#getsnapshotindexoptions" class="tsd-signature-type">GetSnapshotIndexOptions</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="goto" class="tsd-anchor"></a>
+					<h3>goto</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">goto<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L59">VuexHistory.ts:59</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -263,7 +334,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L19">VuexHistory.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L49">VuexHistory.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -280,7 +351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L26">VuexHistory.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L65">VuexHistory.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -297,15 +368,21 @@
 					<a name="redo" class="tsd-anchor"></a>
 					<h3>redo</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">redo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
+						<li class="tsd-signature tsd-kind-icon">redo<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L23">VuexHistory.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L57">VuexHistory.ts:57</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> amount: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></h4>
 						</li>
 					</ul>
@@ -314,19 +391,19 @@
 					<a name="removesnapshot" class="tsd-anchor"></a>
 					<h3>remove<wbr>Snapshot</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Snapshot<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Snapshot<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L17">VuexHistory.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L45">VuexHistory.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
+									<h5>options: <a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a>
@@ -346,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L25">VuexHistory.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L63">VuexHistory.ts:63</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -357,15 +434,21 @@
 					<a name="undo" class="tsd-anchor"></a>
 					<h3>undo</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">undo<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
+						<li class="tsd-signature tsd-kind-icon">undo<span class="tsd-signature-symbol">(</span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L22">VuexHistory.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L55">VuexHistory.ts:55</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> amount: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></h4>
 						</li>
 					</ul>
@@ -374,19 +457,19 @@
 					<a name="updatesnapshot" class="tsd-anchor"></a>
 					<h3>update<wbr>Snapshot</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Snapshot<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, snapshot<span class="tsd-signature-symbol">: </span><a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Snapshot<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a>, snapshot<span class="tsd-signature-symbol">: </span><a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historyinterface.html" class="tsd-signature-type">HistoryInterface</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/efe6985/src/VuexHistory.ts#L18">VuexHistory.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/Veake/vuex-multi-history/blob/0a0e6b1/src/VuexHistory.ts#L47">VuexHistory.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
+									<h5>id: <a href="../globals.html#findsnapshotoptions" class="tsd-signature-type">FindSnapshotOptions</a></h5>
 								</li>
 								<li>
 									<h5>snapshot: <a href="historysnapshot.html" class="tsd-signature-type">HistorySnapshot</a></h5>
@@ -409,10 +492,19 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="../classes/baseerror.html" class="tsd-kind-icon">Base<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="../classes/invalidoptionserror.html" class="tsd-kind-icon">Invalid<wbr>Options<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/invalidtypeerror.html" class="tsd-kind-icon">Invalid<wbr>Type<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/invalidvalueerror.html" class="tsd-kind-icon">Invalid<wbr>Value<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/referencablehistorysnapshot.html" class="tsd-kind-icon">Referencable<wbr>History<wbr>Snapshot</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/vuexhistory.html" class="tsd-kind-icon">Vuex<wbr>History</a>
@@ -420,14 +512,29 @@
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="../classes/vuexmultihistory.html" class="tsd-kind-icon">Vuex<wbr>Multi<wbr>History</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="basefindsnapshotoptions.html" class="tsd-kind-icon">Base<wbr>Find<wbr>Snapshot<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="findsnapshotbyidoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ById<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="findsnapshotbyindexoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ByIndex<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="findsnapshotbyinstanceoptions.html" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>ByInstance<wbr>Options</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
 						<a href="historyinterface.html" class="tsd-kind-icon">History<wbr>Interface</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="historyinterface.html#idcount" class="tsd-kind-icon">id<wbr>Count</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="historyinterface.html#index" class="tsd-kind-icon">index</a>
 							</li>
@@ -451,6 +558,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="historyinterface.html#getsnapshot" class="tsd-kind-icon">get<wbr>Snapshot</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="historyinterface.html#getsnapshotindex" class="tsd-kind-icon">get<wbr>Snapshot<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="historyinterface.html#goto" class="tsd-kind-icon">goto</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="historyinterface.html#haschanges" class="tsd-kind-icon">has<wbr>Changes</a>
@@ -495,8 +608,20 @@
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#filterfunction" class="tsd-kind-icon">Filter<wbr>Function</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#findsnapshotoptions" class="tsd-kind-icon">Find<wbr>Snapshot<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#getsnapshotindexoptions" class="tsd-kind-icon">Get<wbr>Snapshot<wbr>Index<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#getsnapshotoptions" class="tsd-kind-icon">Get<wbr>Snapshot<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-is-not-exported">
 						<a href="../globals.html#historymap" class="tsd-kind-icon">History<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#historysnapshotid" class="tsd-kind-icon">History<wbr>Snapshot<wbr>Id</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#serializefunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
@@ -506,6 +631,9 @@
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#default_key" class="tsd-kind-icon">DEFAULT_<wbr>KEY</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#history_snapshot_id_type" class="tsd-kind-icon">HISTORY_<wbr>SNAPSHOT_<wbr>ID_<wbr>TYPE</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="../globals.html#default_allocation" class="tsd-kind-icon">DEFAULT_<wbr>ALLOCATION</a>
@@ -517,10 +645,10 @@
 						<a href="../globals.html#default_filter" class="tsd-kind-icon">DEFAULT_<wbr>FILTER</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="../globals.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+						<a href="../globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="../globals.html#default_serializer" class="tsd-kind-icon">DEFAULT_<wbr>SERIALIZER</a>
+						<a href="../globals.html#generatedefaultoptions" class="tsd-kind-icon">generate<wbr>Default<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>
