@@ -17,6 +17,14 @@ Multiple histories for Vuex
     or \
     `yarn add vue vuex vuex-history-plugin`
 
+    or by using a CDN: \
+    `<script src="https://unpkg.com/vuex-multi-history@<version>/dist/index.umd.js"></script>`
+
+    > **INFO if using a CDN**:
+    >
+    > Replace `<version>` with an available npm-version of `vuex-multi-history` that's higher than or equal to *2.0.1*.\
+    > The root of this module will be available via `window.VuexMultiHistory` and `VuexMultiHistory` if loading it via a `<script>`-tag.
+
 2.  Initialize the plugin:
 
     ```typescript
@@ -82,6 +90,14 @@ Example:
 import { VuexMultiHistory } from 'vuex-multi-history';
 
 const vuexHistory = new VuexMultiHistory();
+```
+
+Example (CommonJS):
+
+```javascript
+const VuexMultiHistory = require('vuex-multi-history');
+
+const vuexHistory = new VuexMultiHistory.VuexMultiHistory();
 ```
 
 ### Initializing multiple histories
@@ -238,7 +254,7 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 | length       | number | returns the amount of snapshots the history has                                    |
 | index        | number | returns the index the history is currently at                                      |
 | initialState | any    | returns the initial state of the history; the result is automatically deserialized |
-| idCount      | number | returns the number the id counter is currently at                                   |
+| idCount      | number | returns the number the id counter is currently at                                  |
 
 #### Find Options
 
