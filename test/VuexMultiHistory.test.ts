@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Vuex, { MutationPayload, Store } from 'vuex';
 
-import { DEFAULT_KEY, VuexMultiHistory, VuexMultiHistoryOptions } from '../src';
-import { VuexHistory } from '../src/VuexHistory';
+import { DEFAULT_KEY, VuexHistory, VuexMultiHistory, VuexMultiHistoryOptions } from '../src';
 
 import {
+  INITIAL_SINGLE_STATE,
+  INITIAL_SINGLE_STATE_SUM,
   initMockupMultiStore,
   initMockupSingleStore,
-  INITIAL_SINGLE_STATE_SUM,
   MockupMultiHistoryKeys,
   MockupMultiState,
   MockupSingleState,
@@ -16,6 +16,31 @@ import {
 Vue.use(Vuex);
 
 describe('VuexHistoryPlugin', () => {
+
+  test('error is thrown because the plugin was not added to plugins', async() => {
+    const plugin = new VuexMultiHistory();
+    const store = new Store({
+      state: { ...INITIAL_SINGLE_STATE },
+      mutations: {
+        add(state, value) {
+          state.sum += value;
+        },
+        sub(state, value) {
+          state.sum -= value;
+        },
+      },
+    });
+
+    let errorMessage = '';
+    try {
+      await store.history();
+    } catch (e) {
+      errorMessage = e.message;
+    }
+
+    expect(errorMessage).toBe('The plugin has to be installed to be used!');
+  });
+
   describe('single history (default)', () => {
     let plugin!: VuexMultiHistory;
     let store!: Store<MockupSingleState>;
@@ -109,7 +134,7 @@ describe('VuexHistoryPlugin', () => {
       store = initMockupMultiStore(plugin);
     });
 
-    test('\'allocate\' returns invalid key', () => {
+    test("'allocate' returns invalid key", () => {
       plugin.options.histories.allocate = (mutation: MutationPayload) => {
         return ['doesNotExist'];
       };
@@ -118,7 +143,7 @@ describe('VuexHistoryPlugin', () => {
       }).toThrow(Error);
     });
 
-    test('history is accessible via it\'s related key', () => {
+    test("history is accessible via it's related key", () => {
       expect(store.history('editor') instanceof VuexHistory).toBeTruthy();
     });
 
@@ -138,13 +163,64 @@ describe('VuexHistoryPlugin', () => {
       store = initMockupSingleStore(plugin);
     });
 
-    test('filter given', () => {
+    test(`'filter' given`, () => {
       plugin.options.filter = (mutation: MutationPayload) => {
         return mutation.type === 'add';
       };
       store.commit('add', 2);
       store.commit('sub', 2);
       expect(store.history().length).toBe(1);
+    });
+
+    describe(`'histories' given`, () => {
+      test(`passed via constructor - works`, () => {
+        plugin = new VuexMultiHistory({
+          histories: {
+            allocate(mutation: MutationPayload) {
+              return mutation.type === 'add' ? ['one'] : ['two'];
+            },
+            keys: ['one', 'two'],
+          },
+        });
+        store = initMockupSingleStore(plugin);
+
+        store.commit('add', 2);
+        expect(plugin.data.historyMap.one.length).toBe(1);
+        expect(plugin.data.historyMap.two.length).toBe(0);
+      });
+
+      test(`passed manually - does not work, has to be provided in constructor`, () => {
+        plugin = new VuexMultiHistory();
+        store = initMockupSingleStore(plugin);
+
+        plugin.options.histories = {
+          allocate(mutation: MutationPayload) {
+            return mutation.type === 'add' ? ['one'] : ['two'];
+          },
+          keys: ['one', 'two'],
+        };
+
+        expect(plugin.data.historyMap.one).toBeUndefined();
+        expect(plugin.data.historyMap.two).toBeUndefined();
+      });
+    });
+
+    test(`'transform' given`, () => {
+      plugin.options.transform = {
+        serialize(historyKey: string, state: any) {
+          return state.sum;
+        },
+        deserialize(historyKey: string, stateData: any) {
+          return {
+            sum: stateData,
+          };
+        },
+      };
+
+      const serialized = plugin.serialize(DEFAULT_KEY, { sum: 2 });
+      expect(serialized).toBe(2);
+      const deserialized = plugin.deserialize(DEFAULT_KEY, serialized);
+      expect(deserialized).toEqual({ sum: 2 });
     });
 
     describe('validateOptions', () => {

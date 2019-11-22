@@ -23,14 +23,14 @@ describe('VuexHistory', () => {
   beforeEach(() => {
     plugin = new VuexMultiHistory();
     store = initMockupSingleStore(plugin);
-    history = new VuexHistory(plugin, 'test').init(store);
+    history = new VuexHistory(plugin, 'test').init();
   });
 
   describe('validateFindOptions', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
     });
 
@@ -50,7 +50,7 @@ describe('VuexHistory', () => {
       beforeEach(() => {
         plugin = new VuexMultiHistory();
         store = initMockupSingleStore(plugin);
-        history = new VuexHistory(plugin, 'test').init(store);
+        history = new VuexHistory(plugin, 'test').init();
         addTestSnapshot(history, 2);
       });
 
@@ -67,7 +67,7 @@ describe('VuexHistory', () => {
       beforeEach(() => {
         plugin = new VuexMultiHistory();
         store = initMockupSingleStore(plugin);
-        history = new VuexHistory(plugin, 'test').init(store);
+        history = new VuexHistory(plugin, 'test').init();
         addTestSnapshot(history, 2);
       });
 
@@ -88,7 +88,7 @@ describe('VuexHistory', () => {
       beforeEach(() => {
         plugin = new VuexMultiHistory();
         store = initMockupSingleStore(plugin);
-        history = new VuexHistory(plugin, 'test').init(store);
+        history = new VuexHistory(plugin, 'test').init();
         addTestSnapshot(history, 2);
         addTestSnapshot(history, 4);
       });
@@ -112,7 +112,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
     });
 
     test('increment idCount', () => {
@@ -155,7 +155,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
     });
 
@@ -180,7 +180,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
     });
 
@@ -206,7 +206,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
     });
 
@@ -227,7 +227,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
     });
 
@@ -246,7 +246,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       store.commit('add', 2);
     });
 
@@ -265,7 +265,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
       addTestSnapshot(history, 2);
       addTestSnapshot(history, 4);
       addTestSnapshot(history, 8);
@@ -291,7 +291,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
     });
 
     test('no argument passed', () => {
@@ -322,7 +322,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
     });
 
     test('no argument passed', () => {
@@ -358,7 +358,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
     });
 
     test('no argument passed', () => {
@@ -385,7 +385,7 @@ describe('VuexHistory', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory();
       store = initMockupSingleStore(plugin);
-      history = new VuexHistory(plugin, 'test').init(store);
+      history = new VuexHistory(plugin, 'test').init();
     });
 
     test('no argument passed', () => {

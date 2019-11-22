@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { MutationPayload, Store } from 'vuex';
+import { MutationPayload, Plugin, Store } from 'vuex';
 
 import {
   AllocateFunction,
@@ -11,7 +11,6 @@ import {
   InvalidTypeError,
   InvalidValueError,
   SerializeFunction,
-  VuexPlugin,
 } from './';
 import { VuexHistory } from './VuexHistory';
 
@@ -70,9 +69,10 @@ const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
 };
 
 export class VuexMultiHistory<K extends string = string> {
-  readonly plugin: VuexPlugin;
+  readonly plugin: Plugin<any>;
   readonly data: Data;
   readonly options: Required<VuexMultiHistoryOptions<K>>;
+  store!: Store<any>;
 
   constructor(options?: Partial<VuexMultiHistoryOptions<K>>) {
     this.options = Object.assign(generateDefaultOptions(), options);
@@ -90,11 +90,12 @@ export class VuexMultiHistory<K extends string = string> {
     this.data = Vue.observable<Data>(dataObj);
 
     this.plugin = (store: Store<any>) => {
+      this.store = store;
       this.validateOptions();
 
       for (const key in this.data.historyMap) {
         if (this.data.historyMap.hasOwnProperty(key)) {
-          this.data.historyMap[key].init(store);
+          this.data.historyMap[key].init();
         }
       }
 
@@ -119,6 +120,7 @@ export class VuexMultiHistory<K extends string = string> {
         }
       });
 
+      store.history = this.getHistory.bind(this);
       Store.prototype.history = this.getHistory.bind(this);
     };
   }

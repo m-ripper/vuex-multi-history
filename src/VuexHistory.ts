@@ -1,5 +1,3 @@
-import { Store } from 'vuex';
-
 import { InvalidOptionsError } from './errors/InvalidOptionsError';
 import { InvalidTypeError } from './errors/InvalidTypeError';
 import { InvalidValueError } from './errors/InvalidValueError';
@@ -72,8 +70,6 @@ export class VuexHistory implements HistoryInterface {
   private hasInitialized: boolean;
   private idCounter: number;
 
-  private store!: Store<any>;
-
   constructor(private readonly plugin: VuexMultiHistory, private readonly historyKey: string) {
     this.currentIndex = -1;
     this.idCounter = 0;
@@ -98,10 +94,9 @@ export class VuexHistory implements HistoryInterface {
     return this.idCounter;
   }
 
-  init(store: Store<any>): VuexHistory {
+  init(): VuexHistory {
     if (!this.hasInitialized) {
-      this.store = store;
-      this.overrideInitialState(store.state);
+      this.overrideInitialState(this.plugin.store.state);
       this.hasInitialized = true;
     }
     return this;
@@ -173,7 +168,7 @@ export class VuexHistory implements HistoryInterface {
     this.snapshots.splice(0);
     this.currentIndex = -1;
     if (overrideInitialState) {
-      this.overrideInitialState(this.store.state);
+      this.overrideInitialState(this.plugin.store.state);
     }
   }
 
@@ -221,7 +216,7 @@ export class VuexHistory implements HistoryInterface {
 
   reset(): void {
     this.clearHistory(false);
-    this.store.replaceState(this.initialStateData);
+    this.plugin.store.replaceState(this.initialStateData);
   }
 
   undo(amount = 1): VuexHistory {
@@ -343,6 +338,6 @@ export class VuexHistory implements HistoryInterface {
   }
 
   private replaceState(stateData: any) {
-    this.store.replaceState(this.deserialize(stateData));
+    this.plugin.store.replaceState(this.deserialize(stateData));
   }
 }

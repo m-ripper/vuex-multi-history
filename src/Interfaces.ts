@@ -2,8 +2,6 @@ import { MutationPayload, Store } from 'vuex';
 
 import { VuexMultiHistory } from './VuexMultiHistory';
 
-export type VuexPlugin<T = any> = (state: Store<T>) => void;
-
 export type DefaultKey = 'default';
 
 export type AllocateFunction<K extends string = string, T extends MutationPayload = MutationPayload> = (
