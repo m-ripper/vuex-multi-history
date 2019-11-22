@@ -1,10 +1,29 @@
 {
   "name": "vuex-multi-history",
-  "version": "2.0.1",
+  "version": "2.1.0",
+  "description": "A Vuex-plugin to allow undo, redo, etc for multiple histories",
+  "keywords": [
+    "vue",
+    "vuex",
+    "plugin",
+    "undo",
+    "redo",
+    "undo-redo",
+    "multiple",
+    "history"
+  ],
+  "author": "Max Ripper (@Veake)",
+  "repository": "https://github.com/Veake/vuex-multi-history#readme",
+  "license": "MIT",
+  "homepage": "https://veake.github.io/vuex-multi-history/",
+  "bugs": {
+    "url": "https://github.com/Veake/vuex-multi-history/issues"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "browser": "dist/index.umd.js",
-  "author": "Max Ripper (@Veake)",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build:dev": "set NODE_ENV=development && npm run build",
     "build": "npm run build:cjs && npm run build:umd",
@@ -18,7 +37,7 @@
     "lint:fix": "tslint --project . --fix",
     "prettier:check": "prettier --check src/**/*.{ts,vue,json}",
     "prettier:format": "prettier --write src/**/*.{ts,vue,json} --list-different",
-    "typedoc": "typedoc --mode file  --out docs src"
+    "typedoc": "typedoc --mode file --out docs src"
   },
   "dependencies": {
     "vue": "^2.6.10",
@@ -38,10 +57,5 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
-  "prettier": "@veake/prettier-config",
-  "license": "MIT",
-  "files": [
-    "dist"
-  ],
-  "repository": "https://github.com/Veake/vuex-multi-history"
+  "prettier": "@veake/prettier-config"
 }
