@@ -6,10 +6,6 @@
 
 Multiple histories for Vuex
 
-## Requirements
-
-- npm or yarn
-
 ## Getting Started
 
 1.  Install the dependencies: \
@@ -22,8 +18,8 @@ Multiple histories for Vuex
 
     > **INFO if using a CDN**:
     >
-    > Replace `<version>` with an available npm-version of `vuex-multi-history` that's higher than or equal to *2.0.1*.\
-    > The root of this module will be available via `window.VuexMultiHistory` and `VuexMultiHistory` if loading it via a `<script>`-tag.
+    > Replace `<version>` with an available npm-version of `vuex-multi-history` >= `2.0.1`.\
+     The root of this module will be available via `window.VuexMultiHistory` and `VuexMultiHistory`.
 
 2.  Initialize the plugin:
 
@@ -51,7 +47,6 @@ Multiple histories for Vuex
 
 ## Table of Contents
 
-- [Requirements](#requirements)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
   - [Initializing a single history](#initializing-a-single-history)
