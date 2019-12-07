@@ -25,7 +25,11 @@ export class UniqueHistorySnapshot implements HistorySnapshot {
   }
 
   get stateData(): any {
-    return { ...this.$stateData };
+    return typeof this.$stateData === 'object'
+      ? Array.isArray(this.$stateData)
+        ? [...this.$stateData]
+        : { ...this.$stateData }
+      : this.$stateData;
   }
 
   toSnapshot(): HistorySnapshot {
