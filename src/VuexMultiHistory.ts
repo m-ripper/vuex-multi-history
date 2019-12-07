@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { MutationPayload, Plugin, Store } from 'vuex';
 
 import {
-  AllocateFunction,
   DefaultKey,
   DeserializeFunction,
   FilterFunction,
@@ -10,6 +9,7 @@ import {
   InvalidOptionsError,
   InvalidTypeError,
   InvalidValueError,
+  ResolveFunction,
   SerializeFunction,
 } from './';
 import { VuexHistory } from './VuexHistory';
@@ -19,16 +19,16 @@ const DEFAULT_FILTER: FilterFunction = function(mutation: MutationPayload) {
   return true;
 };
 // tslint:disable-next-line
-const DEFAULT_ALLOCATION: AllocateFunction = function(mutation: MutationPayload) {
+const DEFAULT_RESOLVE: ResolveFunction = function(mutation: MutationPayload) {
   return [this.options.histories.keys[0]];
 };
 // tslint:disable-next-line
-const DEFAULT_SERIALIZER: SerializeFunction = function(historyKey: string, state: any) {
+const DEFAULT_SERIALIZE: SerializeFunction = function(historyKey: string, state: any) {
   return state;
 };
 // tslint:disable-next-line
-const DEFAULT_DESERIALIZER: DeserializeFunction = function(historyKey: string, data: any) {
-  return data;
+const DEFAULT_DESERIALIZE: DeserializeFunction = function(historyKey: string, stateData: any, state: any) {
+  return stateData;
 };
 export const DEFAULT_KEY: DefaultKey = 'default';
 
@@ -43,7 +43,7 @@ export interface VuexMultiHistoryOptions<K extends string = string> {
   size?: number;
   filter?: FilterFunction;
   histories?: {
-    allocate: AllocateFunction<K>;
+    resolve: ResolveFunction<K>;
     keys: K[];
   };
   transform?: {
@@ -58,12 +58,12 @@ const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
     size: 50,
     filter: DEFAULT_FILTER,
     histories: {
-      allocate: DEFAULT_ALLOCATION,
+      resolve: DEFAULT_RESOLVE,
       keys: [DEFAULT_KEY],
     },
     transform: {
-      serialize: DEFAULT_SERIALIZER,
-      deserialize: DEFAULT_DESERIALIZER,
+      serialize: DEFAULT_SERIALIZE,
+      deserialize: DEFAULT_DESERIALIZE,
     },
   };
 };
@@ -105,26 +105,28 @@ export class VuexMultiHistory<K extends string = string> {
           return;
         }
 
-        const historyKeys = this.options.histories.allocate.call(this, mutation);
-        for (const historyKey of historyKeys) {
-          if (!this.options.histories.keys.includes(historyKey)) {
-            const keysString = this.options.histories.keys.join(', ');
-            throw new Error(`'${historyKey}' is not a valid key! Valid keys are: [${keysString}]}`);
+        const resolvedHistoryKeys = this.options.histories.resolve.call(this, mutation);
+        const localHistoryKeys = Object.keys(this.data.historyMap);
+
+        for (const resolvedHistoryKey of resolvedHistoryKeys) {
+          if (!this.data.historyMap[resolvedHistoryKey]) {
+            const keysString = localHistoryKeys.join(', ');
+            throw new Error(`'${resolvedHistoryKey}' is not a valid key! Valid keys are: [${keysString}]}`);
           }
-          const history = this.getHistory(historyKey);
+          const history = this.getHistory(resolvedHistoryKey);
           const snapshot: HistorySnapshot = {
             mutation: mutation.type,
-            stateData: this.serialize(historyKey, state),
+            stateData: this.serialize(resolvedHistoryKey, state),
           };
           history.addSnapshot(snapshot);
         }
       });
 
-      Store.prototype.addHistory = this.addHistory.bind(this);
-      Store.prototype.hasHistory = this.hasHistory.bind(this);
-      Store.prototype.history = this.getHistory.bind(this);
-      Store.prototype.listHistoryKeys = this.listHistoryKeys.bind(this);
-      Store.prototype.removeHistory = this.removeHistory.bind(this);
+      store.addHistory = this.addHistory.bind(this);
+      store.hasHistory = this.hasHistory.bind(this);
+      store.history = this.getHistory.bind(this);
+      store.listHistoryKeys = this.listHistoryKeys.bind(this);
+      store.removeHistory = this.removeHistory.bind(this);
 
       this.hasInstalled = true;
     };
@@ -175,7 +177,7 @@ export class VuexMultiHistory<K extends string = string> {
   }
 
   deserialize(historyKey: string, stateData: any): any {
-    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, stateData));
+    return this.removeObservers(this.options.transform.deserialize.call(this, historyKey, stateData, this.store.state));
   }
 
   private validateOptions() {
@@ -193,15 +195,13 @@ export class VuexMultiHistory<K extends string = string> {
       errors.push(new InvalidTypeError('filter', 'function'));
     }
 
-    const { allocate, keys } = this.options.histories;
-    if (typeof allocate !== 'function') {
-      errors.push(new InvalidTypeError('allocate', 'function'));
+    const { resolve, keys } = this.options.histories;
+    if (typeof resolve !== 'function') {
+      errors.push(new InvalidTypeError('resolve', 'function'));
     }
 
     if (typeof keys !== 'object' || !Array.isArray(keys)) {
       errors.push(new InvalidTypeError('keys', 'array'));
-    } else if (keys.length === 0) {
-      errors.push(new InvalidValueError('keys', 'cannot be empty'));
     }
 
     const { serialize, deserialize } = this.options.transform;

@@ -254,11 +254,6 @@ describe('VuexHistory', () => {
       history.clearHistory();
       expect(history.initialState.sum).toBe(2);
     });
-
-    test('does not override initial state', () => {
-      history.clearHistory(false);
-      expect(history.initialState.sum).toBe(0);
-    });
   });
 
   describe('goto', () => {
@@ -414,7 +409,7 @@ describe('VuexHistory', () => {
   test('hasChanges', () => {
     addTestSnapshot(history, 2);
     expect(history.hasChanges()).toBeTruthy();
-    history.clearHistory(false);
+    history.clearHistory();
     expect(history.hasChanges()).toBeFalsy();
   });
 

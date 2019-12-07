@@ -4,7 +4,7 @@ import { VuexMultiHistory } from './VuexMultiHistory';
 
 export type DefaultKey = 'default';
 
-export type AllocateFunction<K extends string = string, T extends MutationPayload = MutationPayload> = (
+export type ResolveFunction<K extends string = string, T extends MutationPayload = MutationPayload> = (
   this: VuexMultiHistory,
   mutation: T,
 ) => K[];
@@ -17,4 +17,5 @@ export type DeserializeFunction<K extends string = string> = (
   this: VuexMultiHistory,
   historyKey: K,
   stateData: any,
+  state: any,
 ) => any;

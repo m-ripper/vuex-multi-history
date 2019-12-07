@@ -179,12 +179,9 @@ export class VuexHistory implements HistoryInterface {
     return prevIndex >= -1 && prevIndex < this.snapshots.length;
   }
 
-  clearHistory(overrideInitialState = true): void {
-    this.snapshots.splice(0);
-    this.currentIndex = -1;
-    if (overrideInitialState) {
-      this.overrideInitialState(this.plugin.store.state);
-    }
+  clearHistory(): void {
+    this.resetSnapshots();
+    this.overrideInitialState(this.plugin.store.state);
   }
 
   hasChanges(): boolean {
@@ -197,16 +194,14 @@ export class VuexHistory implements HistoryInterface {
       index = this.getSnapshotIndex(options as GetSnapshotIndexOptions);
     }
 
-    if (index >= 0) {
-      const difference = index - this.currentIndex;
-      if (difference === 0) {
-        return this;
-      }
-      const total = Math.abs(difference);
-      const funcKey: keyof VuexHistory = difference > 0 ? 'redo' : 'undo';
-
-      this[funcKey](total);
+    const difference = index - this.currentIndex;
+    if (difference === 0) {
+      return this;
     }
+    const total = Math.abs(difference);
+    const funcKey: keyof VuexHistory = difference > 0 ? 'redo' : 'undo';
+
+    this[funcKey](total);
 
     return this;
   }
@@ -230,8 +225,8 @@ export class VuexHistory implements HistoryInterface {
   }
 
   reset(): void {
-    this.clearHistory(false);
-    this.plugin.store.replaceState(this.initialStateData);
+    this.resetSnapshots();
+    this.replaceState(this.initialStateData);
   }
 
   undo(amount = 1): VuexHistory {
@@ -253,6 +248,11 @@ export class VuexHistory implements HistoryInterface {
 
   deserialize(stateData: any): any {
     return this.plugin.deserialize(this.historyKey, stateData);
+  }
+
+  private resetSnapshots() {
+    this.snapshots.splice(0);
+    this.currentIndex = -1;
   }
 
   private findSnapshot(options: FindSnapshotOptions): UniqueHistorySnapshot | undefined {

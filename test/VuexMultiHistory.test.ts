@@ -86,18 +86,11 @@ describe('VuexHistoryPlugin', () => {
       expect(store.history().canRedo()).toBeTruthy();
     });
 
-    test('clearHistory - override initial stateData', () => {
+    test('clearHistory', () => {
       store.commit('add', 2);
       store.history().clearHistory();
       expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
       expect(plugin.data.historyMap[DEFAULT_KEY].initialState.sum).toBe(2);
-    });
-
-    test('clearHistory - not overriding', () => {
-      store.commit('add', 2);
-      store.history().clearHistory(false);
-      expect(plugin.data.historyMap[DEFAULT_KEY].length).toBe(0);
-      expect(plugin.data.historyMap[DEFAULT_KEY].initialState.sum).toBe(INITIAL_SINGLE_STATE_SUM);
     });
 
     test('reset', () => {
@@ -123,7 +116,7 @@ describe('VuexHistoryPlugin', () => {
     beforeEach(() => {
       plugin = new VuexMultiHistory<MockupMultiHistoryKeys>({
         histories: {
-          allocate: (mutation: MutationPayload) => {
+          resolve: (mutation: MutationPayload) => {
             return mutation.type === 'updateEditorEntity' ? ['editor'] : ['entities'];
           },
           keys: ['editor', 'entities'],
@@ -132,8 +125,8 @@ describe('VuexHistoryPlugin', () => {
       store = initMockupMultiStore(plugin);
     });
 
-    test("'allocate' returns invalid key", () => {
-      plugin.options.histories.allocate = (mutation: MutationPayload) => {
+    test("'resolve' returns invalid key", () => {
+      plugin.options.histories.resolve = (mutation: MutationPayload) => {
         return ['doesNotExist'];
       };
       expect(() => {
@@ -253,7 +246,7 @@ describe('VuexHistoryPlugin', () => {
       test(`passed via constructor - works`, () => {
         plugin = new VuexMultiHistory({
           histories: {
-            allocate(mutation: MutationPayload) {
+            resolve(mutation: MutationPayload) {
               return mutation.type === 'add' ? ['one'] : ['two'];
             },
             keys: ['one', 'two'],
@@ -271,7 +264,7 @@ describe('VuexHistoryPlugin', () => {
         store = initMockupSingleStore(plugin);
 
         plugin.options.histories = {
-          allocate(mutation: MutationPayload) {
+          resolve(mutation: MutationPayload) {
             return mutation.type === 'add' ? ['one'] : ['two'];
           },
           keys: ['one', 'two'],
@@ -334,7 +327,7 @@ describe('VuexHistoryPlugin', () => {
       test('`histories.keys` wrong type or undefined', () => {
         const options: any = {
           histories: {
-            allocate: (mutation: MutationPayload) => {
+            resolve: (mutation: MutationPayload) => {
               return [''];
             },
             keys: undefined,
@@ -349,7 +342,7 @@ describe('VuexHistoryPlugin', () => {
       test('`histories.keys` wrong type or undefined', () => {
         const options: any = {
           histories: {
-            allocate: (mutation: MutationPayload) => {
+            resolve: (mutation: MutationPayload) => {
               return [''];
             },
             keys: undefined,
@@ -361,24 +354,10 @@ describe('VuexHistoryPlugin', () => {
         }).toThrowError();
       });
 
-      test('`histories.keys` empty', () => {
-        const options: VuexMultiHistoryOptions = {
-          histories: {
-            allocate: (mutation: MutationPayload) => {
-              return [''];
-            },
-            keys: [],
-          },
-        };
-        expect(() => {
-          return new VuexMultiHistory(options);
-        }).toThrowError();
-      });
-
-      test('`histories.allocate` wrong type or undefined', () => {
+      test('`histories.resolve` wrong type or undefined', () => {
         const options: any = {
           histories: {
-            allocate: 1,
+            resolve: 1,
             keys: ['test'],
           },
         };
