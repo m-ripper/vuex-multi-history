@@ -7,7 +7,7 @@ export interface HistorySnapshot {
   stateData: any;
 }
 
-export class ReferencableHistorySnapshot implements HistorySnapshot {
+export class UniqueHistorySnapshot implements HistorySnapshot {
   private readonly $mutation: string;
   private readonly $stateData: any;
 

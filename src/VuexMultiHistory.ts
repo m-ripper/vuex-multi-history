@@ -73,6 +73,7 @@ export class VuexMultiHistory<K extends string = string> {
   readonly data: Data;
   readonly options: Required<VuexMultiHistoryOptions<K>>;
   store!: Store<any>;
+  private hasInstalled: boolean = false;
 
   constructor(options?: Partial<VuexMultiHistoryOptions<K>>) {
     this.options = Object.assign(generateDefaultOptions(), options);
@@ -111,7 +112,6 @@ export class VuexMultiHistory<K extends string = string> {
             throw new Error(`'${historyKey}' is not a valid key! Valid keys are: [${keysString}]}`);
           }
           const history = this.getHistory(historyKey);
-
           const snapshot: HistorySnapshot = {
             mutation: mutation.type,
             stateData: this.serialize(historyKey, state),
@@ -120,9 +120,32 @@ export class VuexMultiHistory<K extends string = string> {
         }
       });
 
-      store.history = this.getHistory.bind(this);
+      Store.prototype.addHistory = this.addHistory.bind(this);
+      Store.prototype.hasHistory = this.hasHistory.bind(this);
       Store.prototype.history = this.getHistory.bind(this);
+      Store.prototype.listHistoryKeys = this.listHistoryKeys.bind(this);
+      Store.prototype.removeHistory = this.removeHistory.bind(this);
+
+      this.hasInstalled = true;
     };
+  }
+
+  addHistory(historyKey: string): VuexHistory | undefined {
+    if (this.data.historyMap[historyKey]) {
+      return;
+    }
+    const history = new VuexHistory(this, historyKey);
+
+    if (this.hasInstalled) {
+      history.init();
+    }
+
+    Vue.set(this.data.historyMap, historyKey, history);
+    return history;
+  }
+
+  hasHistory(historyKey: string): boolean {
+    return !!this.data.historyMap[historyKey];
   }
 
   getHistory(historyKey?: string): VuexHistory {
@@ -131,6 +154,20 @@ export class VuexMultiHistory<K extends string = string> {
       throw new Error(`Cannot retrieve history for key '${key}'`);
     }
     return this.data.historyMap[key];
+  }
+
+  listHistoryKeys(): string[] {
+    return Object.keys(this.data.historyMap);
+  }
+
+  removeHistory(historyKey: string): VuexHistory | undefined {
+    if (!this.data.historyMap[historyKey]) {
+      return;
+    }
+    const history = this.data.historyMap[historyKey];
+
+    Vue.delete(this.data.historyMap, historyKey);
+    return history;
   }
 
   serialize(historyKey: string, state: any): any {

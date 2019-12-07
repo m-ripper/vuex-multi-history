@@ -16,9 +16,9 @@ import {
 Vue.use(Vuex);
 
 describe('VuexHistoryPlugin', () => {
+  let plugin!: VuexMultiHistory;
 
-  test('error is thrown because the plugin was not added to plugins', async() => {
-    const plugin = new VuexMultiHistory();
+  test('error is thrown because the plugin was not added to plugins', async () => {
     const store = new Store({
       state: { ...INITIAL_SINGLE_STATE },
       mutations: {
@@ -42,7 +42,6 @@ describe('VuexHistoryPlugin', () => {
   });
 
   describe('single history (default)', () => {
-    let plugin!: VuexMultiHistory;
     let store!: Store<MockupSingleState>;
 
     beforeEach(() => {
@@ -119,7 +118,6 @@ describe('VuexHistoryPlugin', () => {
   });
 
   describe('multiple histories', () => {
-    let plugin!: VuexMultiHistory;
     let store!: Store<MockupMultiState>;
 
     beforeEach(() => {
@@ -154,8 +152,87 @@ describe('VuexHistoryPlugin', () => {
     });
   });
 
+  describe('addHistory', () => {
+    let store!: Store<MockupSingleState>;
+
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+    });
+
+    test('history was added - key not in use', () => {
+      expect(plugin.addHistory('someKey')).toBeInstanceOf(VuexHistory);
+    });
+
+    test('history was not added - key in use', () => {
+      expect(plugin.addHistory(DEFAULT_KEY)).toBeUndefined();
+    });
+  });
+
+  describe('hasHistory', () => {
+    let store!: Store<MockupSingleState>;
+
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+    });
+
+    test('history was not found - key not in use', () => {
+      expect(plugin.hasHistory('someKey')).toBe(false);
+    });
+
+    test('history was found - key in use', () => {
+      expect(plugin.hasHistory(DEFAULT_KEY)).toBe(true);
+    });
+  });
+
+  describe('listHistoryKeys', () => {
+    let store!: Store<MockupSingleState>;
+
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+    });
+
+    test('history keys returned', () => {
+      expect(plugin.listHistoryKeys()).toEqual([DEFAULT_KEY]);
+    });
+  });
+
+  describe('getHistory', () => {
+    let store!: Store<MockupSingleState>;
+
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+    });
+
+    test('history was not found - key not in use', () => {
+      expect(() => plugin.getHistory('someKey')).toThrowError();
+    });
+
+    test('history was found - key in use', () => {
+      expect(plugin.getHistory()).toBeInstanceOf(VuexHistory);
+    });
+  });
+
+  describe('removeHistory', () => {
+    let store!: Store<MockupSingleState>;
+
+    beforeEach(() => {
+      plugin = new VuexMultiHistory();
+      store = initMockupSingleStore(plugin);
+    });
+    test('history was not removed - key not in use', () => {
+      expect(plugin.removeHistory('someKey')).toBeUndefined();
+    });
+
+    test('history was removed - key in use', () => {
+      expect(plugin.removeHistory(DEFAULT_KEY)).toBeInstanceOf(VuexHistory);
+    });
+  });
+
   describe('options', () => {
-    let plugin!: VuexMultiHistory;
     let store!: Store<MockupSingleState>;
 
     beforeEach(() => {

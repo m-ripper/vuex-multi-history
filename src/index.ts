@@ -4,7 +4,11 @@ import { VuexHistory } from './VuexHistory';
 
 declare module 'vuex' {
   interface Store<S> {
+    addHistory(historyKey: string): VuexHistory | undefined;
+    hasHistory(historyKey: string): boolean;
     history<K extends string = string>(historyKey?: K): VuexHistory;
+    listHistoryKeys(): string[];
+    removeHistory(historyKey: string): VuexHistory | undefined;
   }
 }
 

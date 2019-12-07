@@ -1,4 +1,4 @@
-import { HistorySnapshot, ReferencableHistorySnapshot } from '../src';
+import { HistorySnapshot, UniqueHistorySnapshot } from '../src';
 
 describe('HistorySnapshot', () => {
   test('HistorySnapshot', () => {
@@ -6,7 +6,7 @@ describe('HistorySnapshot', () => {
       mutation: 'test',
       stateData: { sum: 2 },
     };
-    const referencableSnapshot = new ReferencableHistorySnapshot(1, snapshot);
+    const referencableSnapshot = new UniqueHistorySnapshot(1, snapshot);
     expect(referencableSnapshot.mutation).toBe('test');
     expect(referencableSnapshot.toSnapshot()).toEqual(snapshot);
   });
