@@ -68,7 +68,7 @@ Multiple histories for Vuex
     - [Methods](#methods-1)
   - [Functions](#functions)
     - [`FilterFunction`](#filterfunction)
-    - [`AllocateFunction`](#allocatefunction)
+    - [`ResolveFunction`](#resolvefunction)
     - [`SerializeFunction`](#serializefunction)
     - [`DeserializeFunction`](#deserializefunction)
 - [Docs](#docs)
@@ -100,8 +100,8 @@ const vuexHistory = new VuexMultiHistory.VuexMultiHistory();
 It is possible to initialize multiple histories. This can be done by modifying the [`histories`](#histories-options)-object of the options of [`VuexMultiHistory`](#vuexmultihistory), which can be either done by passing it to the constructor or setting it manually.
 
 For each key of [`histories.keys`](#histories-options) a history will be created, which will also be accessible by the given key. \
-Also [`histories.allocate`](#histories-options) has to be provided, which is of the type [`AllocateFunction`](#allocatefunction) and used to determine to which histories the snapshot will be added.
-You can read more about the [`AllocateFunction`](#allocatefunction) [here](#allocatefunction).
+Also [`histories.resolve`](#histories-options) has to be provided, which is of the type [`ResolveFunction`](#resolvefunction) and used to determine to which histories the snapshot will be added.
+You can read more about the [`ResolveFunction`](#resolvefunction) [here](#resolvefunction).
 
 Example:
 
@@ -110,7 +110,7 @@ import { VuexMultiHistory } from 'vuex-multi-history';
 
 const vuexHistory = new VuexMultiHistory({
   histories: {
-    allocate: (mutation) => {
+    resolve: (mutation) => {
       return mutation.type === 'someType' ? ['historyA'] : ['historyB'];
     },
     keys: ['historyA', 'historyB'],
@@ -166,7 +166,7 @@ The options beneath are required when the `histories`-object is passed.
 
 | key      | type                                    | default                               | description                                                      |
 | -------- | --------------------------------------- | ------------------------------------- | ---------------------------------------------------------------- |
-| allocate | [`AllocateFunction`](#allocatefunction) | returns first key of `histories.keys` | Determines which history/histories a snapshot should be added to |
+| resolve | [`ResolveFunction`](#resolvefunction) | returns first key of `histories.keys` | Determines which history/histories a snapshot should be added to |
 | keys     | `string[]`                              | `['default']`                         | For each given key a separate history will be created            |
 
 #### `transform`-Options
@@ -234,7 +234,7 @@ A [`HistorySnapshot`](#historysnapshot) is an object hat has the following signa
 }
 ```
 
-Whenever a mutation occurs in the Vuex-`Store` and it passes the [`filter`](#options) as well as the [`allocate`](#histories-options)-function the `addSnapshot`-function of the [`VuexHistory`](#vuexhistory) will be called and a new instance of [`ReferencableHistorySnapshot`](#historysnapshot) will be created.
+Whenever a mutation occurs in the Vuex-`Store` and it passes the [`filter`](#options) as well as the [`resolve`](#histories-options)-function the `addSnapshot`-function of the [`VuexHistory`](#vuexhistory) will be called and a new instance of [`ReferencableHistorySnapshot`](#historysnapshot) will be created.
 
 The difference between [`ReferencableHistorySnapshot`](#historysnapshot) and [`HistorySnapshot`](#historysnapshot) is that [`ReferencableHistorySnapshot`](#historysnapshot) has an additional `id`-property which will be managed by the [`VuexHistory`](#vuexhistory)-instance.
 
@@ -302,9 +302,9 @@ A [`FilterFunction`](#filterfunction) has the following signature:
 The aim of this function is to determine whether the given `mutation` is allowed to be added to any history or not. \
 If the function returns `true`, it will be added, if it returns `false` the mutation will not processed any further and not added to any history.
 
-#### `AllocateFunction`
+#### `ResolveFunction`
 
-The [`AllocateFunction`](#allocatefunction) is called after the [`FilterFunction`](#filterfunction) if it returned `true` or if the `filter` in the options was explicitly set to `undefined` or `null`. \
+The [`ResolveFunction`](#resolvefunction) is called after the [`FilterFunction`](#filterfunction) if it returned `true` or if the `filter` in the options was explicitly set to `undefined` or `null`. \
 It has the following signature:
 
 ```typescript
