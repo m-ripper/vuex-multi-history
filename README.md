@@ -234,9 +234,9 @@ A [`HistorySnapshot`](#historysnapshot) is an object hat has the following signa
 }
 ```
 
-Whenever a mutation occurs in the Vuex-`Store` and it passes the [`filter`](#options) as well as the [`resolve`](#histories-options)-function the `addSnapshot`-function of the [`VuexHistory`](#vuexhistory) will be called and a new instance of [`ReferencableHistorySnapshot`](#historysnapshot) will be created.
+Whenever a mutation occurs in the Vuex-`Store` and it passes the [`filter`](#options) as well as the [`resolve`](#histories-options)-function the `addSnapshot`-function of the [`VuexHistory`](#vuexhistory) will be called and a new instance of [`uniqueHistorySnapshot`](#historysnapshot) will be created.
 
-The difference between [`ReferencableHistorySnapshot`](#historysnapshot) and [`HistorySnapshot`](#historysnapshot) is that [`ReferencableHistorySnapshot`](#historysnapshot) has an additional `id`-property which will be managed by the [`VuexHistory`](#vuexhistory)-instance.
+The difference between [`uniqueHistorySnapshot`](#historysnapshot) and [`HistorySnapshot`](#historysnapshot) is that [`uniqueHistorySnapshot`](#historysnapshot) has an additional `id`-property which will be managed by the [`VuexHistory`](#vuexhistory)-instance.
 
 ### `VuexHistory`
 
@@ -253,11 +253,11 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 
 #### Find Options
 
-`FindSnapshotOptions`: accepts `{ id: number }` or `{ index: number }` or `{ instance: ReferencableHistorySnapshot }`
+`FindSnapshotOptions`: accepts `{ id: number }` or `{ index: number }` or `{ instance: uniqueHistorySnapshot }`
 
 `GetSnapshotOptions`: accepts `{ id: number }` or `{ index: number }`
 
-`GetSnapshotIndexOptions`: accepts `{ id: number }` or `{ instance: ReferencableHistorySnapshot }`
+`GetSnapshotIndexOptions`: accepts `{ id: number }` or `{ instance: uniqueHistorySnapshot }`
 
 > **INFO**:
 >
@@ -271,10 +271,10 @@ A [`VuexHistory`](#vuexhistory)-object has the following properties and methods:
 | signature                                                                                                 | description                                                                                                                                                 |
 | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `addSnapshot(snapshot: HistorySnapshot): VuexHistory`                                                     | adds a snapshot to the history                                                                                                                              |
-| `getSnapshot(options: GetSnapshotOptions): ReferencableHistorySnapshot`<code>&#124;</code>`undefined`     | returns a copy of a snapshot of the history                                                                                                                 |
+| `getSnapshot(options: GetSnapshotOptions): uniqueHistorySnapshot`<code>&#124;</code>`undefined`     | returns a copy of a snapshot of the history                                                                                                                 |
 | `getSnapshotIndex(options: GetSnapshotIndexOptions): number`                                              | returns the index of a snapshot of the history                                                                                                              |
-| `removeSnapshot(options: FindSnapshotOptions): ReferencableHistorySnapshot`<code>&#124;</code>`undefined` | deletes a snapshot of the history                                                                                                                           |
-| `updateSnapshot(options: FindSnapshotOptions, snapshot: ReferencableHistorySnapshot): VuexHistory`        | updates a snapshot of the history                                                                                                                           |
+| `removeSnapshot(options: FindSnapshotOptions): uniqueHistorySnapshot`<code>&#124;</code>`undefined` | deletes a snapshot of the history                                                                                                                           |
+| `updateSnapshot(options: FindSnapshotOptions, snapshot: uniqueHistorySnapshot): VuexHistory`        | updates a snapshot of the history                                                                                                                           |
 | `goto(options: FindSnapshotOptions): VuexHistory`                                                         | jumps to the state of the related snapshot if there is any                                                                                                  |
 | `canUndo(amount: number = 1): boolean`                                                                    | returns if undo is possible                                                                                                                                 |
 | `undo(amount: number = 1): VuexHistory`                                                                   | undoes the last snapshot                                                                                                                                    |
