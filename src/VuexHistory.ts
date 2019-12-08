@@ -120,7 +120,7 @@ export class VuexHistory implements HistoryInterface {
   addSnapshot(snapshot: HistorySnapshot): VuexHistory {
     this.idCounter++;
 
-    const referencableSnapshot = new UniqueHistorySnapshot(this.idCounter, snapshot);
+    const uniqueSnapshot = new UniqueHistorySnapshot(this.idCounter, snapshot);
 
     // needed because everything after the currentIndex will be removed if something was undone and then added
     const isLatestSnapshot = this.currentIndex + 1 < this.snapshots.length;
@@ -132,7 +132,7 @@ export class VuexHistory implements HistoryInterface {
       this.currentIndex--;
     }
 
-    this.snapshots.splice(this.currentIndex, 1, referencableSnapshot);
+    this.snapshots.splice(this.currentIndex, 1, uniqueSnapshot);
 
     if (isLatestSnapshot) {
       this.snapshots.splice(this.currentIndex + 1);
@@ -158,8 +158,8 @@ export class VuexHistory implements HistoryInterface {
     if (index < 0 || index >= this.length) {
       return this;
     }
-    const referencableSnapshot = new UniqueHistorySnapshot(this.snapshots[index].id, snapshot);
-    this.snapshots.splice(index, 1, referencableSnapshot);
+    const uniqueSnapshot = new UniqueHistorySnapshot(this.snapshots[index].id, snapshot);
+    this.snapshots.splice(index, 1, uniqueSnapshot);
     return this;
   }
 
