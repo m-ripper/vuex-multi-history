@@ -10,6 +10,8 @@ const correctApiSideBar = apiSideBar.map((entry) => {
   return { ...entry, children: correctedChildren };
 });
 
+const usedSidebar = process.env.NODE_ENV === 'production' ? apiSideBar : correctApiSideBar;
+
 module.exports = {
   title: 'vuex-multi-history',
   description: 'A Vuex-plugin to allow undo, redo, etc for multiple histories',
@@ -25,7 +27,7 @@ module.exports = {
       '/guide/',
       {
         title: 'API',
-        children: ['/api/', ...correctApiSideBar],
+        children: ['/api/', ...usedSidebar],
         sidebarDepth: 1,
       },
     ],
