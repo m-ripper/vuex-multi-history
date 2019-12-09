@@ -16,13 +16,13 @@ script:
 
 after_success:
   - npm run prettier:format
-  - npm run typedoc
+  - npm run docs:build
 
 before_deploy:
-  - touch docs/.nojekyll
+  - touch docs/.vuepress/dist/.nojekyll
 
 deploy:
-  local_dir: docs
+  local_dir: docs/.vuepress/dist
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
