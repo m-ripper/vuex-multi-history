@@ -18,7 +18,6 @@ script:
   - codecov
 
 after_success:
-  - npm run prettier:format
   - npm run docs:build
 
 before_deploy:
