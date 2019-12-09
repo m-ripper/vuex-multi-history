@@ -11,6 +11,7 @@ const correctApiSideBar = apiSideBar.map((entry) => {
 });
 
 const usedSidebar = process.env.NODE_ENV === 'production' ? apiSideBar : correctApiSideBar;
+const base = process.env.NODE_ENV === 'production' ? '/vuex-multi-history/' : '/';
 
 module.exports = {
   title: 'vuex-multi-history',

@@ -39,7 +39,7 @@
     "typedoc": "typedoc src",
     "docs:dev": "vuepress dev docs",
     "docs:example": "npm run build:example && node scripts/moveExample.js",
-    "docs:build": "npm run typedoc && vuepress build docs && npm run docs:example",
+    "docs:build": "set NODE_ENV=production && npm run typedoc && vuepress build docs && npm run docs:example",
     "build:example": "cd demo && npm run build"
   },
   "dependencies": {
