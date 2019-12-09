@@ -10,7 +10,8 @@ const correctApiSideBar = apiSideBar.map((entry) => {
   return { ...entry, children: correctedChildren };
 });
 
-const env = process.env.NODE_ENV.trim();
+const env = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'production';
+
 const usedSidebar = env === 'production' ? apiSideBar : correctApiSideBar;
 const base = env === 'production' ? '/vuex-multi-history/' : '/';
 
