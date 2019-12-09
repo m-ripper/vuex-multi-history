@@ -37,9 +37,9 @@
     "lint:fix": "tslint --project . --fix",
     "prettier:check": "prettier --check src/**/*.{ts,vue,json}",
     "prettier:format": "prettier --write src/**/*.{ts,vue,json} --list-different",
-    "typedoc": "typedoc --mode file --out docs src",
+    "typedoc": "typedoc src",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "typedoc && vuepress build docs"
   },
   "dependencies": {
     "vue": "^2.6.10",
@@ -55,6 +55,7 @@
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.0",
     "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^2.2.14",
     "typescript": "^3.6.4",
     "vuepress": "^1.2.0",
     "webpack": "^4.41.2",

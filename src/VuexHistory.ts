@@ -23,42 +23,7 @@ export type FindSnapshotOptions = FindSnapshotByIdOptions | FindSnapshotByIndexO
 export type GetSnapshotOptions = Exclude<FindSnapshotOptions, FindSnapshotByInstanceOptions>;
 export type GetSnapshotIndexOptions = Exclude<FindSnapshotOptions, FindSnapshotByIndexOptions>;
 
-export interface HistoryInterface {
-  readonly length: number;
-  readonly index: number;
-  readonly initialState: any;
-  readonly idCount: number;
-
-  addSnapshot(snapshot: HistorySnapshot): HistoryInterface;
-
-  getSnapshot(options: GetSnapshotOptions): UniqueHistorySnapshot | undefined;
-
-  getSnapshotIndex(options: GetSnapshotIndexOptions): number;
-
-  removeSnapshot(options: FindSnapshotOptions): HistorySnapshot | undefined;
-
-  updateSnapshot(id: FindSnapshotOptions, snapshot: HistorySnapshot): HistoryInterface;
-
-  hasChanges(): boolean;
-
-  canUndo(amount?: number): boolean;
-
-  canRedo(amount?: number): boolean;
-
-  undo(amount?: number): HistoryInterface;
-
-  redo(amount?: number): HistoryInterface;
-
-  goto(options: FindSnapshotOptions): HistoryInterface;
-
-  clearHistory(overrideInitialState?: boolean): void;
-
-  reset(): void;
-
-  overrideInitialState(state: any): HistoryInterface;
-}
-
-export class VuexHistory implements HistoryInterface {
+export class VuexHistory {
   get length(): number {
     return this.snapshots.length;
   }
@@ -188,7 +153,7 @@ export class VuexHistory implements HistoryInterface {
     return this.snapshots.length > 0;
   }
 
-  goto(options: FindSnapshotOptions): HistoryInterface {
+  goto(options: FindSnapshotOptions): VuexHistory {
     let index = (options as FindSnapshotByIndexOptions).index;
     if (typeof index !== 'number') {
       index = this.getSnapshotIndex(options as GetSnapshotIndexOptions);

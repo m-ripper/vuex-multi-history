@@ -1,0 +1,13 @@
+{
+  "mode": "file",
+  "out": "docs/api",
+  "plugin": "typedoc-plugin-markdown",
+  "theme": "vuepress",
+  "readme": "none",
+  "name": "Types & Constants",
+  "excludePrivate": true,
+  "excludeExternals": true,
+  "exclude": [
+    "src/errors/*"
+  ]
+}

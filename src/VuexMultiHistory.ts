@@ -38,18 +38,22 @@ interface Data {
   historyMap: HistoryMap;
 }
 
-export interface VuexMultiHistoryOptions<K extends string = string> {
+export interface HistoriesOptions {
+  keys: string[];
+  resolve: ResolveFunction;
+}
+
+export interface TransformOptions {
+  serialize: SerializeFunction;
+  deserialize: DeserializeFunction;
+}
+
+export interface VuexMultiHistoryOptions {
   debug?: boolean;
   size?: number;
   filter?: FilterFunction;
-  histories?: {
-    resolve: ResolveFunction<K>;
-    keys: K[];
-  };
-  transform?: {
-    serialize: SerializeFunction;
-    deserialize: DeserializeFunction;
-  };
+  histories?: HistoriesOptions;
+  transform?: TransformOptions;
 }
 
 const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
@@ -68,14 +72,14 @@ const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
   };
 };
 
-export class VuexMultiHistory<K extends string = string> {
+export class VuexMultiHistory<STATE = any> {
   readonly plugin: Plugin<any>;
   readonly data: Data;
-  readonly options: Required<VuexMultiHistoryOptions<K>>;
-  store!: Store<any>;
+  readonly options: Required<VuexMultiHistoryOptions>;
+  store!: Store<STATE>;
   private hasInstalled: boolean = false;
 
-  constructor(options?: Partial<VuexMultiHistoryOptions<K>>) {
+  constructor(options?: Partial<VuexMultiHistoryOptions>) {
     this.options = Object.assign(generateDefaultOptions(), options);
 
     this.validateOptions();
@@ -172,7 +176,7 @@ export class VuexMultiHistory<K extends string = string> {
     return history;
   }
 
-  serialize(historyKey: string, state: any): any {
+  serialize(historyKey: string, state: STATE): any {
     return this.removeObservers(this.options.transform.serialize.call(this, historyKey, state));
   }
 

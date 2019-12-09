@@ -3,3 +3,7 @@ node_modules
 dist
 coverage
 .env
+docs/api
+docs/.vuepress/api-sidebar.json
+docs/.vuepress/api-sidebar-relative.json
+

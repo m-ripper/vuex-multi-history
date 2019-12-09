@@ -1,3 +1,15 @@
+const apiSideBar = require('./api-sidebar.json');
+
+const correctApiSideBar = apiSideBar.map((entry) => {
+  if (!entry.children) {
+    return entry;
+  }
+  const correctedChildren = entry.children.map((child) => {
+    return `/api/${child}`;
+  });
+  return { ...entry, children: correctedChildren };
+});
+
 module.exports = {
   title: 'vuex-multi-history',
   description: 'A Vuex-plugin to allow undo, redo, etc for multiple histories',
@@ -9,13 +21,13 @@ module.exports = {
     ],
     sidebar: [
       '/',
-      '/getting-started/',
+      '/guide/',
       {
-        title: 'Guide',
-        collapsable: false,
-        children: ['/guide/', '/guide/options/', '/guide/usage/'],
-        sidebarDepth: 2,
+        title: 'API',
+        children: ['/api/', ...correctApiSideBar],
+        sidebarDepth: 1,
       },
     ],
+    sidebarDepth: 2,
   },
 };

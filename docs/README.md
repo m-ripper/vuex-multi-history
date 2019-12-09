@@ -7,8 +7,8 @@ actionLink: /guide/
 features:
 - title: Dynamic
   details: Histories can be added and removed on the fly.
-- title: Multiple histories
-  details: Compared to most plugins for Vuex with similar functionalities, this plugin also offers handling multiple histories at the same time.
+- title: Reactive
+  details: Histories are reactive, therefore it is easy to integrate into Vue.
 - title: Well-Tested
-  details: All functionalities are covered with tests.
+  details: Functionalities are covered with tests.
 ---
