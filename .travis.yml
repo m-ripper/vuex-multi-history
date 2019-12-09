@@ -8,6 +8,9 @@ install:
 before_script:
   - npm install
   - npm run build
+  - cd demo
+  - npm install
+  - cd ..
 
 script:
   - npm run lint
