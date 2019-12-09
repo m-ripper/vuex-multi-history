@@ -25,7 +25,6 @@
     "dist"
   ],
   "scripts": {
-    "build:dev": "set NODE_ENV=development && npm run build",
     "build": "npm run build:cjs && npm run build:umd",
     "build:cjs": "tsc",
     "build:umd": "webpack",
@@ -39,7 +38,9 @@
     "prettier:format": "prettier --write src/**/*.{ts,vue,json} --list-different",
     "typedoc": "typedoc src",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "typedoc && vuepress build docs"
+    "docs:example": "npm run build:example && node scripts/moveExample.js",
+    "docs:build": "npm run typedoc && vuepress build docs && npm run docs:example",
+    "build:example": "cd demo && npm run build"
   },
   "dependencies": {
     "vue": "^2.6.10",

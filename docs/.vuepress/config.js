@@ -17,6 +17,7 @@ module.exports = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
+      { text: 'Example', link: 'https://veake.github.io/vuex-multi-history/example' },
       { text: 'Github', link: 'https://github.com/veake/vuex-multi-history' },
     ],
     sidebar: [
