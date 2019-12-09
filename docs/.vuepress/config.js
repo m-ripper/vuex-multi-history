@@ -10,10 +10,12 @@ const correctApiSideBar = apiSideBar.map((entry) => {
   return { ...entry, children: correctedChildren };
 });
 
-const usedSidebar = process.env.NODE_ENV === 'production' ? apiSideBar : correctApiSideBar;
-const base = process.env.NODE_ENV === 'production' ? '/vuex-multi-history/' : '/';
+const env = process.env.NODE_ENV.trim();
+const usedSidebar = env === 'production' ? apiSideBar : correctApiSideBar;
+const base = env === 'production' ? '/vuex-multi-history/' : '/';
 
 module.exports = {
+  base,
   title: 'vuex-multi-history',
   description: 'A Vuex-plugin to allow undo, redo, etc for multiple histories',
   themeConfig: {
