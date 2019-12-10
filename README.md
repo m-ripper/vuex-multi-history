@@ -6,6 +6,8 @@
 
 Multiple histories for Vuex
 
+The Demo is available [here](https://veake.github.io/vuex-multi-history/example/).
+
 ## Getting Started
 
 1.  Install the dependencies: \
