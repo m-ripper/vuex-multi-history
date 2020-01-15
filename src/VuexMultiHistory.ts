@@ -62,8 +62,8 @@ const generateDefaultOptions: () => Required<VuexMultiHistoryOptions> = () => {
     size: 50,
     filter: DEFAULT_FILTER,
     histories: {
-      resolve: DEFAULT_RESOLVE,
       keys: [DEFAULT_KEY],
+      resolve: DEFAULT_RESOLVE,
     },
     transform: {
       serialize: DEFAULT_SERIALIZE,

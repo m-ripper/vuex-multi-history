@@ -408,9 +408,9 @@ describe('VuexHistory', () => {
 
   test('hasChanges', () => {
     addTestSnapshot(history, 2);
-    expect(history.hasChanges()).toBeTruthy();
+    expect(history.hasChanges).toBeTruthy();
     history.clearHistory();
-    expect(history.hasChanges()).toBeFalsy();
+    expect(history.hasChanges).toBeFalsy();
   });
 
   test('overrideInitialState', () => {

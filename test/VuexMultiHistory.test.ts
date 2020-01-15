@@ -51,9 +51,9 @@ describe('VuexHistoryPlugin', () => {
 
     test('hasChanges', () => {
       store.commit('add', 2);
-      expect(store.history().hasChanges()).toBeTruthy();
+      expect(store.history().hasChanges).toBeTruthy();
       store.commit('add', -2);
-      expect(store.history().hasChanges()).toBeTruthy();
+      expect(store.history().hasChanges).toBeTruthy();
     });
 
     test('undo', () => {

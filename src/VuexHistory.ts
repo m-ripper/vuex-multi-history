@@ -60,6 +60,7 @@ export class VuexHistory {
     }
     return false;
   }
+
   private currentIndex: number;
   private readonly snapshots: UniqueHistorySnapshot[];
   private initialStateData: any;
@@ -86,20 +87,17 @@ export class VuexHistory {
     this.idCounter++;
 
     const uniqueSnapshot = new UniqueHistorySnapshot(this.idCounter, snapshot);
+    const isLatestSnapshot = this.currentIndex + 1 === this.snapshots.length;
 
-    // needed because everything after the currentIndex will be removed if something was undone and then added
-    const isLatestSnapshot = this.currentIndex + 1 < this.snapshots.length;
+    if (this.currentIndex + 1 === this.plugin.options.size) {
+      this.snapshots.splice(0, 1);
+    }
 
     this.currentIndex++;
 
-    if (this.currentIndex === this.plugin.options.size) {
-      this.snapshots.splice(0, 1);
-      this.currentIndex--;
-    }
-
     this.snapshots.splice(this.currentIndex, 1, uniqueSnapshot);
 
-    if (isLatestSnapshot) {
+    if (!isLatestSnapshot) {
       this.snapshots.splice(this.currentIndex + 1);
     }
     return this;
@@ -115,12 +113,12 @@ export class VuexHistory {
 
   removeSnapshot(options: FindSnapshotOptions): HistorySnapshot | undefined {
     const index = this.findSnapshotIndex(options);
-    return index >= 0 && this.length > index ? this.snapshots.splice(index, 1)[0] : undefined;
+    return index >= 0 ? this.snapshots.splice(index, 1)[0] : undefined;
   }
 
   updateSnapshot(options: FindSnapshotOptions, snapshot: HistorySnapshot): VuexHistory {
     const index = this.findSnapshotIndex(options);
-    if (index < 0 || index >= this.length) {
+    if (index < 0) {
       return this;
     }
     const uniqueSnapshot = new UniqueHistorySnapshot(this.snapshots[index].id, snapshot);
@@ -149,7 +147,7 @@ export class VuexHistory {
     this.overrideInitialState(this.plugin.store.state);
   }
 
-  hasChanges(): boolean {
+  get hasChanges(): boolean {
     return this.snapshots.length > 0;
   }
 

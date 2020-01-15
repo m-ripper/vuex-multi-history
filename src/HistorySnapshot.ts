@@ -11,13 +11,9 @@ export class UniqueHistorySnapshot implements HistorySnapshot {
   private readonly $mutation: string;
   private readonly $stateData: any;
 
-  constructor(private readonly $id: HistorySnapshotId, snapshot: HistorySnapshot) {
+  constructor(readonly id: HistorySnapshotId, snapshot: HistorySnapshot) {
     this.$mutation = snapshot.mutation;
     this.$stateData = snapshot.stateData;
-  }
-
-  get id(): HistorySnapshotId {
-    return this.$id;
   }
 
   get mutation(): string {
