@@ -12,12 +12,12 @@
     "multiple",
     "history"
   ],
-  "author": "Max Ripper (@Veake)",
-  "repository": "https://github.com/Veake/vuex-multi-history#readme",
+  "author": "Max Ripper (@m-ripper)",
+  "repository": "https://github.com/m-ripper/vuex-multi-history#readme",
   "license": "MIT",
-  "homepage": "https://veake.github.io/vuex-multi-history/",
+  "homepage": "https://m-ripper.github.io/vuex-multi-history/",
   "bugs": {
-    "url": "https://github.com/Veake/vuex-multi-history/issues"
+    "url": "https://github.com/m-ripper/vuex-multi-history/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

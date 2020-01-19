@@ -1,12 +1,12 @@
 # vuex-multi-history
 
-[![Build Status](https://travis-ci.com/Veake/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/Veake/vuex-multi-history)
+[![Build Status](https://travis-ci.com/m-ripper/vuex-multi-history.svg?token=Bg4GBGTdq9xroxnkokv8&branch=master)](https://travis-ci.com/m-ripper/vuex-multi-history)
 [![npm version](https://badge.fury.io/js/vuex-multi-history.svg)](https://badge.fury.io/js/vuex-multi-history)
-[![codecov](https://codecov.io/gh/Veake/vuex-multi-history/branch/master/graph/badge.svg)](https://codecov.io/gh/Veake/vuex-multi-history)
+[![codecov](https://codecov.io/gh/m-ripper/vuex-multi-history/branch/master/graph/badge.svg)](https://codecov.io/gh/m-ripper/vuex-multi-history)
 
 Multiple histories for Vuex
 
-The Demo is available [here](https://veake.github.io/vuex-multi-history/example/).
+The Demo is available [here](https://m-ripper.github.io/vuex-multi-history/example/).
 
 ## Getting Started
 
@@ -39,4 +39,4 @@ The Demo is available [here](https://veake.github.io/vuex-multi-history/example/
     });
     ```
 
-For more information visit the [docs](https://veake.github.io/vuex-multi-history/).
+For more information visit the [docs](https://m-ripper.github.io/vuex-multi-history/).
