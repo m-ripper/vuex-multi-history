@@ -1,6 +1,6 @@
 {
   "name": "vuex-multi-history",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A Vuex-plugin to allow undo, redo, etc for multiple histories",
   "keywords": [
     "vue",
@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.20",
-    "@veake/prettier-config": "^1.0.0",
-    "@veake/tslint-config": "^1.0.0",
+    "@m-ripper/prettier-config": "^1.0.0",
+    "@m-ripper/tslint-config": "^1.0.0",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.1.0",
@@ -62,5 +62,5 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
-  "prettier": "@veake/prettier-config"
+  "prettier": "@m-ripper/prettier-config"
 }

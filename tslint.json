@@ -1,5 +1,5 @@
 {
-  "extends": "@veake/tslint-config",
+  "extends": "@m-ripper/tslint-config",
   "linterOptions": {
     "exclude": ["node_modules/**/*"]
   }

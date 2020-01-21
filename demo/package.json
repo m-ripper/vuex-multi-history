@@ -17,8 +17,8 @@
     "vuex-multi-history": "latest"
   },
   "devDependencies": {
-    "@veake/prettier-config": "^1.0.0",
-    "@veake/tslint-config": "^1.0.0",
+    "@m-ripper/prettier-config": "^1.0.0",
+    "@m-ripper/tslint-config": "^1.0.0",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",
     "@vue/cli-plugin-typescript": "^4.1.0",
@@ -29,5 +29,5 @@
     "typescript": "~3.6.4",
     "vue-template-compiler": "^2.6.10"
   },
-  "prettier": "@veake/prettier-config"
+  "prettier": "@m-ripper/prettier-config"
 }
